@@ -20,7 +20,6 @@ class _StartPageState extends State<StartPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text("COPY"),
               Container(
                 width: 150,
                 height: 40,
