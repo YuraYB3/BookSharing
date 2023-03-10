@@ -1,68 +1,161 @@
+import 'package:booksshare/Services/Auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class BookSearchScreen extends StatefulWidget {
+import '../../Models/BooksModel.dart';
+import '../../Services/UserBooks.dart';
+import '../Panel/UserPanel.dart';
+import 'BookDetailsScreen.dart';
+
+class BookSearchPage extends StatefulWidget {
   @override
-  _BookSearchScreenState createState() => _BookSearchScreenState();
+  _BookSearchPageState createState() => _BookSearchPageState();
 }
 
-class _BookSearchScreenState extends State<BookSearchScreen> {
-  final TextEditingController _searchController = TextEditingController();
-  String _searchText = '';
-  String _getText = "";
+class _BookSearchPageState extends State<BookSearchPage> {
+  TextEditingController searchController = TextEditingController();
+  String searchQuery = "";
 
   @override
   Widget build(BuildContext context) {
+    AuthService auth = AuthService();
+    var uId = auth.getUserID();
+    var bookList = BookService(uId!);
+    CollectionReference user = FirebaseFirestore.instance.collection("users");
     return Scaffold(
-      appBar: AppBar(
-        title: TextField(
-          controller: _searchController,
-          decoration: InputDecoration(
-            hintText: 'Search by title',
+        appBar: AppBar(
+          title: Card(
+            child: TextField(
+              decoration: const InputDecoration(
+                hintText: 'Search .....',
+                prefixIcon: Icon(Icons.search),
+              ),
+              onChanged: (value) {
+                setState(() {
+                  searchQuery = value;
+                });
+              },
+            ),
           ),
-          onChanged: (value) {
-            _searchText = value;
-          },
+          automaticallyImplyLeading: true,
+          toolbarHeight: 80,
+          backgroundColor: const Color(0xff008787),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              setState(() {});
-            },
-          ),
-        ],
-      ),
-      body: StreamBuilder(
-        stream: FirebaseFirestore.instance
-            .collection('books')
-            .orderBy('title')
-            .startAt([_searchText.toLowerCase()]).endAt(
-                [_searchText.toLowerCase() + '\uf8ff']).snapshots(),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          if (!snapshot.hasData) {
-            return Center(
-              child: CircularProgressIndicator(),
-            );
-          }
-          final docs = snapshot.data?.docs;
-          if (docs!.isEmpty) {
-            return Center(
-              child: Text('No books found'),
-            );
-          }
-          return ListView.builder(
-            itemCount: docs.length,
-            itemBuilder: (BuildContext context, int index) {
-              final doc = docs[index];
-              return ListTile(
-                title: Text(doc['title']),
-                subtitle: Text(doc['name']),
-              );
-            },
-          );
-        },
-      ),
-    );
+        body: StreamBuilder<List<Books>>(
+            stream: bookList.readAllUsersBooks(),
+            builder:
+                (BuildContext context, AsyncSnapshot<List<Books>> snapshot) {
+              if (snapshot.hasError) {
+                return Text("{$snapshot.error}");
+              }
+              if (snapshot.hasData) {
+                final books = snapshot.data!;
+                return ListView.builder(
+                    itemCount: books.length,
+                    itemBuilder: (context, index) {
+                      final book = books[index];
+                      return FutureBuilder<DocumentSnapshot>(
+                          future: user.doc(book.userId).get(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                            if (userSnapshot.connectionState ==
+                                ConnectionState.done) {
+                              Map<String, dynamic> userdata = userSnapshot.data!
+                                  .data() as Map<String, dynamic>;
+                              if (searchQuery.isEmpty) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookDetailsScreen(
+                                            bookID: book.bookId,
+                                            userID: book.userId,
+                                          ),
+                                        ));
+                                  },
+                                  child: ListTile(
+                                    title: Text("Назва книги:${book.name}"),
+                                    leading: SizedBox(
+                                        height: 300,
+                                        width: 50,
+                                        child: Image.network(book.cover,
+                                            width: 200,
+                                            height: 300,
+                                            fit: BoxFit.cover)),
+                                    subtitle: Text(
+                                        'Власник книги: ${userdata['name']} ${userdata['surname']}'),
+                                  ),
+                                );
+                              }
+                              if (book.available == 'yes' &&
+                                      book.name
+                                          .toString()
+                                          .toLowerCase()
+                                          .startsWith(
+                                              searchQuery.toLowerCase()) ||
+                                  book.title
+                                      .toString()
+                                      .toLowerCase()
+                                      .startsWith(searchQuery.toLowerCase())) {
+                                return GestureDetector(
+                                  onTap: () {
+                                    // Navigate to the BookDetailsScreen and pass in the book id
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) =>
+                                              BookDetailsScreen(
+                                            bookID: book.bookId,
+                                            userID: book.userId,
+                                          ),
+                                        ));
+                                  },
+                                  child: ListTile(
+                                    title: Text("Назва книги:${book.name}"),
+                                    leading: SizedBox(
+                                        height: 300,
+                                        width: 50,
+                                        child: Image.network(book.cover,
+                                            width: 200,
+                                            height: 300,
+                                            fit: BoxFit.cover)),
+                                    subtitle: Text(
+                                        'Власник книги: ${userdata['name']} ${userdata['surname']}'),
+                                  ),
+                                );
+                              } else {}
+                            }
+                            return const Text('');
+                          });
+                    });
+              } else {
+                return Container();
+              }
+            }),
+        drawer: UserPanel());
   }
 }
+/*
+if (searchQuery.isEmpty) {
+                        return ListTile(
+                          title: Text(book.name),
+                          leading: Text(book.title),
+                        );
+                      }
+                      if (book.name
+                              .toString()
+                              .toLowerCase()
+                              .startsWith(searchQuery.toLowerCase()) ||
+                          book.title
+                              .toString()
+                              .toLowerCase()
+                              .startsWith(searchQuery.toLowerCase())) {
+                        return ListTile(
+                          title: Text(book.name),
+                          leading: Text(book.title),
+                        );
+                      } else {
+                        return Container();
+                      }*/

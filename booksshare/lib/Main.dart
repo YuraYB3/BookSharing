@@ -4,7 +4,6 @@ import 'package:booksshare/Models/userModel.dart';
 import 'package:booksshare/Screens/Authentication/LoginPage.dart';
 import 'package:booksshare/Screens/Authentication/SignUp.dart';
 import 'package:booksshare/Screens/Home/homepage.dart';
-import 'package:booksshare/Screens/Library/BookSearchPage.dart';
 import 'package:booksshare/Screens/Profile/userProfile.dart';
 import 'package:booksshare/Screens/Settings/userSettings.dart';
 import 'package:booksshare/Services/auth.dart';
@@ -14,6 +13,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Screens/Library/AllBooksOfAllUsers.dart';
+import 'Screens/Library/BookSearchPage.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
             '/home': (context) => const HomePage(),
             '/settings': (context) => UserSettings(),
             '/library': (context) => const UsersBooks(),
-            '/search': (context) => BookSearchScreen()
+            '/search': (context) => BookSearchPage()
           },
           home: const Wrapper(),
         ));

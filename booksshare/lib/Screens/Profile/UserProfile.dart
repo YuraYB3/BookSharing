@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 
 import '../../Models/userModel.dart';
 import '../../Services/DatabaseUser.dart';
+import '../Panel/UserPanel.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -23,9 +24,9 @@ class _UserProfileState extends State<UserProfile> {
         value: DatabaseUserService(uid: '').users,
         initialData: null,
         child: Scaffold(
-          appBar: userAppBar.headerBar(context),
-          backgroundColor: Colors.white,
-          body: const Text("User Profile :)"),
-        ));
+            appBar: userAppBar.headerBar(context),
+            backgroundColor: Colors.white,
+            body: const Text("User Profile :)"),
+            drawer: UserPanel()));
   }
 }
