@@ -48,6 +48,19 @@ class _BookSearchPageState extends State<BookSearchPage> {
               if (snapshot.hasError) {
                 return Text("{$snapshot.error}");
               }
+              if (searchQuery.isEmpty) {
+                return const Center(
+                    child: Align(
+                  alignment: Alignment.center,
+                  child: Text(
+                    'Введіть назву книги або автора :)',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 24.0,
+                        decorationStyle: TextDecorationStyle.solid),
+                  ),
+                ));
+              }
               if (snapshot.hasData) {
                 final books = snapshot.data!;
                 return ListView.builder(
@@ -62,43 +75,20 @@ class _BookSearchPageState extends State<BookSearchPage> {
                                 ConnectionState.done) {
                               Map<String, dynamic> userdata = userSnapshot.data!
                                   .data() as Map<String, dynamic>;
-                              if (searchQuery.isEmpty) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookDetailsScreen(
-                                            bookID: book.bookId,
-                                            userID: book.userId,
-                                          ),
-                                        ));
-                                  },
-                                  child: ListTile(
-                                    title: Text("Назва книги:${book.name}"),
-                                    leading: SizedBox(
-                                        height: 300,
-                                        width: 50,
-                                        child: Image.network(book.cover,
-                                            width: 200,
-                                            height: 300,
-                                            fit: BoxFit.cover)),
-                                    subtitle: Text(
-                                        'Власник книги: ${userdata['name']} ${userdata['surname']}'),
-                                  ),
-                                );
-                              }
+
                               if (book.available == 'yes' &&
+                                      searchQuery.length >= 3 &&
                                       book.name
                                           .toString()
                                           .toLowerCase()
                                           .startsWith(
                                               searchQuery.toLowerCase()) ||
-                                  book.title
-                                      .toString()
-                                      .toLowerCase()
-                                      .startsWith(searchQuery.toLowerCase())) {
+                                  searchQuery.length >= 3 &&
+                                      book.title
+                                          .toString()
+                                          .toLowerCase()
+                                          .startsWith(
+                                              searchQuery.toLowerCase())) {
                                 return GestureDetector(
                                   onTap: () {
                                     // Navigate to the BookDetailsScreen and pass in the book id
@@ -137,25 +127,3 @@ class _BookSearchPageState extends State<BookSearchPage> {
         drawer: UserPanel());
   }
 }
-/*
-if (searchQuery.isEmpty) {
-                        return ListTile(
-                          title: Text(book.name),
-                          leading: Text(book.title),
-                        );
-                      }
-                      if (book.name
-                              .toString()
-                              .toLowerCase()
-                              .startsWith(searchQuery.toLowerCase()) ||
-                          book.title
-                              .toString()
-                              .toLowerCase()
-                              .startsWith(searchQuery.toLowerCase())) {
-                        return ListTile(
-                          title: Text(book.name),
-                          leading: Text(book.title),
-                        );
-                      } else {
-                        return Container();
-                      }*/
