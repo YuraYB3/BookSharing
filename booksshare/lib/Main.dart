@@ -37,9 +37,9 @@ class MyApp extends StatelessWidget {
             // ignore: prefer_const_constructors
             '/login': (context) => LoginPage(),
             '/signup': (context) => SignUp(),
-            '/profile': (context) => UserProfile(),
+            '/profile': (context) => const UserProfile(),
             '/home': (context) => const HomePage(),
-            '/settings': (context) => UserSettings(),
+            '/settings': (context) => const UserSettings(),
             '/library': (context) => const UsersBooks(),
             '/search': (context) => BookSearchPage()
           },

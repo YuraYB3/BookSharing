@@ -26,7 +26,7 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('My books'),
+            title: const Text('My library'),
             leading: const Icon(Icons.my_library_books),
             onTap: () {
               Navigator.pop(context);

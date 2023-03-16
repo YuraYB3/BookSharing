@@ -64,64 +64,66 @@ class _BookSearchPageState extends State<BookSearchPage> {
               if (snapshot.hasData) {
                 final books = snapshot.data!;
                 return ListView.builder(
-                    itemCount: books.length,
-                    itemBuilder: (context, index) {
-                      final book = books[index];
-                      return FutureBuilder<DocumentSnapshot>(
-                          future: user.doc(book.userId).get(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                            if (userSnapshot.connectionState ==
-                                ConnectionState.done) {
-                              Map<String, dynamic> userdata = userSnapshot.data!
-                                  .data() as Map<String, dynamic>;
-
-                              if (book.available == 'yes' &&
-                                      searchQuery.length >= 3 &&
-                                      book.name
-                                          .toString()
-                                          .toLowerCase()
-                                          .startsWith(
-                                              searchQuery.toLowerCase()) ||
-                                  searchQuery.length >= 3 &&
-                                      book.title
-                                          .toString()
-                                          .toLowerCase()
-                                          .startsWith(
-                                              searchQuery.toLowerCase())) {
-                                return GestureDetector(
-                                  onTap: () {
-                                    // Navigate to the BookDetailsScreen and pass in the book id
-                                    Navigator.push(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder: (context) =>
-                                              BookDetailsScreen(
-                                            bookID: book.bookId,
-                                            userID: book.userId,
-                                          ),
-                                        ));
-                                  },
-                                  child: ListTile(
-                                    title: Text("Назва книги:${book.name}"),
-                                    leading: SizedBox(
-                                        height: 300,
-                                        width: 50,
-                                        child: Image.network(book.cover,
-                                            width: 200,
-                                            height: 300,
-                                            fit: BoxFit.cover)),
-                                    subtitle: Text(
-                                        'Власник книги: ${userdata['name']} ${userdata['surname']}'),
+                  itemCount: books.length,
+                  itemBuilder: (context, index) {
+                    final book = books[index];
+                    return FutureBuilder<DocumentSnapshot>(
+                      future: user.doc(book.userId).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                        if (userSnapshot.connectionState ==
+                            ConnectionState.done) {
+                          final userdata =
+                              userSnapshot.data!.data() as Map<String, dynamic>;
+                          final bookName = book.name.toString().toLowerCase();
+                          final bookTitle = book.title.toString().toLowerCase();
+                          final query = searchQuery.toLowerCase();
+                          final startsWithQuery = bookName.startsWith(query) ||
+                              bookTitle.startsWith(query);
+                          if (searchQuery.length >= 3 &&
+                              book.available == 'yes' &&
+                              startsWithQuery) {
+                            return ListTile(
+                              title: const Text("Назва книги:"),
+                              subtitle: Text(book.name),
+                              leading: SizedBox(
+                                height: 300,
+                                width: 50,
+                                child: Image.network(book.cover,
+                                    width: 200, height: 300, fit: BoxFit.cover),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailsScreen(
+                                      bookID: book.bookId,
+                                      userID: book.userId,
+                                    ),
                                   ),
                                 );
-                              } else {}
-                            }
-                            return const Text('');
-                          });
-                    });
+                              },
+                            );
+                          } else {
+                            return const Center(
+                              child: Text(
+                                'Нічого не знайдено :(',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 24.0,
+                                    decorationStyle: TextDecorationStyle.solid),
+                              ),
+                            );
+                          }
+                        } else {
+                          return const SizedBox.shrink();
+                        }
+                      },
+                    );
+                  },
+                );
               } else {
-                return Container();
+                return const SizedBox.shrink();
               }
             }),
         drawer: UserPanel());
