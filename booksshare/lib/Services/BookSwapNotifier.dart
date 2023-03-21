@@ -2,6 +2,8 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Models/BookSwapRequestModel.dart';
+
 class BookSwapNotifier {
   final String? receiverID;
   final CollectionReference bookSwapRequestCollection =
@@ -19,13 +21,15 @@ class BookSwapNotifier {
   }
 
   // Get a list of new swap requests for the receiver.
-  Future<List<DocumentSnapshot>> getNewRequests() async {
-    final querySnapshot = await bookSwapRequestCollection
-        .where('receiverID', isEqualTo: receiverID)
-        .where('seenByReceiver', isEqualTo: false)
-        .get();
-    return querySnapshot.docs;
-  }
+
+  Stream<List<BookSwapRequestModel>> getNewRequests() =>
+      FirebaseFirestore.instance
+          .collection('swapRequest')
+          .where("receiverID", isEqualTo: receiverID)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => BookSwapRequestModel.fromJson(doc.data()))
+              .toList());
 
   // Mark a swap request as seen by the receiver.
   Future<void> markRequestAsSeen(String requestID) async {

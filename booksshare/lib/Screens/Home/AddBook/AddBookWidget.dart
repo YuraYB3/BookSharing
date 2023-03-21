@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import '../../../Services/auth.dart';
 import '../../../Shared/Constants.dart';
 import '../../../Services/UserBooks.dart';
@@ -26,17 +27,20 @@ class _AddBookWidgetState extends State<AddBookWidget> {
         backgroundColor: const Color(0xff008787),
         child: const Icon(Icons.add),
         onPressed: () {
-          showModalBottomSheet<void>(
+          showMaterialModalBottomSheet(
+            bounce: true,
             context: context,
+            enableDrag: true,
             builder: (BuildContext context) {
               return Container(
-                height: 500,
+                height: 470,
                 color: const Color(0xff008787),
                 child: Form(
                   key: _formKey,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: <Widget>[
                       TextFormField(
                           decoration: textInputDecoration.copyWith(
@@ -50,9 +54,6 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                               nameBook = val;
                             });
                           }),
-                      Container(
-                        height: 20,
-                      ),
                       TextFormField(
                         decoration: textInputDecoration.copyWith(
                             hintText: "Enter the author of the book"),
@@ -65,9 +66,6 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                             autorBook = val;
                           });
                         },
-                      ),
-                      Container(
-                        height: 20,
                       ),
                       ElevatedButton(
                         style: const ButtonStyle(

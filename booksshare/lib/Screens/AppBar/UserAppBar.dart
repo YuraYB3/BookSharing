@@ -28,7 +28,9 @@ class UserAppBar {
             } else {
               return IconButton(
                 icon: const Icon(Icons.notifications_off_rounded),
-                onPressed: () {},
+                onPressed: () {
+                  print("WORKED?");
+                },
               );
             }
           },

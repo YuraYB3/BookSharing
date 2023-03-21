@@ -46,6 +46,7 @@ dependencies:
   firebase_storage: ^11.0.14
   fluttertoast: ^8.2.1
   cached_network_image: ^3.2.3
+  modal_bottom_sheet: ^2.1.2
 
 dev_dependencies:
   flutter_test:

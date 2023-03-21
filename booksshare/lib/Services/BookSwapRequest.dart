@@ -27,11 +27,11 @@ class BookSwapRequest {
       );
       return;
     }
-
     // Otherwise, execute the request and notify the user.
     final newSwapReqRef = bookSwapRequestCollection.doc();
     try {
       await newSwapReqRef.set({
+        'swapReqID': newSwapReqRef.id,
         'senderID': senderID,
         'receiverID': receiverID,
         'desiredBookID': desiredBookID,
@@ -46,6 +46,32 @@ class BookSwapRequest {
       );
     } catch (e) {
       // Handle any errors that occur during the request.
+    }
+  }
+
+  Future<void> updateData(String swapReqID) async {
+    final CollectionReference swapReqRef =
+        FirebaseFirestore.instance.collection('swapRequest');
+    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
+
+    try {
+      await swapReqDocRef.update({'seenByReceiver': true});
+      print('Data updated successfully!');
+    } catch (e) {
+      print('Error updating data: $e');
+    }
+  }
+
+  Future<void> deleteData(String swapReqID) async {
+    final CollectionReference swapReqRef =
+        FirebaseFirestore.instance.collection('swapRequest');
+    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
+
+    try {
+      await swapReqDocRef.delete();
+      print('Data deleted successfully!');
+    } catch (e) {
+      print('Error updating data: $e');
     }
   }
 }
