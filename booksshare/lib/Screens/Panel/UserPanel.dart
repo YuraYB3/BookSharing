@@ -34,11 +34,11 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Reads'),
+            title: const Text('Exchange'),
             leading: const Icon(Icons.menu_book),
             onTap: () {
               Navigator.pop(context);
-              Navigator.pushNamed(context, '/library');
+              Navigator.pushNamed(context, '/exchange');
             },
           ),
           ListTile(

@@ -3,6 +3,7 @@
 import 'package:booksshare/Models/userModel.dart';
 import 'package:booksshare/Screens/Authentication/LoginPage.dart';
 import 'package:booksshare/Screens/Authentication/SignUp.dart';
+import 'package:booksshare/Screens/Exchange/ExchangePage.dart';
 import 'package:booksshare/Screens/Home/homepage.dart';
 import 'package:booksshare/Screens/Notification/notifacationScreen.dart';
 import 'package:booksshare/Screens/Profile/userProfile.dart';
@@ -43,7 +44,8 @@ class MyApp extends StatelessWidget {
             '/settings': (context) => const UserSettings(),
             '/library': (context) => const UsersBooks(),
             '/search': (context) => BookSearchPage(),
-            '/notification': (context) => const NotificationScreen()
+            '/notification': (context) => const NotificationScreen(),
+            '/exchange': (context) => ExchangePage()
           },
           home: const Wrapper(),
         ));
