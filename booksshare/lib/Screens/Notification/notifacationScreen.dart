@@ -7,11 +7,7 @@ import 'package:booksshare/Services/BookSwap.dart';
 import 'package:booksshare/Services/BookSwapNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../../Models/userModel.dart';
 import '../../Services/BookSwapRequest.dart';
-import '../../Services/DatabaseUser.dart';
 import '../Panel/UserPanel.dart';
 
 class NotificationScreen extends StatefulWidget {
@@ -23,7 +19,7 @@ class NotificationScreen extends StatefulWidget {
 
 class _NotificationScreenState extends State<NotificationScreen> {
   UserAppBar userAppBar = UserAppBar();
-  AuthService _authService = AuthService();
+  final AuthService _authService = AuthService();
   BookSwap bookSwap = BookSwap();
   BookSwapRequest b = BookSwapRequest();
 
@@ -62,7 +58,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 Map<String, dynamic> userdata =
                                     userSnapshot.data!.data()
                                         as Map<String, dynamic>;
-
                                 return FutureBuilder<DocumentSnapshot>(
                                     future:
                                         book.doc(notify.desiredBookID).get(),

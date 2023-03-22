@@ -56,10 +56,7 @@ class BookSwapRequest {
 
     try {
       await swapReqDocRef.update({'seenByReceiver': true});
-      print('Data updated successfully!');
-    } catch (e) {
-      print('Error updating data: $e');
-    }
+    } catch (e) {}
   }
 
   Future<void> deleteData(String swapReqID) async {
@@ -69,9 +66,6 @@ class BookSwapRequest {
 
     try {
       await swapReqDocRef.delete();
-      print('Data deleted successfully!');
-    } catch (e) {
-      print('Error updating data: $e');
-    }
+    } catch (e) {}
   }
 }

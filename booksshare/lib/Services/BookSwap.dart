@@ -2,7 +2,11 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import '../Models/BookSwapModel.dart';
+
 class BookSwap {
+  final CollectionReference bookSwapCollection =
+      FirebaseFirestore.instance.collection('bookSwap');
   Future<void> addBookSwap(String swapReqID, String? senderID,
       String receiverID, String desiredBookID) async {
     final CollectionReference bookSwapCollection =
@@ -16,8 +20,22 @@ class BookSwap {
         'receiverID': receiverID,
         'desiredBookID': desiredBookID,
       });
-    } catch (e) {
-      print(e);
-    }
+    } catch (e) {}
+  }
+
+  Stream<List<BookSwapModel>> getBookSwap(String user, String userID) {
+    return FirebaseFirestore.instance
+        .collection('bookSwap')
+        .where(user, isEqualTo: userID)
+        .snapshots()
+        .map((snapshot) => snapshot.docs
+            .map((doc) => BookSwapModel.fromJson(doc.data()))
+            .toList());
+  }
+
+  Future<int> getBookSwapCount(String user, String userID) async {
+    final querySnapshot =
+        await bookSwapCollection.where(user, isEqualTo: userID).get();
+    return querySnapshot.docs.length;
   }
 }
