@@ -15,7 +15,6 @@ class BookSwapNotifier {
   Future<int> getNewRequestCount() async {
     final querySnapshot = await bookSwapRequestCollection
         .where('receiverID', isEqualTo: receiverID)
-        .where('seenByReceiver', isEqualTo: false)
         .get();
     return querySnapshot.docs.length;
   }
@@ -26,6 +25,7 @@ class BookSwapNotifier {
       FirebaseFirestore.instance
           .collection('swapRequest')
           .where("receiverID", isEqualTo: receiverID)
+          .where('seenByReceiver', isEqualTo: false)
           .snapshots()
           .map((snapshot) => snapshot.docs
               .map((doc) => BookSwapRequestModel.fromJson(doc.data()))

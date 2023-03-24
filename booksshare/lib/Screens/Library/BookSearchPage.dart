@@ -105,15 +105,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
                               },
                             );
                           } else {
-                            return const Center(
-                              child: Text(
-                                'Нічого не знайдено :(',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 24.0,
-                                    decorationStyle: TextDecorationStyle.solid),
-                              ),
-                            );
+                            return Container();
                           }
                         } else {
                           return const SizedBox.shrink();

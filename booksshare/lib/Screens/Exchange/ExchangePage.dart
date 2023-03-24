@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import '../../Models/BookSwapModel.dart';
 import '../../Models/userModel.dart';
 import '../../Services/DatabaseUser.dart';
-import '../AppBar/UserAppBar.dart';
 
 class ExchangePage extends StatefulWidget {
   const ExchangePage({super.key});
@@ -27,8 +26,6 @@ class _ExchangePageState extends State<ExchangePage>
   }
 
   Widget build(BuildContext context) {
-    UserAppBar userBar = UserAppBar();
-    BookSwap bookSwap = BookSwap();
     AuthService authService = AuthService();
     var id = authService.getUserID();
     return StreamProvider<List<UserModel>?>.value(
@@ -54,8 +51,8 @@ class _ExchangePageState extends State<ExchangePage>
             body: TabBarView(
               controller: _tabController,
               children: [
-                ExchangeScreen('senderID', () {}, 'sender'),
-                ExchangeScreen('receiverID', () {}, 'receiver')
+                exchangeScreen('senderID', () {}, 'sender'),
+                exchangeScreen('receiverID', () {}, 'receiver')
               ],
             )));
   }
@@ -66,7 +63,7 @@ class _ExchangePageState extends State<ExchangePage>
     super.dispose();
   }
 
-  StreamBuilder<List<BookSwapModel>> ExchangeScreen(
+  StreamBuilder<List<BookSwapModel>> exchangeScreen(
       String user, Function action, String exchangeType) {
     BookSwap bookSwap = BookSwap();
     AuthService authService = AuthService();
@@ -134,7 +131,7 @@ class _ExchangePageState extends State<ExchangePage>
                                                 fit: BoxFit.cover)),
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(left: 50),
+                                              const EdgeInsets.only(left: 10),
                                           child: Column(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.start,
@@ -180,20 +177,38 @@ class _ExchangePageState extends State<ExchangePage>
                                               ),
                                             ],
                                           ),
-                                        )
+                                        ),
+                                        Expanded(child: Container()),
+                                        exchangeType == "sender"
+                                            ? Padding(
+                                                padding: const EdgeInsets.only(
+                                                    right: 2),
+                                                child: returnBookButton(
+                                                    bookswap.desiredBookID,
+                                                    bookswap.bookSwapID))
+                                            : Container(),
                                       ],
                                     ),
                                   );
                                 }
-                                return Container();
+                                return Column();
                               });
                         }
-                        return Container();
+                        return Column();
                       });
                 });
           } else {
             return const Center(child: CircularProgressIndicator());
           }
         });
+  }
+
+  TextButton returnBookButton(String bookID, String bookSwapID) {
+    BookSwap bookSwap = BookSwap();
+    return TextButton(
+        onPressed: () async {
+          bookSwap.returnBook(bookSwapID, bookID);
+        },
+        child: const Text('Return book'));
   }
 }

@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Models/BookSwapModel.dart';
 
@@ -37,5 +39,24 @@ class BookSwap {
     final querySnapshot =
         await bookSwapCollection.where(user, isEqualTo: userID).get();
     return querySnapshot.docs.length;
+  }
+
+  Future<void> returnBook(String swapReqID, String bookID) async {
+    final CollectionReference bookRef =
+        FirebaseFirestore.instance.collection('books');
+    final DocumentReference bookDocRef = bookRef.doc(bookID);
+    final CollectionReference bookSwapRef =
+        FirebaseFirestore.instance.collection('bookSwap');
+    final DocumentReference bookSwapDocRef = bookSwapRef.doc(swapReqID);
+    try {
+      await bookDocRef.update({'available': 'yes'});
+      await bookSwapDocRef.delete();
+      Fluttertoast.showToast(
+        msg: 'Book returned',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.green,
+        textColor: Colors.white,
+      );
+    } catch (e) {}
   }
 }

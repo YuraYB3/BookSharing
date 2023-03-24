@@ -132,8 +132,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                         .receiverID,
                                                                     notify
                                                                         .desiredBookID);
-                                                                b.updateData(notify
-                                                                    .swapReqID);
+                                                                b.updateData(
+                                                                    notify
+                                                                        .swapReqID,
+                                                                    notify
+                                                                        .desiredBookID);
                                                               },
                                                               icon: const Icon(
                                                                 Icons.done,
