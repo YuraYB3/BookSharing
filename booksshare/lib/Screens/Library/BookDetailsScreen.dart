@@ -5,6 +5,7 @@ import 'package:booksshare/Services/BookSwapRequest.dart';
 import 'package:booksshare/Services/UserBooks.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flip_card/flip_card.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final String? bookID;
@@ -65,291 +66,14 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   if (userSnapshot.connectionState == ConnectionState.done) {
                     Map<String, dynamic> userdata =
                         userSnapshot.data!.data() as Map<String, dynamic>;
-                    if (widget.userID == auth.getUserID()) {
-                      return Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          SizedBox(
-                            height: 350,
-                            width: 400,
-                            child: Card(
-                              elevation: 20,
-                              borderOnForeground: true,
-                              semanticContainer: true,
-                              color: Color(0xff008787),
-                              shadowColor: Color(0xff008787),
-                              child: Row(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: SizedBox(
-                                      height: 280,
-                                      width: 190,
-                                      child: Image.network(
-                                        bookdata['cover'],
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 280,
-                                    width: 2,
-                                  ),
-                                  Column(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 30.0),
-                                        child: Row(
-                                          children: [
-                                            Text(bookdata['name']),
-                                          ],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [Text(bookdata['title'])],
-                                        ),
-                                      ),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 10.0),
-                                        child: Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceEvenly,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
-                                          children: [
-                                            Text('Доступна:'),
-                                            Container(
-                                              width: 30,
-                                            ),
-                                            bookdata['available'] == 'yes'
-                                                ? Text('Yes')
-                                                : Text("No")
-                                          ],
-                                        ),
-                                      ),
-                                      Expanded(child: Container()),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 40,
-                                            width: 100,
-                                            child: ElevatedButton(
-                                              onPressed: () async {
-                                                bool confirmDelete =
-                                                    await showDialog(
-                                                  context: context,
-                                                  builder:
-                                                      (BuildContext context) {
-                                                    return AlertDialog(
-                                                      backgroundColor:
-                                                          Color(0xff008787),
-                                                      title: const Text(
-                                                        'Delete Book',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      content: const Text(
-                                                        'Are you sure you want to delete this book?',
-                                                        style: TextStyle(
-                                                            color:
-                                                                Colors.white),
-                                                      ),
-                                                      actions: [
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context,
-                                                                  false),
-                                                          child: const Text(
-                                                            'Cancel',
-                                                            style: TextStyle(
-                                                                color: Colors
-                                                                    .amber),
-                                                          ),
-                                                        ),
-                                                        TextButton(
-                                                          onPressed: () =>
-                                                              Navigator.pop(
-                                                                  context,
-                                                                  true),
-                                                          child: const Text(
-                                                              'Delete',
-                                                              style: TextStyle(
-                                                                  color: Colors
-                                                                      .amber)),
-                                                        ),
-                                                      ],
-                                                    );
-                                                  },
-                                                );
-                                                if (confirmDelete == true) {
-                                                  BookService bookService =
-                                                      BookService(
-                                                          auth.getUserID());
-                                                  bookService.deleteBook(
-                                                      bookdata['bookID']);
-                                                  Navigator.pop(context);
-                                                }
-                                              },
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(
-                                                  const Color(0xff008787),
-                                                ),
-                                              ),
-                                              child: const Text(
-                                                "Delete",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                          SizedBox(
-                                            height: 40,
-                                            width: 100,
-                                            child: ElevatedButton(
-                                              onPressed: () async {},
-                                              style: ButtonStyle(
-                                                backgroundColor:
-                                                    MaterialStateProperty.all<
-                                                        Color>(
-                                                  const Color(0xff008787),
-                                                ),
-                                              ),
-                                              child: const Text(
-                                                "Відгуки",
-                                                style: TextStyle(
-                                                  fontSize: 18,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            height: 10,
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  )
-                                ],
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    } else {
-                      return Stack(
-                        children: [
-                          Center(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.center,
-                              children: [
-                                SizedBox(
-                                    height: 300,
-                                    width: 200,
-                                    child: Image.network(bookdata['cover'],
-                                        fit: BoxFit.fill)),
-                                Text(
-                                  '${userdata['name']} ${userdata['surname']}',
-                                  style: const TextStyle(
-                                    fontSize: 24,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "${bookdata['name']}",
-                                  style: const TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "${bookdata['title']}",
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                const SizedBox(height: 30),
-                              ],
-                            ),
-                          ),
-                          Positioned(
-                            bottom: 0,
-                            left: 0,
-                            right: 0,
-                            child: Container(
-                              height: 60,
-                              width: 150,
-                              decoration: const BoxDecoration(
-                                color: Color.fromRGBO(7, 85, 85, 1),
-                                borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  topRight: Radius.circular(20),
-                                ),
-                              ),
-                              child: TextButton(
-                                onPressed: () async {
-                                  BookSwapRequest b = BookSwapRequest();
-                                  b.addBookSwapRequest(
-                                    auth.getUserID(),
-                                    userdata['userID'],
-                                    bookdata['bookID'],
-                                  );
-                                  Navigator.pop(context);
-                                },
-                                style: ButtonStyle(
-                                  foregroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    const Color.fromARGB(255, 255, 255, 255),
-                                  ),
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    const Color(0xff008787),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Send an exchange request ",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      );
-                    }
+
+                    return FlipCard(
+                        fill: Fill
+                            .fillBack, // Fill the back side of the card to make in the same size as the front.
+                        direction: FlipDirection.HORIZONTAL, // default
+                        side: CardSide.FRONT, // The side to initially display.
+                        front: FrontSide(auth, bookdata, userdata),
+                        back: BackSide(auth, bookdata));
                   } else {
                     return const Text('');
                   }
@@ -358,6 +82,245 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         }
         return const Text("");
       },
+    );
+  }
+
+  Widget FrontSide(AuthService auth, Map<String, dynamic> bookdata,
+      Map<String, dynamic> userdata) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 350,
+          width: 400,
+          child: Card(
+            elevation: 20,
+            borderOnForeground: true,
+            semanticContainer: true,
+            color: const Color(0xff008787),
+            shadowColor: const Color(0xff008787),
+            child: Row(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: SizedBox(
+                    height: 280,
+                    width: 190,
+                    child: Image.network(
+                      bookdata['cover'],
+                      fit: BoxFit.fill,
+                    ),
+                  ),
+                ),
+                const SizedBox(
+                  height: 280,
+                  width: 2,
+                ),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 30.0),
+                      child: Row(
+                        children: [
+                          Text(bookdata['name']),
+                        ],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [Text(bookdata['title'])],
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 10.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.end,
+                        children: [
+                          const Text('Доступна:'),
+                          Container(
+                            width: 30,
+                          ),
+                          bookdata['available'] == 'yes'
+                              ? const Text('Yes')
+                              : const Text("No")
+                        ],
+                      ),
+                    ),
+                    Expanded(child: Container()),
+                    widget.userID != auth.getUserID()
+                        ? SizedBox(
+                            height: 40,
+                            width: 170,
+                            child: ElevatedButton(
+                              onPressed: () async {
+                                BookSwapRequest b = BookSwapRequest();
+                                b.addBookSwapRequest(
+                                  auth.getUserID(),
+                                  userdata['userID'],
+                                  bookdata['bookID'],
+                                );
+                                Navigator.pop(context);
+                              },
+                              style: ButtonStyle(
+                                foregroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  const Color.fromARGB(255, 255, 255, 255),
+                                ),
+                                backgroundColor:
+                                    MaterialStateProperty.all<Color>(
+                                  const Color(0xff008787),
+                                ),
+                              ),
+                              child: const Text(
+                                "Send request ",
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          )
+                        : Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              SizedBox(
+                                height: 40,
+                                width: 170,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    bool confirmDelete = await showDialog(
+                                      context: context,
+                                      builder: (BuildContext context) {
+                                        return AlertDialog(
+                                          backgroundColor:
+                                              const Color(0xff008787),
+                                          title: const Text(
+                                            'Delete Book',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          content: const Text(
+                                            'Are you sure you want to delete this book?',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          ),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, false),
+                                              child: const Text(
+                                                'Cancel',
+                                                style: TextStyle(
+                                                    color: Colors.amber),
+                                              ),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, true),
+                                              child: const Text('Delete',
+                                                  style: TextStyle(
+                                                      color: Colors.amber)),
+                                            ),
+                                          ],
+                                        );
+                                      },
+                                    );
+                                    if (confirmDelete == true) {
+                                      BookService bookService =
+                                          BookService(auth.getUserID());
+                                      bookService
+                                          .deleteBook(bookdata['bookID']);
+                                      Navigator.pop(context);
+                                    }
+                                  },
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      const Color(0xff008787),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Delete",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              SizedBox(
+                                height: 40,
+                                width: 170,
+                                child: ElevatedButton(
+                                  onPressed: () async {},
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      const Color(0xff008787),
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Відгуки",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                  ],
+                )
+              ],
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget BackSide(AuthService auth, Map<String, dynamic> bookdata) {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        SizedBox(
+          height: 350,
+          width: 400,
+          child: Card(
+              elevation: 20,
+              borderOnForeground: true,
+              semanticContainer: true,
+              color: const Color.fromARGB(255, 66, 177, 177),
+              shadowColor: const Color(0xff008787),
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    const Text('Description:'),
+                    Container(
+                      height: 10,
+                    ),
+                    const Text(
+                        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                  ],
+                ),
+              )),
+        ),
+      ],
     );
   }
 }
