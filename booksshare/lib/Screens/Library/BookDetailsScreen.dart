@@ -48,6 +48,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           Map<String, dynamic> bookdata =
               bookSnapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
+            backgroundColor: const Color.fromARGB(255, 219, 219, 219),
             appBar: AppBar(
               automaticallyImplyLeading: true,
               toolbarHeight: 80,
@@ -68,120 +69,195 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       return Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Container(
-                            height: 10,
-                          ),
                           SizedBox(
-                            height: 300,
-                            width: 200,
-                            child: Image.network(
-                              bookdata['cover'],
-                              fit: BoxFit.fill,
-                            ),
-                          ),
-                          Text(
-                            '${userdata['name']}',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 10,
-                          ),
-                          Text(
-                            '${userdata['surname']}',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 10,
-                          ),
-                          Text(
-                            "${bookdata['name']}",
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          Container(
-                            height: 10,
-                          ),
-                          Text(
-                            "${bookdata['title']}",
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Colors.black,
-                            ),
-                          ),
-                          const Spacer(),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
-                            children: [
-                              ElevatedButton(
-                                onPressed: () async {},
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    const Color(0xff008787),
+                            height: 350,
+                            width: 400,
+                            child: Card(
+                              elevation: 20,
+                              borderOnForeground: true,
+                              semanticContainer: true,
+                              color: Color(0xff008787),
+                              shadowColor: Color(0xff008787),
+                              child: Row(
+                                children: [
+                                  Padding(
+                                    padding: const EdgeInsets.all(10.0),
+                                    child: SizedBox(
+                                      height: 280,
+                                      width: 190,
+                                      child: Image.network(
+                                        bookdata['cover'],
+                                        fit: BoxFit.fill,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                                child: const Text(
-                                  "Update",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                                  SizedBox(
+                                    height: 280,
+                                    width: 2,
                                   ),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  bool confirmDelete = await showDialog(
-                                    context: context,
-                                    builder: (BuildContext context) {
-                                      return AlertDialog(
-                                        title: const Text('Delete Book'),
-                                        content: const Text(
-                                            'Are you sure you want to delete this book?'),
-                                        actions: [
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, false),
-                                            child: const Text('Cancel'),
+                                  Column(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 30.0),
+                                        child: Row(
+                                          children: [
+                                            Text(bookdata['name']),
+                                          ],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [Text(bookdata['title'])],
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 10.0),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.end,
+                                          children: [
+                                            Text('Доступна:'),
+                                            Container(
+                                              width: 30,
+                                            ),
+                                            bookdata['available'] == 'yes'
+                                                ? Text('Yes')
+                                                : Text("No")
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          SizedBox(
+                                            height: 40,
+                                            width: 100,
+                                            child: ElevatedButton(
+                                              onPressed: () async {
+                                                bool confirmDelete =
+                                                    await showDialog(
+                                                  context: context,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return AlertDialog(
+                                                      backgroundColor:
+                                                          Color(0xff008787),
+                                                      title: const Text(
+                                                        'Delete Book',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      content: const Text(
+                                                        'Are you sure you want to delete this book?',
+                                                        style: TextStyle(
+                                                            color:
+                                                                Colors.white),
+                                                      ),
+                                                      actions: [
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  false),
+                                                          child: const Text(
+                                                            'Cancel',
+                                                            style: TextStyle(
+                                                                color: Colors
+                                                                    .amber),
+                                                          ),
+                                                        ),
+                                                        TextButton(
+                                                          onPressed: () =>
+                                                              Navigator.pop(
+                                                                  context,
+                                                                  true),
+                                                          child: const Text(
+                                                              'Delete',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .amber)),
+                                                        ),
+                                                      ],
+                                                    );
+                                                  },
+                                                );
+                                                if (confirmDelete == true) {
+                                                  BookService bookService =
+                                                      BookService(
+                                                          auth.getUserID());
+                                                  bookService.deleteBook(
+                                                      bookdata['bookID']);
+                                                  Navigator.pop(context);
+                                                }
+                                              },
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(
+                                                  const Color(0xff008787),
+                                                ),
+                                              ),
+                                              child: const Text(
+                                                "Delete",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
                                           ),
-                                          TextButton(
-                                            onPressed: () =>
-                                                Navigator.pop(context, true),
-                                            child: const Text('Delete'),
+                                          SizedBox(
+                                            height: 10,
+                                          ),
+                                          SizedBox(
+                                            height: 40,
+                                            width: 100,
+                                            child: ElevatedButton(
+                                              onPressed: () async {},
+                                              style: ButtonStyle(
+                                                backgroundColor:
+                                                    MaterialStateProperty.all<
+                                                        Color>(
+                                                  const Color(0xff008787),
+                                                ),
+                                              ),
+                                              child: const Text(
+                                                "Відгуки",
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            height: 10,
                                           ),
                                         ],
-                                      );
-                                    },
-                                  );
-                                  if (confirmDelete == true) {
-                                    BookService bookService =
-                                        BookService(auth.getUserID());
-                                    bookService.deleteBook(bookdata['bookID']);
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                style: ButtonStyle(
-                                  backgroundColor:
-                                      MaterialStateProperty.all<Color>(
-                                    const Color(0xff008787),
-                                  ),
-                                ),
-                                child: const Text(
-                                  "Delete",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
+                                      ),
+                                    ],
+                                  )
+                                ],
                               ),
-                            ],
+                            ),
                           ),
                         ],
                       );
