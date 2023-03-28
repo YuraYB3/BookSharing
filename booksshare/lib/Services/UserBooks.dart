@@ -25,13 +25,12 @@ class BookService {
       .map((snapshot) =>
           snapshot.docs.map((doc) => Books.fromJson(doc.data())).toList());
 
-  Future<void> addBooks(String name, String title) async {
+  Future<void> addBooks(
+      String name, String title, XFile file, String description) async {
     String imageURL = '';
     final CollectionReference booksCollection =
         FirebaseFirestore.instance.collection('books');
     final newDocRef = booksCollection.doc();
-    ImagePicker imagePicker = ImagePicker();
-    XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
     if (file != null) {
       String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
       uniqueFileName += file.name;
@@ -49,6 +48,7 @@ class BookService {
           "bookID": newDocRef.id,
           "available": 'yes',
           'cover': imageURL,
+          'description': description
         });
         Fluttertoast.showToast(
           msg: 'Book added successfully!',

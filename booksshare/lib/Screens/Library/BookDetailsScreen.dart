@@ -314,8 +314,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     Container(
                       height: 10,
                     ),
-                    const Text(
-                        'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+                    Text(bookdata['description'])
                   ],
                 ),
               )),
