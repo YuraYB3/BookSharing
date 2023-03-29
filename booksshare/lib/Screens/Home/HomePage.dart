@@ -34,11 +34,11 @@ class _HomePageState extends State<HomePage> {
         initialData: null,
         child: Scaffold(
             appBar: userBar.headerBar(context),
-            backgroundColor: Colors.white,
+            backgroundColor: const Color(0xff005959),
             body: booksList.ListOfBooks(bookService),
             floatingActionButton: const AddBookWidget(),
             bottomNavigationBar: BottomAppBar(
-              color: Colors.white,
+              color: const Color(0xff005959),
               child: Container(height: 50),
             ),
             floatingActionButtonLocation:

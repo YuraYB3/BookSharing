@@ -1,11 +1,13 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Screens/Review/ReviewWidget.dart';
 import 'package:booksshare/Services/Auth.dart';
 import 'package:booksshare/Services/BookSwapRequest.dart';
 import 'package:booksshare/Services/UserBooks.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final String? bookID;
@@ -262,7 +264,15 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                 height: 40,
                                 width: 170,
                                 child: ElevatedButton(
-                                  onPressed: () async {},
+                                  onPressed: () async {
+                                    showMaterialModalBottomSheet(
+                                        bounce: true,
+                                        context: context,
+                                        enableDrag: true,
+                                        builder: (BuildContext context) {
+                                          return ReviewWidget();
+                                        });
+                                  },
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(

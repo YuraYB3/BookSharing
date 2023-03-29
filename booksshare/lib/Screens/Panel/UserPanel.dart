@@ -12,10 +12,14 @@ class UserPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
+      backgroundColor: Color(0xff008787),
+      width: 300,
       child: ListView(
         children: <Widget>[
           DrawerHeader(
-              decoration: const BoxDecoration(color: Color(0xff008787)),
+              decoration: const BoxDecoration(
+                color: Color(0xff005959),
+              ),
               child: UserList(_auth.getUserID()!)),
           ListTile(
             title: const Text('My profile'),
