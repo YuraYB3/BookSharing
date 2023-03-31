@@ -1,6 +1,6 @@
 // ignore_for_file: file_names
 
-class Books {
+class BookModel {
   final String name;
   final String title;
   final String userId;
@@ -9,7 +9,7 @@ class Books {
   final String cover;
   final String description;
 
-  Books(
+  BookModel(
       {required this.name,
       required this.title,
       required this.userId,
@@ -18,7 +18,7 @@ class Books {
       required this.cover,
       required this.description});
 
-  static Books fromJson(Map<String, dynamic> json) => Books(
+  static BookModel fromJson(Map<String, dynamic> json) => BookModel(
       name: json['name'],
       title: json['title'],
       userId: json['userID'],

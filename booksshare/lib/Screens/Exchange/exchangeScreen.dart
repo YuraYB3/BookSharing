@@ -1,24 +1,26 @@
 // ignore_for_file: file_names
-import 'package:booksshare/Services/Auth.dart';
-import 'package:booksshare/Services/BookSwap.dart';
-import 'package:booksshare/Services/Review.dart';
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import '../../Models/BookSwapModel.dart';
-import '../../Models/userModel.dart';
-import '../../Services/DatabaseUser.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:provider/provider.dart';
 
-class ExchangePage extends StatefulWidget {
-  const ExchangePage({super.key});
+import '../../Models/bookSwapModel.dart';
+import '../../Models/userModel.dart';
+import '../../Services/authService.dart';
+import '../../Services/bookSwapService.dart';
+import '../../Services/databaseUserService.dart';
+import '../../Services/reviewService.dart';
+
+class ExchangeScreen extends StatefulWidget {
+  const ExchangeScreen({super.key});
 
   @override
-  State<ExchangePage> createState() => _ExchangePageState();
+  State<ExchangeScreen> createState() => _ExchangeScreenState();
 }
 
-class _ExchangePageState extends State<ExchangePage>
+class _ExchangeScreenState extends State<ExchangeScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
   @override
@@ -49,7 +51,7 @@ class _ExchangePageState extends State<ExchangePage>
                 ],
               ),
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: AppTheme.backgroundColor,
             body: TabBarView(
               controller: _tabController,
               children: [
@@ -67,7 +69,7 @@ class _ExchangePageState extends State<ExchangePage>
 
   StreamBuilder<List<BookSwapModel>> exchangeScreen(
       String user, Function action, String exchangeType) {
-    BookSwap bookSwap = BookSwap();
+    BookSwapService bookSwap = BookSwapService();
     AuthService authService = AuthService();
     CollectionReference userCollection =
         FirebaseFirestore.instance.collection("users");
@@ -207,10 +209,10 @@ class _ExchangePageState extends State<ExchangePage>
   }
 
   TextButton returnBookButton(String bookID, String bookSwapID, String userID) {
-    BookSwap bookSwap = BookSwap();
-    Review review = Review();
+    BookSwapService bookSwap = BookSwapService();
+    ReviewService review = ReviewService();
     String description = '';
-    late double rating;
+    late double rating = 3;
     return TextButton(
         onPressed: () async {
           showDialog(
@@ -270,7 +272,7 @@ class _ExchangePageState extends State<ExchangePage>
                     TextButton(
                         onPressed: () {
                           bookSwap.returnBook(bookSwapID, bookID);
-                          review.addBookSwap(
+                          review.addBookReview(
                               bookID, userID, description, rating);
                           Navigator.pop(context);
                         },

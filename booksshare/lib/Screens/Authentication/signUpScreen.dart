@@ -1,20 +1,20 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Models/userModel.dart';
-import 'package:booksshare/Services/auth.dart';
-import 'package:booksshare/Services/DatabaseUser.dart';
+// ignore: use_key_in_widget_constructors
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../../Shared/Constants.dart';
+import '../../Models/userModel.dart';
+import '../../Services/authService.dart';
+import '../../Services/databaseUserService.dart';
+import '../../Shared/constants.dart';
 
-// ignore: use_key_in_widget_constructors
-class SignUp extends StatefulWidget {
+class SignUpScreen extends StatefulWidget {
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<SignUpScreen> createState() => _SignUpScreenState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _SignUpScreenState extends State<SignUpScreen> {
   String email = '';
   String password = '';
   String repeatedPassword = '';

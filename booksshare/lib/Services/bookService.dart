@@ -1,29 +1,31 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Models/BooksModel.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
 import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
+
+import '../Models/bookModel.dart';
 
 class BookService {
   final String? documnetID;
 
   const BookService(this.documnetID);
-  Stream<List<Books>> readUserBooks() => FirebaseFirestore.instance
+  Stream<List<BookModel>> readUserBooks() => FirebaseFirestore.instance
       .collection('books')
       .where('userID', isEqualTo: documnetID)
       .snapshots()
       .map((snapshot) =>
-          snapshot.docs.map((doc) => Books.fromJson(doc.data())).toList());
-  Stream<List<Books>> readAllUsersBooks() => FirebaseFirestore.instance
+          snapshot.docs.map((doc) => BookModel.fromJson(doc.data())).toList());
+  Stream<List<BookModel>> readAllUsersBooks() => FirebaseFirestore.instance
       .collection('books')
       .where('userID', isNotEqualTo: documnetID)
       .snapshots()
       .map((snapshot) =>
-          snapshot.docs.map((doc) => Books.fromJson(doc.data())).toList());
+          snapshot.docs.map((doc) => BookModel.fromJson(doc.data())).toList());
 
   Future<void> addBooks(
       String name, String title, XFile file, String description) async {

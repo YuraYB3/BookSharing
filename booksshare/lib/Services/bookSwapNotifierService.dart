@@ -2,14 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Models/BookSwapRequestModel.dart';
+import '../Models/bookSwapRequestModel.dart';
 
-class BookSwapNotifier {
+class BookSwapNotifierService {
   final String? receiverID;
   final CollectionReference bookSwapRequestCollection =
       FirebaseFirestore.instance.collection('swapRequest');
 
-  BookSwapNotifier({required this.receiverID});
+  BookSwapNotifierService({required this.receiverID});
 
   // Get the number of new swap requests for the receiver.
   Future<int> getNewRequestCount() async {

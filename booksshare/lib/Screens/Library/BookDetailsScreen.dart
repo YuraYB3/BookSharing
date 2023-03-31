@@ -1,13 +1,14 @@
 // ignore_for_file: file_names
-
-import 'package:booksshare/Screens/Review/ReviewWidget.dart';
-import 'package:booksshare/Services/Auth.dart';
-import 'package:booksshare/Services/BookSwapRequest.dart';
-import 'package:booksshare/Services/UserBooks.dart';
+import 'package:booksshare/Services/bookSwapRequestService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
+
+import '../../Services/authService.dart';
+import '../../Services/bookService.dart';
+import '../../Shared/appTheme.dart';
+import '../../Widgets/Review/reviewWidget.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final String? bookID;
@@ -51,7 +52,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           Map<String, dynamic> bookdata =
               bookSnapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
-            backgroundColor: const Color.fromARGB(255, 219, 219, 219),
+            backgroundColor: AppTheme.backgroundColor,
             appBar: AppBar(
               automaticallyImplyLeading: true,
               toolbarHeight: 80,
@@ -161,8 +162,9 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                             width: 170,
                             child: ElevatedButton(
                               onPressed: () async {
-                                BookSwapRequest b = BookSwapRequest();
-                                b.addBookSwapRequest(
+                                BookSwapRequestService bookSwapRequest =
+                                    BookSwapRequestService();
+                                bookSwapRequest.addBookSwapRequest(
                                   auth.getUserID(),
                                   userdata['userID'],
                                   bookdata['bookID'],
@@ -270,7 +272,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                         context: context,
                                         enableDrag: true,
                                         builder: (BuildContext context) {
-                                          return ReviewWidget();
+                                          return ReviewWidget(
+                                              bookID: bookdata['bookID']);
                                         });
                                   },
                                   style: ButtonStyle(

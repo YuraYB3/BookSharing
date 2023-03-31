@@ -1,16 +1,17 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Services/auth.dart';
-import 'package:booksshare/Shared/Constants.dart';
+// ignore: use_key_in_widget_constructors
 import 'package:flutter/material.dart';
 
-// ignore: use_key_in_widget_constructors
-class LoginPage extends StatefulWidget {
+import '../../Services/authService.dart';
+import '../../Shared/constants.dart';
+
+class LoginScreen extends StatefulWidget {
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _LoginScreenState extends State<LoginScreen> {
   final AuthService _auth = AuthService();
   String email = '';
   String password = '';

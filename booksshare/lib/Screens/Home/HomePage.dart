@@ -1,14 +1,15 @@
-import 'package:booksshare/Screens/AppBar/userAppBar.dart';
-import 'package:booksshare/Screens/Home/UserBooksList.dart';
-import 'package:booksshare/Screens/Panel/userPanel.dart';
-import 'package:booksshare/Services/auth.dart';
+import 'package:booksshare/Widgets/CurrentUserBooksList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../../Models/userModel.dart';
-import '../../Services/DatabaseUser.dart';
-import '../../Services/UserBooks.dart';
-import 'AddBook/AddBookWidget.dart';
+import '../../Services/authService.dart';
+import '../../Services/bookService.dart';
+import '../../Services/databaseUserService.dart';
+import '../../Widgets/AddBook/addBookWidget.dart';
+import '../../Widgets/AppBar/userAppBar.dart';
+import '../../Widgets/Panel/userPanel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -27,7 +28,7 @@ class _HomePageState extends State<HomePage> {
     var uId = auth.getUserID();
     var bookService = BookService(uId!);
     UserAppBar userBar = UserAppBar();
-    BooksList booksList = BooksList();
+    CurrentUserBooksList booksList = CurrentUserBooksList();
 
     return StreamProvider<List<UserModel>?>.value(
         value: DatabaseUserService(uid: '').users,

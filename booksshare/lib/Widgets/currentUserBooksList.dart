@@ -1,18 +1,18 @@
 // ignore_for_file: file_names
-
-import 'package:booksshare/Services/UserBooks.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
-import '../Library/BookDetailsScreen.dart';
-import '../../Models/BooksModel.dart';
+import '../../Models/bookModel.dart';
+import '../Screens/Library/bookDetailsScreen.dart';
+import '../Services/bookService.dart';
 
-class BooksList {
+class CurrentUserBooksList {
   // ignore: non_constant_identifier_names
   StreamBuilder ListOfBooks(BookService bookList) {
-    return StreamBuilder<List<Books>>(
+    return StreamBuilder<List<BookModel>>(
         stream: bookList.readUserBooks(),
-        builder: (BuildContext context, AsyncSnapshot<List<Books>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<BookModel>> snapshot) {
           if (snapshot.hasError) {
             return const Text("ERROR!!!");
           }

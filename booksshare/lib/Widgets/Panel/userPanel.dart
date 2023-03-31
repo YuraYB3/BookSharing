@@ -1,9 +1,9 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Services/auth.dart';
 import 'package:flutter/material.dart';
 
-import '../Settings/UserInfo.dart';
+import '../../Services/authService.dart';
+import '../userInfo.dart';
 
 class UserPanel extends StatelessWidget {
   final AuthService _auth = AuthService();

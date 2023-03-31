@@ -1,8 +1,9 @@
 // ignore_for_file: file_names
 
 import 'package:booksshare/Models/userModel.dart';
-import 'package:booksshare/Services/DatabaseUser.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'databaseUserService.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;

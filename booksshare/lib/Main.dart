@@ -1,21 +1,20 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Models/userModel.dart';
-import 'package:booksshare/Screens/Authentication/LoginPage.dart';
-import 'package:booksshare/Screens/Authentication/SignUp.dart';
-import 'package:booksshare/Screens/Exchange/ExchangePage.dart';
-import 'package:booksshare/Screens/Home/homepage.dart';
-import 'package:booksshare/Screens/Notification/notifacationScreen.dart';
-import 'package:booksshare/Screens/Profile/userProfile.dart';
-import 'package:booksshare/Screens/Settings/userSettings.dart';
-import 'package:booksshare/Services/auth.dart';
-import 'package:booksshare/Wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'Screens/Library/AllBooksOfAllUsers.dart';
-import 'Screens/Library/BookSearchPage.dart';
+import 'Models/userModel.dart';
+import 'Screens/Authentication/loginScreen.dart';
+import 'Screens/Authentication/signUpScreen.dart';
+import 'Screens/Exchange/exchangeScreen.dart';
+import 'Screens/Home/homePage.dart';
+import 'Screens/Library/bookSearchPage.dart';
+import 'Screens/Notification/notifacationScreen.dart';
+import 'Screens/Profile/userProfile.dart';
+import 'Screens/Settings/userSettings.dart';
+import 'Services/authService.dart';
+import 'Wrapper.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,15 +36,15 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // ignore: prefer_const_constructors
-            '/login': (context) => LoginPage(),
-            '/signup': (context) => SignUp(),
+            '/login': (context) => LoginScreen(),
+            '/signup': (context) => SignUpScreen(),
             '/profile': (context) => const UserProfile(),
             '/home': (context) => const HomePage(),
             '/settings': (context) => const UserSettings(),
-            '/library': (context) => const UsersBooks(),
+            //    '/library': (context) => const UsersBooks(),
             '/search': (context) => BookSearchPage(),
             '/notification': (context) => const NotificationScreen(),
-            '/exchange': (context) => ExchangePage()
+            '/exchange': (context) => const ExchangeScreen()
           },
           home: const Wrapper(),
         ));

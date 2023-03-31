@@ -1,14 +1,16 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Models/BookSwapRequestModel.dart';
-import 'package:booksshare/Screens/AppBar/userAppBar.dart';
-import 'package:booksshare/Services/Auth.dart';
-import 'package:booksshare/Services/BookSwap.dart';
-import 'package:booksshare/Services/BookSwapNotifier.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import '../../Services/BookSwapRequest.dart';
-import '../Panel/UserPanel.dart';
+
+import '../../Models/bookSwapRequestModel.dart';
+import '../../Services/authService.dart';
+import '../../Services/bookSwapNotifierService.dart';
+import '../../Services/bookSwapRequestService.dart';
+import '../../Services/bookSwapService.dart';
+import '../../Shared/appTheme.dart';
+import '../../Widgets/AppBar/userAppBar.dart';
+import '../../Widgets/Panel/userPanel.dart';
 
 class NotificationScreen extends StatefulWidget {
   const NotificationScreen({super.key});
@@ -20,18 +22,19 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   UserAppBar userAppBar = UserAppBar();
   final AuthService _authService = AuthService();
-  BookSwap bookSwap = BookSwap();
-  BookSwapRequest b = BookSwapRequest();
+  BookSwapService bookSwap = BookSwapService();
+  BookSwapRequestService bookSwapRequest = BookSwapRequestService();
 
   @override
   Widget build(BuildContext context) {
     var userID = _authService.getUserID();
     CollectionReference user = FirebaseFirestore.instance.collection("users");
-    BookSwapNotifier bookSwapNotifier = BookSwapNotifier(receiverID: userID);
+    BookSwapNotifierService bookSwapNotifier =
+        BookSwapNotifierService(receiverID: userID);
     CollectionReference book = FirebaseFirestore.instance.collection("books");
     return Scaffold(
         appBar: userAppBar.headerBar(context),
-        backgroundColor: Colors.white,
+        backgroundColor: AppTheme.backgroundColor,
         body: StreamBuilder<List<BookSwapRequestModel>>(
             stream: bookSwapNotifier.getNewRequests(),
             builder: (BuildContext context,
@@ -132,11 +135,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                         .receiverID,
                                                                     notify
                                                                         .desiredBookID);
-                                                                b.updateData(
-                                                                    notify
-                                                                        .swapReqID,
-                                                                    notify
-                                                                        .desiredBookID);
+                                                                bookSwapRequest
+                                                                    .updateData(
+                                                                        notify
+                                                                            .swapReqID,
+                                                                        notify
+                                                                            .desiredBookID);
                                                               },
                                                               icon: const Icon(
                                                                 Icons.done,
@@ -148,8 +152,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                             IconButton(
                                                               onPressed:
                                                                   () async {
-                                                                b.deleteData(notify
-                                                                    .swapReqID);
+                                                                bookSwapRequest
+                                                                    .deleteData(
+                                                                        notify
+                                                                            .swapReqID);
                                                               },
                                                               icon: const Icon(
                                                                 Icons.close,
@@ -185,47 +191,3 @@ class _NotificationScreenState extends State<NotificationScreen> {
         drawer: UserPanel());
   }
 }
-/* Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 60,
-                  child: Card(
-                      child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Padding(
-                        padding: EdgeInsets.only(left: 10),
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text("Користувач: апава"),
-                            Text("Хоче взяти від вас книгу: авапа"),
-                          ],
-                        ),
-                      ),
-                      Row(
-                        children: [
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.done,
-                              color: Colors.green,
-                            ),
-                          ),
-                          IconButton(
-                            onPressed: () {},
-                            icon: const Icon(
-                              Icons.close,
-                              color: Colors.red,
-                            ),
-                          ),
-                        ],
-                      )
-                    ],
-                  )),
-                )
-              ],
-            ),*/

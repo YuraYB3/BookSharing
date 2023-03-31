@@ -1,11 +1,12 @@
-import 'package:booksshare/Services/Auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../Models/BooksModel.dart';
-import '../../Services/UserBooks.dart';
-import '../Panel/UserPanel.dart';
-import 'BookDetailsScreen.dart';
+import '../../Models/bookModel.dart';
+import '../../Services/authService.dart';
+import '../../Services/bookService.dart';
+import '../../Shared/appTheme.dart';
+import '../../Widgets/Panel/userPanel.dart';
+import 'bookDetailsScreen.dart';
 
 class BookSearchPage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
     var bookList = BookService(uId!);
     CollectionReference user = FirebaseFirestore.instance.collection("users");
     return Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
         appBar: AppBar(
           title: Card(
             child: TextField(
@@ -41,10 +43,10 @@ class _BookSearchPageState extends State<BookSearchPage> {
           toolbarHeight: 80,
           backgroundColor: const Color(0xff008787),
         ),
-        body: StreamBuilder<List<Books>>(
+        body: StreamBuilder<List<BookModel>>(
             stream: bookList.readAllUsersBooks(),
-            builder:
-                (BuildContext context, AsyncSnapshot<List<Books>> snapshot) {
+            builder: (BuildContext context,
+                AsyncSnapshot<List<BookModel>> snapshot) {
               if (snapshot.hasError) {
                 return Text("{$snapshot.error}");
               }

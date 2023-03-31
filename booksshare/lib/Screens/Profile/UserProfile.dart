@@ -1,12 +1,12 @@
 // ignore_for_file: file_names
-
-import 'package:booksshare/Screens/AppBar/userAppBar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../Models/userModel.dart';
-import '../../Services/DatabaseUser.dart';
-import '../Panel/UserPanel.dart';
+import '../../Services/databaseUserService.dart';
+import '../../Shared/appTheme.dart';
+import '../../Widgets/AppBar/userAppBar.dart';
+import '../../Widgets/Panel/userPanel.dart';
 
 class UserProfile extends StatefulWidget {
   const UserProfile({super.key});
@@ -25,7 +25,7 @@ class _UserProfileState extends State<UserProfile> {
         initialData: null,
         child: Scaffold(
             appBar: userAppBar.headerBar(context),
-            backgroundColor: Colors.white,
+            backgroundColor: AppTheme.backgroundColor,
             body: const Text("User Profile :)"),
             drawer: UserPanel()));
   }

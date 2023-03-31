@@ -1,19 +1,19 @@
 // ignore_for_file: file_names
-
-import 'package:booksshare/Services/UserBooks.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import 'BookDetailsScreen.dart';
-import '../../Models/BooksModel.dart';
+import '../../Models/bookModel.dart';
+import '../../Screens/Library/bookDetailsScreen.dart';
+import '../../Services/bookService.dart';
 
-class BooksList {
+class AllUsersBookList {
   // ignore: non_constant_identifier_names
   StreamBuilder ListOfBooks(BookService bookList, String userID) {
     CollectionReference user = FirebaseFirestore.instance.collection("users");
-    return StreamBuilder<List<Books>>(
+    return StreamBuilder<List<BookModel>>(
         stream: bookList.readAllUsersBooks(),
-        builder: (BuildContext context, AsyncSnapshot<List<Books>> snapshot) {
+        builder:
+            (BuildContext context, AsyncSnapshot<List<BookModel>> snapshot) {
           if (snapshot.hasError) {
             return Text("{$snapshot.error}");
           }

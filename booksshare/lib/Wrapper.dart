@@ -1,9 +1,10 @@
 // ignore_for_file: file_names
 import 'package:booksshare/Models/userModel.dart';
-import 'package:booksshare/Screens/Start/StartPage.dart';
+import 'package:booksshare/Screens/Start/startPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'Screens/Home/homepage.dart';
+
+import 'Screens/Home/homePage.dart';
 
 class Wrapper extends StatelessWidget {
   const Wrapper({super.key});
