@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -34,16 +35,19 @@ class UserList extends StatelessWidget {
         if (snapshot.connectionState == ConnectionState.done) {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
-          return Row(children: <Widget>[
-            const Icon(
-              Icons.person,
-              color: Colors.white,
-            ),
-            Text(
-              "${data['name']} ${data['surname']}",
-              style: const TextStyle(color: Colors.white),
-            ),
-          ]);
+          return Container(
+            color: AppTheme.secondBackgroundColor,
+            child: Row(children: <Widget>[
+              const Icon(
+                Icons.person,
+                color: AppTheme.iconColor,
+              ),
+              Text(
+                "${data['name']} ${data['surname']}",
+                style: const TextStyle(color: AppTheme.textColor),
+              ),
+            ]),
+          );
         }
         return const Text("");
       },

@@ -1,3 +1,4 @@
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 import 'notifyIcon.dart';
@@ -8,10 +9,13 @@ class UserAppBar {
     return AppBar(
       automaticallyImplyLeading: true,
       toolbarHeight: 80,
-      backgroundColor: const Color(0xff008787),
+      backgroundColor: AppTheme.secondBackgroundColor,
       actions: <Widget>[
         IconButton(
-          icon: const Icon(Icons.search),
+          icon: const Icon(
+            Icons.search,
+            color: AppTheme.iconColor,
+          ),
           onPressed: () {
             Navigator.pushNamed(context, '/search');
           },
@@ -23,7 +27,10 @@ class UserAppBar {
               return snapshot.data!;
             } else {
               return IconButton(
-                icon: const Icon(Icons.notifications_off_rounded),
+                icon: const Icon(
+                  Icons.notifications_off_rounded,
+                  color: AppTheme.iconColor,
+                ),
                 onPressed: () {
                   print("WORKED?");
                 },
@@ -32,7 +39,10 @@ class UserAppBar {
           },
         ),
         IconButton(
-          icon: const Icon(Icons.account_circle_outlined),
+          icon: const Icon(
+            Icons.account_circle_outlined,
+            color: AppTheme.iconColor,
+          ),
           onPressed: () {
             Navigator.pushNamed(context, '/profile');
           },

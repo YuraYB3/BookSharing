@@ -35,7 +35,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         if (bookSnapshot.hasError) {
           return const Text(
             "Something went wrong!",
-            style: TextStyle(color: Colors.white),
+            style: TextStyle(color: AppTheme.textColor),
             textAlign: TextAlign.start,
             textDirection: TextDirection.ltr,
           );
@@ -43,7 +43,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
         if (bookSnapshot.hasData && !bookSnapshot.data!.exists) {
           return Text(
             "${widget.bookID}",
-            style: const TextStyle(color: Colors.white, fontSize: 20),
+            style: const TextStyle(color: AppTheme.textColor, fontSize: 20),
             textAlign: TextAlign.center,
             textDirection: TextDirection.ltr,
           );
@@ -56,10 +56,10 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             appBar: AppBar(
               automaticallyImplyLeading: true,
               toolbarHeight: 80,
-              backgroundColor: const Color(0xff008787),
+              backgroundColor: AppTheme.secondBackgroundColor,
               title: Text(
                 "${bookdata['name']}",
-                style: const TextStyle(color: Colors.white),
+                style: const TextStyle(color: AppTheme.textColor),
               ),
             ),
             body: FutureBuilder<DocumentSnapshot>(
@@ -100,8 +100,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
             elevation: 20,
             borderOnForeground: true,
             semanticContainer: true,
-            color: const Color(0xff008787),
-            shadowColor: const Color(0xff008787),
+            color: AppTheme.secondBackgroundColor,
+            shadowColor: AppTheme.secondBackgroundColor,
             child: Row(
               children: [
                 Padding(
@@ -174,11 +174,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                               style: ButtonStyle(
                                 foregroundColor:
                                     MaterialStateProperty.all<Color>(
-                                  const Color.fromARGB(255, 255, 255, 255),
+                                  AppTheme.textColor,
                                 ),
                                 backgroundColor:
                                     MaterialStateProperty.all<Color>(
-                                  const Color(0xff008787),
+                                  AppTheme.secondBackgroundColor,
                                 ),
                               ),
                               child: const Text(
@@ -204,16 +204,16 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                       builder: (BuildContext context) {
                                         return AlertDialog(
                                           backgroundColor:
-                                              const Color(0xff008787),
+                                              AppTheme.secondBackgroundColor,
                                           title: const Text(
                                             'Delete Book',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: AppTheme.textColor),
                                           ),
                                           content: const Text(
                                             'Are you sure you want to delete this book?',
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: TextStyle(
+                                                color: AppTheme.textColor),
                                           ),
                                           actions: [
                                             TextButton(
@@ -222,7 +222,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                               child: const Text(
                                                 'Cancel',
                                                 style: TextStyle(
-                                                    color: Colors.amber),
+                                                    color: AppTheme.iconColor),
                                               ),
                                             ),
                                             TextButton(
@@ -230,7 +230,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                                   Navigator.pop(context, true),
                                               child: const Text('Delete',
                                                   style: TextStyle(
-                                                      color: Colors.amber)),
+                                                      color:
+                                                          AppTheme.iconColor)),
                                             ),
                                           ],
                                         );
@@ -247,7 +248,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                      const Color(0xff008787),
+                                      AppTheme.secondBackgroundColor,
                                     ),
                                   ),
                                   child: const Text(
@@ -279,7 +280,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                   style: ButtonStyle(
                                     backgroundColor:
                                         MaterialStateProperty.all<Color>(
-                                      const Color(0xff008787),
+                                      AppTheme.secondBackgroundColor,
                                     ),
                                   ),
                                   child: const Text(
@@ -317,8 +318,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
               elevation: 20,
               borderOnForeground: true,
               semanticContainer: true,
-              color: const Color.fromARGB(255, 66, 177, 177),
-              shadowColor: const Color(0xff008787),
+              color: AppTheme.secondBackgroundColor,
+              shadowColor: AppTheme.backgroundColor,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

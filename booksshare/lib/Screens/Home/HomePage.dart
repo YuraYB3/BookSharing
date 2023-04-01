@@ -1,3 +1,4 @@
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:booksshare/Widgets/CurrentUserBooksList.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -35,11 +36,11 @@ class _HomePageState extends State<HomePage> {
         initialData: null,
         child: Scaffold(
             appBar: userBar.headerBar(context),
-            backgroundColor: const Color(0xff005959),
+            backgroundColor: AppTheme.backgroundColor,
             body: booksList.ListOfBooks(bookService),
             floatingActionButton: const AddBookWidget(),
             bottomNavigationBar: BottomAppBar(
-              color: const Color(0xff005959),
+              color: AppTheme.backgroundColor,
               child: Container(height: 50),
             ),
             floatingActionButtonLocation:

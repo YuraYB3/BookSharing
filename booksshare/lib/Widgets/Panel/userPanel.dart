@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../Services/authService.dart';
@@ -12,50 +13,61 @@ class UserPanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Drawer(
-      backgroundColor: Color(0xff008787),
-      width: 300,
+      backgroundColor: AppTheme.secondBackgroundColor,
+      width: 250,
       child: ListView(
         children: <Widget>[
           DrawerHeader(
               decoration: const BoxDecoration(
-                color: Color(0xff005959),
+                color: AppTheme.secondBackgroundColor,
               ),
               child: UserList(_auth.getUserID()!)),
           ListTile(
-            title: const Text('My profile'),
-            leading: const Icon(Icons.account_circle_outlined),
+            title: const Text(
+              'My profile',
+              style: TextStyle(color: AppTheme.textColor),
+            ),
+            leading: const Icon(
+              Icons.account_circle_outlined,
+              color: AppTheme.iconColor,
+            ),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/profile');
             },
           ),
           ListTile(
-            title: const Text('My library'),
-            leading: const Icon(Icons.my_library_books),
+            title: const Text('My library',
+                style: TextStyle(color: AppTheme.textColor)),
+            leading:
+                const Icon(Icons.my_library_books, color: AppTheme.iconColor),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/home');
             },
           ),
           ListTile(
-            title: const Text('Exchange'),
-            leading: const Icon(Icons.menu_book),
+            title: const Text('Exchange',
+                style: TextStyle(color: AppTheme.textColor)),
+            leading: const Icon(Icons.menu_book, color: AppTheme.iconColor),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/exchange');
             },
           ),
           ListTile(
-            title: const Text('Settings'),
-            leading: const Icon(Icons.settings),
+            title: const Text('Settings',
+                style: TextStyle(color: AppTheme.textColor)),
+            leading: const Icon(Icons.settings, color: AppTheme.iconColor),
             onTap: () {
               Navigator.pop(context);
               Navigator.pushNamed(context, '/settings');
             },
           ),
           ListTile(
-            title: const Text('Log out'),
-            leading: const Icon(Icons.logout),
+            title: const Text('Log out',
+                style: TextStyle(color: AppTheme.textColor)),
+            leading: const Icon(Icons.logout, color: AppTheme.iconColor),
             onTap: () async {
               await _auth.signOut();
               // ignore: use_build_context_synchronously

@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 // ignore: use_key_in_widget_constructors
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../Services/authService.dart';
@@ -20,7 +21,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget build(BuildContext context) {
     // ignore: prefer_const_constructors
     return Scaffold(
-        backgroundColor: const Color.fromARGB(252, 7, 85, 85),
+        backgroundColor: AppTheme.secondBackgroundColor,
         // ignore: prefer_const_constructors
         body: Padding(
           padding: const EdgeInsets.only(left: 20.0, right: 20.0),
@@ -73,10 +74,10 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                     style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all<Color>(
-                            const Color.fromRGBO(7, 85, 85, 1)),
+                            AppTheme.secondBackgroundColor),
                         // ignore: prefer_const_constructors
                         backgroundColor: const MaterialStatePropertyAll<Color>(
-                            Colors.white)),
+                            AppTheme.textColor)),
                     child: const Text(
                       'SIGN IN',
                     ),

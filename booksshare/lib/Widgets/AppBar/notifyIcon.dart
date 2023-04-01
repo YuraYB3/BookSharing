@@ -1,3 +1,4 @@
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../Services/authService.dart';
@@ -12,7 +13,10 @@ class NotifyIcon {
     final requestCount = await bookSwapNotifier.getNewRequestCount();
     if (requestCount != 0) {
       return IconButton(
-        icon: const Icon(Icons.notification_important),
+        icon: const Icon(
+          Icons.notification_important,
+          color: AppTheme.iconColor,
+        ),
         onPressed: () {
           const snackBar = SnackBar(content: Text('Has request'));
           Navigator.pushNamed(context, '/notification');
@@ -20,7 +24,10 @@ class NotifyIcon {
       );
     } else {
       return IconButton(
-        icon: const Icon(Icons.notifications_rounded),
+        icon: const Icon(
+          Icons.notifications_rounded,
+          color: AppTheme.iconColor,
+        ),
         onPressed: () {
           Navigator.pushNamed(context, '/notification');
         },

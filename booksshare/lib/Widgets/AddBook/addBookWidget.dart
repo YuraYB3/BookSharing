@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -28,7 +29,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
     var uId = auth.getUserID();
     BookService bookList = BookService(uId!);
     return FloatingActionButton(
-        backgroundColor: const Color(0xff008787),
+        backgroundColor: AppTheme.secondBackgroundColor,
         child: const Icon(Icons.add),
         onPressed: () {
           showMaterialModalBottomSheet(
@@ -39,7 +40,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
               return SingleChildScrollView(
                 child: Container(
                   height: 470,
-                  color: const Color(0xff008787),
+                  color: AppTheme.secondBackgroundColor,
                   child: Form(
                     key: _formKey,
                     child: Column(

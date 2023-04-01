@@ -38,13 +38,13 @@ class _ExchangeScreenState extends State<ExchangeScreen>
         child: Scaffold(
             appBar: AppBar(
               toolbarHeight: 60,
-              backgroundColor: const Color(0xff008787),
+              backgroundColor: AppTheme.secondBackgroundColor,
               title: const Text(''),
               bottom: TabBar(
                 controller: _tabController,
-                indicatorColor: Colors.amber,
+                indicatorColor: AppTheme.iconColor,
                 indicatorWeight: 5,
-                labelColor: Colors.white,
+                labelColor: AppTheme.textColor,
                 tabs: const [
                   Tab(text: 'Received'),
                   Tab(text: 'Sent'),
@@ -117,7 +117,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                   return Card(
                                     borderOnForeground: true,
                                     elevation: 5.5,
-                                    shadowColor: const Color(0xff008787),
+                                    shadowColor: AppTheme.secondBackgroundColor,
                                     child: Row(
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,

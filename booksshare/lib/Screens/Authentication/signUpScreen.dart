@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 
 // ignore: use_key_in_widget_constructors
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -31,7 +32,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
         initialData: null,
         child: Scaffold(
           resizeToAvoidBottomInset: false,
-          backgroundColor: const Color.fromARGB(252, 7, 85, 85),
+          backgroundColor: AppTheme.secondBackgroundColor,
           // ignore: prefer_const_constructors
 
           body: Padding(
@@ -129,11 +130,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       },
                       style: ButtonStyle(
                           foregroundColor: MaterialStateProperty.all<Color>(
-                              const Color.fromRGBO(7, 85, 85, 1)),
+                              AppTheme.secondBackgroundColor),
                           // ignore: prefer_const_constructors
                           backgroundColor:
                               const MaterialStatePropertyAll<Color>(
-                                  Colors.white)),
+                                  AppTheme.textColor)),
                       child: const Text(
                         'SIGN UP',
                       ),

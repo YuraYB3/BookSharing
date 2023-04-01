@@ -41,7 +41,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
           ),
           automaticallyImplyLeading: true,
           toolbarHeight: 80,
-          backgroundColor: const Color(0xff008787),
+          backgroundColor: AppTheme.secondBackgroundColor,
         ),
         body: StreamBuilder<List<BookModel>>(
             stream: bookList.readAllUsersBooks(),

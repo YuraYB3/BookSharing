@@ -1,3 +1,4 @@
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -15,7 +16,7 @@ class ReviewWidget extends StatelessWidget {
     CollectionReference user = FirebaseFirestore.instance.collection("users");
     ReviewService reviewObj = ReviewService();
     return Container(
-        color: const Color(0xff005959),
+        color: AppTheme.secondBackgroundColor,
         height: 550,
         child: StreamBuilder<List<ReviewModel>>(
           stream: reviewObj.readBookReviews(bookID),
@@ -44,7 +45,7 @@ class ReviewWidget extends StatelessWidget {
                             return Card(
                                 elevation: 10,
                                 borderOnForeground: false,
-                                shadowColor: const Color(0xff005959),
+                                shadowColor: AppTheme.secondBackgroundColor,
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,

@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 class StartPage extends StatefulWidget {
@@ -15,7 +16,7 @@ class _StartPageState extends State<StartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromARGB(252, 7, 85, 85),
+        backgroundColor: AppTheme.secondBackgroundColor,
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -27,10 +28,10 @@ class _StartPageState extends State<StartPage> {
                 child: TextButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromRGBO(7, 85, 85, 1)),
+                          AppTheme.secondBackgroundColor),
                       // ignore: prefer_const_constructors
-                      backgroundColor:
-                          const MaterialStatePropertyAll<Color>(Colors.white)),
+                      backgroundColor: const MaterialStatePropertyAll<Color>(
+                          AppTheme.textColor)),
                   onPressed: () {
                     Navigator.pushNamed(context, '/login');
                   },
@@ -44,10 +45,10 @@ class _StartPageState extends State<StartPage> {
                 child: TextButton(
                   style: ButtonStyle(
                       foregroundColor: MaterialStateProperty.all<Color>(
-                          const Color.fromRGBO(7, 85, 85, 1)),
+                          AppTheme.secondBackgroundColor),
                       // ignore: prefer_const_constructors
-                      backgroundColor:
-                          const MaterialStatePropertyAll<Color>(Colors.white)),
+                      backgroundColor: const MaterialStatePropertyAll<Color>(
+                          AppTheme.textColor)),
                   onPressed: () {
                     Navigator.pushNamed(context, '/signup');
                   },

@@ -26,7 +26,57 @@ class _UserProfileState extends State<UserProfile> {
         child: Scaffold(
             appBar: userAppBar.headerBar(context),
             backgroundColor: AppTheme.backgroundColor,
-            body: const Text("User Profile :)"),
+            body: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(28.0),
+                  child: Container(
+                    height: 250,
+                    width: double.infinity,
+                    decoration: const BoxDecoration(
+                        color: AppTheme.secondBackgroundColor),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Container(
+                          height: 60,
+                          width: 60,
+                          decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(30)),
+                        ),
+                        Container(
+                          height: 10,
+                        ),
+                        Container(
+                          child: Text("Name"),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Container(
+                                height: 100,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [Text('К-ть книг'), Text('0')],
+                                )),
+                            Container(
+                                height: 100,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [Text('Рецензії'), Text('12')],
+                                ))
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                )
+              ],
+            ),
             drawer: UserPanel()));
   }
 }
