@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
@@ -40,8 +41,8 @@ class CurrentUserBooksList {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(20)),
                         child: Card(
-                          elevation: 20,
-                          shadowColor: const Color(0xff008787),
+                          elevation: 10,
+                          shadowColor: AppTheme.secondBackgroundColor,
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -108,9 +109,3 @@ class CurrentUserBooksList {
         });
   }
 }
-/*
-ListTile(
-                    title: 
-                    leading: 
-                    subtitle: 
-                  ),*/

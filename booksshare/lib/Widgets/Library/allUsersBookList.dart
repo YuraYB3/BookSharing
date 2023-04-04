@@ -53,8 +53,8 @@ class AllUsersBookList {
                                         width: 200,
                                         height: 300,
                                         fit: BoxFit.cover)),
-                                subtitle: Text(
-                                    'Власник книги: ${userdata['name']} ${userdata['surname']}'),
+                                subtitle:
+                                    Text('Власник книги: ${userdata['name']}'),
                               ),
                             );
                           } else {}

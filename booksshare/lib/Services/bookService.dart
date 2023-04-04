@@ -72,6 +72,14 @@ class BookService {
     }
   }
 
+  Future<int> readUserBooksCount() async {
+    var querySnapsnot = await FirebaseFirestore.instance
+        .collection('books')
+        .where('userID', isEqualTo: documnetID)
+        .get();
+    return querySnapsnot.docs.length;
+  }
+
   Future<void> deleteBook(String bookId) async {
     try {
       await FirebaseFirestore.instance.collection('books').doc(bookId).delete();

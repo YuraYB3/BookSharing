@@ -23,7 +23,7 @@ class ReviewWidget extends StatelessWidget {
           builder: (BuildContext context,
               AsyncSnapshot<List<ReviewModel>> snapshot) {
             if (!snapshot.hasData) {
-              return Container(child: const Text('here4'));
+              return const Text('here4');
             }
             if (snapshot.hasError) {
               return Text(snapshot.error.toString());
@@ -140,9 +140,7 @@ class ReviewWidget extends StatelessWidget {
                                                 color: Colors.amber,
                                                 size: 5.0,
                                               ),
-                                              onRatingUpdate: (rating) {
-                                                print(rating);
-                                              },
+                                              onRatingUpdate: (rating) {},
                                             ),
                                             Container(
                                               height: 5,
@@ -154,16 +152,14 @@ class ReviewWidget extends StatelessWidget {
                                   ],
                                 ));
                           } else {
-                            return Container(
-                              child: Center(
-                                child: Text('data'),
-                              ),
+                            return const Center(
+                              child: Text('data'),
                             );
                           }
                         });
                   });
             } else {
-              return Container(child: const Text('here2'));
+              return const Text('here2');
             }
           },
         ));

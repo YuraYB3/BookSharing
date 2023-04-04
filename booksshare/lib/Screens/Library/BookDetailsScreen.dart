@@ -127,7 +127,13 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       padding: const EdgeInsets.only(top: 30.0),
                       child: Row(
                         children: [
-                          Text(bookdata['name']),
+                          Text(
+                            bookdata['name'],
+                            style: const TextStyle(
+                                color: AppTheme.textColor,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                     ),
@@ -136,7 +142,13 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [Text(bookdata['title'])],
+                        children: [
+                          Text(bookdata['title'],
+                              style: const TextStyle(
+                                  color: AppTheme.textColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold))
+                        ],
                       ),
                     ),
                     Padding(
@@ -145,13 +157,25 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          const Text('Доступна:'),
+                          const Text('Доступна:',
+                              style: TextStyle(
+                                  color: AppTheme.textColor,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold)),
                           Container(
                             width: 30,
                           ),
                           bookdata['available'] == 'yes'
-                              ? const Text('Yes')
-                              : const Text("No")
+                              ? const Text('Yes',
+                                  style: TextStyle(
+                                      color: AppTheme.textColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold))
+                              : const Text("No",
+                                  style: TextStyle(
+                                      color: AppTheme.textColor,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold))
                         ],
                       ),
                     ),
@@ -166,7 +190,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                     BookSwapRequestService();
                                 bookSwapRequest.addBookSwapRequest(
                                   auth.getUserID(),
-                                  userdata['userID'],
+                                  userdata['uid'],
                                   bookdata['bookID'],
                                 );
                                 Navigator.pop(context);
@@ -324,11 +348,26 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    const Text('Description:'),
+                    const Text('DESCRIPTION:',
+                        style: TextStyle(
+                            color: AppTheme.textColor,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 32)),
                     Container(
                       height: 10,
                     ),
-                    Text(bookdata['description'])
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        bookdata['description'],
+                        style: const TextStyle(
+                            color: AppTheme.textColor,
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16),
+                      ),
+                    )
                   ],
                 ),
               )),

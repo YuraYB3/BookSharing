@@ -2,6 +2,7 @@
 
 import 'package:booksshare/Models/userModel.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
 
 import 'databaseUserService.dart';
 
@@ -24,14 +25,14 @@ class AuthService {
     }
   }
 
-  Future register(
-      String email, String password, String name, String surname) async {
+  Future register(String name, int age, String password, String email,
+      XFile imageURL) async {
     try {
       UserCredential result = await _auth.createUserWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
       await DatabaseUserService(uid: user?.uid)
-          .updateUserData(name, surname, email);
+          .updateUserData(name, age, password, email, imageURL);
       return _userFromFirebase(user);
     } catch (e) {
       return null;

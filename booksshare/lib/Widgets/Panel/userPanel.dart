@@ -12,6 +12,7 @@ class UserPanel extends StatelessWidget {
   UserPanel({super.key});
   @override
   Widget build(BuildContext context) {
+    UserList userList = UserList(_auth.getUserID()!);
     return Drawer(
       backgroundColor: AppTheme.secondBackgroundColor,
       width: 250,
@@ -21,7 +22,7 @@ class UserPanel extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: AppTheme.secondBackgroundColor,
               ),
-              child: UserList(_auth.getUserID()!)),
+              child: userList.UserInfo()),
           ListTile(
             title: const Text(
               'My profile',
@@ -32,8 +33,7 @@ class UserPanel extends StatelessWidget {
               color: AppTheme.iconColor,
             ),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/profile');
+              Navigator.pushReplacementNamed(context, '/profile');
             },
           ),
           ListTile(
@@ -42,8 +42,7 @@ class UserPanel extends StatelessWidget {
             leading:
                 const Icon(Icons.my_library_books, color: AppTheme.iconColor),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushReplacementNamed(context, '/home');
             },
           ),
           ListTile(
@@ -51,8 +50,7 @@ class UserPanel extends StatelessWidget {
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.menu_book, color: AppTheme.iconColor),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/exchange');
+              Navigator.pushReplacementNamed(context, '/exchange');
             },
           ),
           ListTile(
@@ -60,8 +58,7 @@ class UserPanel extends StatelessWidget {
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.settings, color: AppTheme.iconColor),
             onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context, '/settings');
+              Navigator.pushReplacementNamed(context, '/settings');
             },
           ),
           ListTile(

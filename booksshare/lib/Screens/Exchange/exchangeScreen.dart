@@ -12,6 +12,7 @@ import '../../Services/authService.dart';
 import '../../Services/bookSwapService.dart';
 import '../../Services/databaseUserService.dart';
 import '../../Services/reviewService.dart';
+import '../../Widgets/Panel/userPanel.dart';
 
 class ExchangeScreen extends StatefulWidget {
   const ExchangeScreen({super.key});
@@ -36,6 +37,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
         value: DatabaseUserService(uid: '').users,
         initialData: null,
         child: Scaffold(
+            drawer: UserPanel(),
             appBar: AppBar(
               toolbarHeight: 60,
               backgroundColor: AppTheme.secondBackgroundColor,
@@ -173,8 +175,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                                   Container(
                                                     width: 1,
                                                   ),
-                                                  Text(
-                                                      '${userdata['name']}  ${userdata['surname']}',
+                                                  Text('${userdata['name']}',
                                                       style: const TextStyle(
                                                           color: Colors.grey)),
                                                 ],

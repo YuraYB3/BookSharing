@@ -31,9 +31,7 @@ class UserAppBar {
                   Icons.notifications_off_rounded,
                   color: AppTheme.iconColor,
                 ),
-                onPressed: () {
-                  print("WORKED?");
-                },
+                onPressed: () {},
               );
             }
           },
