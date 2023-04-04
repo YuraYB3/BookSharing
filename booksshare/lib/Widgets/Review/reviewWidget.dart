@@ -1,5 +1,7 @@
 import 'package:booksshare/Shared/appTheme.dart';
+import 'package:booksshare/Widgets/userInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
@@ -15,6 +17,7 @@ class ReviewWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference user = FirebaseFirestore.instance.collection("users");
     ReviewService reviewObj = ReviewService();
+    UserList userInfo = UserList();
     return Container(
         color: AppTheme.secondBackgroundColor,
         height: 550,
@@ -23,10 +26,7 @@ class ReviewWidget extends StatelessWidget {
           builder: (BuildContext context,
               AsyncSnapshot<List<ReviewModel>> snapshot) {
             if (!snapshot.hasData) {
-              return const Text('here4');
-            }
-            if (snapshot.hasError) {
-              return Text(snapshot.error.toString());
+              Container();
             }
             if (snapshot.hasData) {
               final reviewData = snapshot.data!;
@@ -46,110 +46,102 @@ class ReviewWidget extends StatelessWidget {
                                 elevation: 10,
                                 borderOnForeground: false,
                                 shadowColor: AppTheme.secondBackgroundColor,
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Container(
-                                            height: 30,
-                                            width: 30,
-                                            decoration: BoxDecoration(
-                                                color: Colors.black,
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                          ),
-                                          Container(
-                                            width: 50,
-                                            height: 20,
-                                            color: Colors.white,
-                                            child: Center(
-                                              child: Text(
-                                                userdata['name'],
-                                                style: const TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: SizedBox(
-                                        height: 100,
-                                        width: 200,
+                                color: Colors.amber[100],
+                                margin: EdgeInsets.all(10),
+                                child: Container(
+                                  color: Colors.amber[50],
+                                  margin: EdgeInsets.all(10),
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
                                         child: Column(
                                           mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.end,
+                                              MainAxisAlignment.spaceEvenly,
                                           children: [
-                                            Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 8.0),
-                                              child: Container(
-                                                color: Colors.white,
-                                                child: Text(review.review
-                                                    .substring(0, 32)),
-                                              ),
-                                            ),
-                                            Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.end,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.end,
-                                              children: [
-                                                SizedBox(
-                                                  height: 30,
-                                                  child: TextButton(
-                                                    onPressed: () {},
-                                                    style: const ButtonStyle(
-                                                        backgroundColor:
-                                                            MaterialStatePropertyAll<
-                                                                    Color>(
-                                                                Colors.amber)),
-                                                    child: const Text(
-                                                      "Read more",
-                                                      style: TextStyle(
-                                                          color: Colors.white,
-                                                          fontSize: 12),
-                                                    ),
-                                                  ),
-                                                )
-                                              ],
-                                            ),
-                                            RatingBar.builder(
-                                              ignoreGestures: true,
-                                              initialRating: review.rating,
-                                              minRating: 1,
-                                              direction: Axis.horizontal,
-                                              itemCount: 5,
-                                              itemSize: 20.0,
-                                              itemPadding:
-                                                  const EdgeInsets.symmetric(
-                                                      horizontal: 4.0),
-                                              itemBuilder: (context, _) =>
-                                                  const Icon(
-                                                Icons.star,
-                                                color: Colors.amber,
-                                                size: 5.0,
-                                              ),
-                                              onRatingUpdate: (rating) {},
-                                            ),
                                             Container(
-                                              height: 5,
+                                              height: 50,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          20)),
+                                              child: ClipRRect(
+                                                  borderRadius:
+                                                      BorderRadius.circular(40),
+                                                  child: userInfo.UserImage(
+                                                      userdata['uid'])),
+                                            ),
+                                            SizedBox(
+                                              width: 50,
+                                              height: 20,
+                                              child: Center(
+                                                child: Text(
+                                                  userdata['name'],
+                                                  style: const TextStyle(
+                                                      color: Colors.black),
+                                                ),
+                                              ),
                                             )
                                           ],
                                         ),
                                       ),
-                                    )
-                                  ],
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: SizedBox(
+                                          height: 100,
+                                          width: 200,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: [
+                                              Padding(
+                                                padding: const EdgeInsets.only(
+                                                    top: 8.0),
+                                                child: Text(
+                                                    '${review.review.substring(0, 32)}...'),
+                                              ),
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.end,
+                                                children: [
+                                                  readMoreButton(
+                                                      context, review.review)
+                                                ],
+                                              ),
+                                              RatingBar.builder(
+                                                ignoreGestures: true,
+                                                initialRating: review.rating,
+                                                minRating: 1,
+                                                direction: Axis.horizontal,
+                                                itemCount: 5,
+                                                itemSize: 20.0,
+                                                itemPadding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 4.0),
+                                                itemBuilder: (context, _) =>
+                                                    const Icon(
+                                                  Icons.star,
+                                                  color: Colors.amber,
+                                                  size: 5.0,
+                                                ),
+                                                onRatingUpdate: (rating) {},
+                                              ),
+                                              Container(
+                                                height: 5,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      )
+                                    ],
+                                  ),
                                 ));
                           } else {
                             return const Center(
@@ -164,5 +156,50 @@ class ReviewWidget extends StatelessWidget {
           },
         ));
   }
-}
-/* */
+
+  Widget readMoreButton(BuildContext context, String review) {
+    return SizedBox(
+      height: 30,
+      child: ElevatedButton(
+        onPressed: () async {
+          bool confirmDelete = await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return SizedBox(
+                height: 450,
+                child: AlertDialog(
+                  backgroundColor: AppTheme.secondBackgroundColor,
+                  content: Text(
+                    review,
+                    style: TextStyle(color: AppTheme.textColor),
+                  ),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.pop(context, false),
+                      child: const Text(
+                        'Close',
+                        style: TextStyle(color: AppTheme.iconColor),
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            },
+          );
+        },
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.all<Color>(
+            Colors.amber,
+          ),
+        ),
+        child: const Text(
+          "Read more",
+          style: TextStyle(
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ),
+    );
+  }
+} /* */

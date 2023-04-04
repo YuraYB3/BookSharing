@@ -5,14 +5,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class UserList {
-  final String documnetID;
-  UserList(
-    this.documnetID,
-  );
-
   CollectionReference user = FirebaseFirestore.instance.collection("users");
 
-  Widget UserInfo() {
+  Widget UserInfo(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:
@@ -69,7 +64,7 @@ class UserList {
     );
   }
 
-  Widget UserName() {
+  Widget UserName(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:
@@ -101,7 +96,7 @@ class UserList {
     );
   }
 
-  Widget UserImage() {
+  Widget UserImage(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:

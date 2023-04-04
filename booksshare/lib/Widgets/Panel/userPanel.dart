@@ -12,7 +12,7 @@ class UserPanel extends StatelessWidget {
   UserPanel({super.key});
   @override
   Widget build(BuildContext context) {
-    UserList userList = UserList(_auth.getUserID()!);
+    UserList userList = UserList();
     return Drawer(
       backgroundColor: AppTheme.secondBackgroundColor,
       width: 250,
@@ -22,7 +22,7 @@ class UserPanel extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: AppTheme.secondBackgroundColor,
               ),
-              child: userList.UserInfo()),
+              child: userList.UserInfo(_auth.getUserID()!)),
           ListTile(
             title: const Text(
               'My profile',

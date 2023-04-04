@@ -85,127 +85,130 @@ class _ExchangeScreenState extends State<ExchangeScreen>
           if (snapshot.hasError) {
             return const Text("ERROR!!!");
           }
-          if (snapshot.hasData) {
-            final swap = snapshot.data!;
-            return ListView.builder(
-                itemCount: swap.length,
-                itemBuilder: (context, index) {
-                  final bookswap = swap[index];
-                  return FutureBuilder<DocumentSnapshot>(
-                      future: userCollection
-                          .doc(exchangeType == 'sender'
-                              ? bookswap.receiverID
-                              : bookswap.senderID)
-                          .get(),
-                      builder: (BuildContext context,
-                          AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                        if (userSnapshot.connectionState ==
-                            ConnectionState.done) {
-                          Map<String, dynamic> userdata =
-                              userSnapshot.data!.data() as Map<String, dynamic>;
-
-                          return FutureBuilder<DocumentSnapshot>(
-                              future: bookCollection
-                                  .doc(bookswap.desiredBookID)
-                                  .get(),
-                              builder: (BuildContext context,
-                                  AsyncSnapshot<DocumentSnapshot>
-                                      bookSnapshot) {
-                                if (bookSnapshot.connectionState ==
-                                    ConnectionState.done) {
-                                  Map<String, dynamic> bookdata =
-                                      bookSnapshot.data!.data()
-                                          as Map<String, dynamic>;
-                                  return Card(
-                                    borderOnForeground: true,
-                                    elevation: 5.5,
-                                    shadowColor: AppTheme.secondBackgroundColor,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
-                                        SizedBox(
-                                            height: 100,
-                                            width: 90,
-                                            child: Image(
-                                                image:
-                                                    CachedNetworkImageProvider(
-                                                  bookdata['cover'],
-                                                ),
-                                                fit: BoxFit.cover)),
-                                        Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 10),
-                                          child: Column(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.start,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
-                                            children: [
-                                              Row(
-                                                children: [
-                                                  const Text(
-                                                    "Назва книги:",
-                                                    style: TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Container(
-                                                    width: 1,
-                                                  ),
-                                                  Text(
-                                                    '${bookdata['name']}',
-                                                    style: const TextStyle(
-                                                        color: Colors.grey),
-                                                  ),
-                                                ],
-                                              ),
-                                              Row(
-                                                children: [
-                                                  Text(
-                                                    exchangeType == 'sender'
-                                                        ? "Власник книги:"
-                                                        : "Орендар:",
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold),
-                                                  ),
-                                                  Container(
-                                                    width: 1,
-                                                  ),
-                                                  Text('${userdata['name']}',
-                                                      style: const TextStyle(
-                                                          color: Colors.grey)),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        Expanded(child: Container()),
-                                        exchangeType == "sender"
-                                            ? Padding(
-                                                padding: const EdgeInsets.only(
-                                                    right: 2),
-                                                child: returnBookButton(
-                                                    bookswap.desiredBookID,
-                                                    bookswap.bookSwapID,
-                                                    bookswap.senderID))
-                                            : Container(),
-                                      ],
-                                    ),
-                                  );
-                                }
-                                return Column();
-                              });
-                        }
-                        return Column();
-                      });
-                });
-          } else {
-            return const Center(child: CircularProgressIndicator());
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [
+                Center(
+                  child: Text('Зараз тут пусто...'),
+                )
+              ],
+            );
           }
+          final swap = snapshot.data!;
+          return ListView.builder(
+              itemCount: swap.length,
+              itemBuilder: (context, index) {
+                final bookswap = swap[index];
+                return FutureBuilder<DocumentSnapshot>(
+                    future: userCollection
+                        .doc(exchangeType == 'sender'
+                            ? bookswap.receiverID
+                            : bookswap.senderID)
+                        .get(),
+                    builder: (BuildContext context,
+                        AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                      if (userSnapshot.connectionState ==
+                          ConnectionState.done) {
+                        Map<String, dynamic> userdata =
+                            userSnapshot.data!.data() as Map<String, dynamic>;
+
+                        return FutureBuilder<DocumentSnapshot>(
+                            future: bookCollection
+                                .doc(bookswap.desiredBookID)
+                                .get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> bookSnapshot) {
+                              if (bookSnapshot.connectionState ==
+                                  ConnectionState.done) {
+                                Map<String, dynamic> bookdata =
+                                    bookSnapshot.data!.data()
+                                        as Map<String, dynamic>;
+                                return Card(
+                                  borderOnForeground: true,
+                                  elevation: 5.5,
+                                  shadowColor: AppTheme.secondBackgroundColor,
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
+                                    children: [
+                                      SizedBox(
+                                          height: 100,
+                                          width: 90,
+                                          child: Image(
+                                              image: CachedNetworkImageProvider(
+                                                bookdata['cover'],
+                                              ),
+                                              fit: BoxFit.cover)),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(left: 10),
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Row(
+                                              children: [
+                                                const Text(
+                                                  "Назва книги:",
+                                                  style: TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Container(
+                                                  width: 1,
+                                                ),
+                                                Text(
+                                                  '${bookdata['name']}',
+                                                  style: const TextStyle(
+                                                      color: Colors.grey),
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: [
+                                                Text(
+                                                  exchangeType == 'sender'
+                                                      ? "Власник книги:"
+                                                      : "Орендар:",
+                                                  style: const TextStyle(
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Container(
+                                                  width: 1,
+                                                ),
+                                                Text('${userdata['name']}',
+                                                    style: const TextStyle(
+                                                        color: Colors.grey)),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                      Expanded(child: Container()),
+                                      exchangeType == "sender"
+                                          ? Padding(
+                                              padding: const EdgeInsets.only(
+                                                  right: 2),
+                                              child: returnBookButton(
+                                                  bookswap.desiredBookID,
+                                                  bookswap.bookSwapID,
+                                                  bookswap.senderID))
+                                          : Container(),
+                                    ],
+                                  ),
+                                );
+                              }
+                              return Column();
+                            });
+                      }
+                      return Column();
+                    });
+              });
         });
   }
 
@@ -235,8 +238,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                         value.length < 50
                                     ? 'You should enter the title of the book'
                                     : null,
-                                decoration:
-                                    InputDecoration(hintText: "Введіть відгук"),
+                                decoration: const InputDecoration(
+                                    hintText: "Введіть відгук"),
                                 maxLength: 250,
                                 maxLines: 10,
                                 onChanged: (value) {
@@ -251,7 +254,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
-                            itemPadding: EdgeInsets.symmetric(horizontal: 4.0),
+                            itemPadding:
+                                const EdgeInsets.symmetric(horizontal: 4.0),
                             itemBuilder: (context, _) => const Icon(
                               Icons.star,
                               color: Colors.amber,

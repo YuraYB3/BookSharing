@@ -27,4 +27,19 @@ class ReviewService {
           .map((snapshot) => snapshot.docs
               .map((doc) => ReviewModel.fromJson(doc.data()))
               .toList());
+  Stream<List<ReviewModel>> readUserReviews(String userID) =>
+      FirebaseFirestore.instance
+          .collection('review')
+          .where('userID', isEqualTo: userID)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => ReviewModel.fromJson(doc.data()))
+              .toList());
+  Future<int> readUserReviewsCount(String userID) async {
+    var querySnapshot = await FirebaseFirestore.instance
+        .collection('review')
+        .where('userID', isEqualTo: userID)
+        .get();
+    return querySnapshot.docs.length;
+  }
 }
