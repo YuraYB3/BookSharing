@@ -27,7 +27,51 @@ class _UserSettingsState extends State<UserSettings> {
         child: Scaffold(
             appBar: u.headerBar(context),
             backgroundColor: AppTheme.backgroundColor,
-            body: const Text("User Settings :)"),
+            body: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Center(
+                  child: Container(
+                      height: 350,
+                      width: 300,
+                      color: Colors.amber[200],
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text('Змінити пароль'),
+                            ),
+                            Container(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text('Змінити email'),
+                            ),
+                            Container(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text('Змінити фото'),
+                            ),
+                            Container(
+                              height: 10,
+                            ),
+                            GestureDetector(
+                              onTap: () {},
+                              child: Text('Видалити профіль'),
+                            )
+                          ],
+                        ),
+                      )),
+                )
+              ],
+            ),
             drawer: UserPanel()));
   }
 }

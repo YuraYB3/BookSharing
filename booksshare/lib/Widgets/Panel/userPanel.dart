@@ -46,6 +46,22 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
+            title: const Text('Friends',
+                style: TextStyle(color: AppTheme.textColor)),
+            leading: const Icon(Icons.people, color: AppTheme.iconColor),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/friends');
+            },
+          ),
+          ListTile(
+            title: const Text('Messenger',
+                style: TextStyle(color: AppTheme.textColor)),
+            leading: const Icon(Icons.message, color: AppTheme.iconColor),
+            onTap: () {
+              Navigator.pushReplacementNamed(context, '/messenger');
+            },
+          ),
+          ListTile(
             title: const Text('Exchange',
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.menu_book, color: AppTheme.iconColor),

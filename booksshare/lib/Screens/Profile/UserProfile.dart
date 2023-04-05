@@ -61,7 +61,7 @@ class _UserProfileState extends State<UserProfile> {
                         Container(
                           height: 10,
                         ),
-                        userInfo.UserName(userID!),
+                        userInfo.UserName(userID),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -82,15 +82,15 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           Text(
                                             snapshot.data.toString(),
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: const TextStyle(
+                                                color: Colors.white),
                                           )
                                         ],
                                       );
                                     } else if (snapshot.hasError) {
                                       return Text("Error: ${snapshot.error}");
                                     } else {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     }
                                   },
                                 )),
@@ -112,15 +112,15 @@ class _UserProfileState extends State<UserProfile> {
                                           ),
                                           Text(
                                             snapshot.data.toString(),
-                                            style:
-                                                TextStyle(color: Colors.white),
+                                            style: const TextStyle(
+                                                color: Colors.white),
                                           )
                                         ],
                                       );
                                     } else if (snapshot.hasError) {
                                       return Text("Error: ${snapshot.error}");
                                     } else {
-                                      return CircularProgressIndicator();
+                                      return const CircularProgressIndicator();
                                     }
                                   },
                                 ))

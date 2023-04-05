@@ -39,13 +39,13 @@ class _ExchangeScreenState extends State<ExchangeScreen>
         child: Scaffold(
             drawer: UserPanel(),
             appBar: AppBar(
-              toolbarHeight: 60,
+              toolbarHeight: 50,
               backgroundColor: AppTheme.secondBackgroundColor,
               title: const Text(''),
               bottom: TabBar(
                 controller: _tabController,
                 indicatorColor: AppTheme.iconColor,
-                indicatorWeight: 5,
+                indicatorWeight: 3,
                 labelColor: AppTheme.textColor,
                 tabs: const [
                   Tab(text: 'Received'),
