@@ -1,3 +1,5 @@
+import 'package:booksshare/Models/userModel.dart';
+import 'package:booksshare/Services/databaseUserService.dart';
 import 'package:booksshare/Shared/appTheme.dart';
 import 'package:booksshare/Widgets/Panel/userPanel.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -63,59 +65,119 @@ class _FriendsScreenState extends State<FriendsScreen>
       mainAxisAlignment: MainAxisAlignment.center,
       children: const [
         Center(
-          child: Text('You dont have friends yet! HAHAHAHHA'),
+          child: Text('You dont have any friends yet! HAHAHAHHA'),
         )
       ],
     );
   }
 
   Widget searchFriends(BuildContext context) {
-    return Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Card(
-            child: TextField(
-              decoration: const InputDecoration(
-                  fillColor: AppTheme.secondBackgroundColor,
-                  hoverColor: AppTheme.secondBackgroundColor,
-                  focusColor: AppTheme.secondBackgroundColor,
-                  hintText: '   Search .....',
-                  enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 2.0)),
-                  focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white, width: 1.0)),
-                  suffixIcon:
-                      Icon(Icons.search, color: AppTheme.secondBackgroundColor),
-                  prefixIcon: Icon(
-                    Icons.search,
-                    color: Colors.white,
-                  )),
-              onChanged: (value) {
-                setState(() {
-                  searchQuery = value;
-                });
-              },
+    AuthService _auth = AuthService();
+    var uid = _auth.getUserID();
+    DatabaseUserService userService = DatabaseUserService(uid: uid);
+    CollectionReference userColection =
+        FirebaseFirestore.instance.collection("users");
+    var bookList = BookService(uid!);
+
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Card(
+              child: TextField(
+                decoration: const InputDecoration(
+                    fillColor: AppTheme.secondBackgroundColor,
+                    hoverColor: AppTheme.secondBackgroundColor,
+                    focusColor: AppTheme.secondBackgroundColor,
+                    hintText: '   Search .....',
+                    enabledBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.white, width: 2.0)),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide:
+                            BorderSide(color: Colors.white, width: 1.0)),
+                    suffixIcon: Icon(Icons.search,
+                        color: AppTheme.secondBackgroundColor),
+                    prefixIcon: Icon(
+                      Icons.search,
+                      color: Colors.white,
+                    )),
+                onChanged: (value) {
+                  setState(() {
+                    searchQuery = value;
+                  });
+                },
+              ),
             ),
           ),
-        ),
-        searchQuery.isEmpty
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Center(
-                    child: Text("Введіть імя користувача!"),
-                  ),
-                ],
-              )
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Center(child: Text(searchQuery)),
-                ],
-              ),
-      ],
+          searchQuery.isEmpty
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: const [
+                    Center(
+                      child: Text("Введіть імя користувача!"),
+                    ),
+                  ],
+                )
+              : StreamBuilder<List<UserModel>>(
+                  stream: userService.readAllUsers(),
+                  builder: (BuildContext context,
+                      AsyncSnapshot<List<UserModel>> snapshot) {
+                    if (snapshot.hasError) {
+                      return Text("{$snapshot.error}");
+                    }
+
+                    if (snapshot.hasData) {
+                      final users = snapshot.data!;
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: users.length,
+                        itemBuilder: (context, index) {
+                          final user = users[index];
+                          return FutureBuilder<DocumentSnapshot>(
+                            future: userColection.doc(user.uid).get(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                              if (userSnapshot.connectionState ==
+                                  ConnectionState.done) {
+                                final userName =
+                                    user.userNickName!.toLowerCase();
+                                final query = searchQuery.toLowerCase();
+                                final containsQuery = userName.contains(query);
+                                if (searchQuery.length >= 3 && containsQuery) {
+                                  return ListTile(
+                                    title: const Text("Користувач"),
+                                    subtitle: Text(user.userNickName!),
+                                    leading: SizedBox(
+                                      height: 300,
+                                      width: 50,
+                                      child: Image.network(user.userImage!,
+                                          width: 200,
+                                          height: 300,
+                                          fit: BoxFit.cover),
+                                    ),
+                                    onTap: () {},
+                                  );
+                                } else {
+                                  return Container();
+                                }
+                              } else {
+                                return const SizedBox.shrink();
+                              }
+                            },
+                          );
+                        },
+                      );
+                    } else {
+                      return const SizedBox.shrink();
+                    }
+                  })
+        ],
+      ),
     );
   }
 }

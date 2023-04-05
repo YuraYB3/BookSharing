@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
@@ -64,41 +63,11 @@ class DatabaseUserService {
   Stream<List<UserModel>?> get users {
     return usersCollection.snapshots().map(_userListFromSnapshot);
   }
+
+  Stream<List<UserModel>> readAllUsers() => FirebaseFirestore.instance
+      .collection('users')
+      .where('uid', isNotEqualTo: uid)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
 }
- /*if (file != null) {
-      String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
-      uniqueFileName += file.name;
-      Reference reference = FirebaseStorage.instance.ref();
-      Reference referenceDirImages = reference.child('book_covers');
-      Reference referenceImagesToUpload =
-          referenceDirImages.child(uniqueFileName);
-      try {
-        await referenceImagesToUpload.putFile(File(file.path));
-        imageURL = await referenceImagesToUpload.getDownloadURL();
-        await newDocRef.set({
-          'name': name,
-          'title': title,
-          "userID": documnetID,
-          "bookID": newDocRef.id,
-          "available": 'yes',
-          'cover': imageURL,
-          'description': description
-        });
-        Fluttertoast.showToast(
-          msg: 'Book added successfully!',
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: Colors.green,
-          textColor: Colors.white,
-        );
-      } catch (e) {
-        Fluttertoast.showToast(
-          msg: 'Book not added!',
-          gravity: ToastGravity.BOTTOM,
-          backgroundColor: const Color.fromARGB(255, 187, 38, 38),
-          textColor: Colors.white,
-        );
-      }
-    } else {
-      // ignore: avoid_print
-      print('Some Error');
-    }*/

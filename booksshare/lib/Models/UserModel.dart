@@ -40,4 +40,13 @@ class UserModel {
         userPassword: data['userPassword'],
         uid: data['uid']);
   }
+
+  static UserModel fromJson(Map<String, dynamic> json) => UserModel(
+        userNickName: json['name'],
+        userEmail: json['email'],
+        userImage: json['userImage'],
+        userAge: json['userAge'],
+        userPassword: json['userPassword'],
+        uid: json['uid'],
+      );
 }

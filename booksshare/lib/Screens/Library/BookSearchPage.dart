@@ -75,8 +75,6 @@ class _BookSearchPageState extends State<BookSearchPage> {
                           AsyncSnapshot<DocumentSnapshot> userSnapshot) {
                         if (userSnapshot.connectionState ==
                             ConnectionState.done) {
-                          final userdata =
-                              userSnapshot.data!.data() as Map<String, dynamic>;
                           final bookName = book.name.toString().toLowerCase();
                           final bookTitle = book.title.toString().toLowerCase();
                           final query = searchQuery.toLowerCase();
