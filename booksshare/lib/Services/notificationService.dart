@@ -2,14 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import '../Models/bookSwapRequestModel.dart';
+import '../Models/notificationModel.dart';
 
-class BookSwapNotifierService {
+class NotificationService {
   final String? receiverID;
   final CollectionReference bookSwapRequestCollection =
       FirebaseFirestore.instance.collection('swapRequest');
 
-  BookSwapNotifierService({required this.receiverID});
+  NotificationService({required this.receiverID});
 
   // Get the number of new swap requests for the receiver.
   Future<int> getNewRequestCount() async {
@@ -21,15 +21,14 @@ class BookSwapNotifierService {
 
   // Get a list of new swap requests for the receiver.
 
-  Stream<List<BookSwapRequestModel>> getNewRequests() =>
-      FirebaseFirestore.instance
-          .collection('swapRequest')
-          .where("receiverID", isEqualTo: receiverID)
-          .where('seenByReceiver', isEqualTo: false)
-          .snapshots()
-          .map((snapshot) => snapshot.docs
-              .map((doc) => BookSwapRequestModel.fromJson(doc.data()))
-              .toList());
+  Stream<List<NotificationModel>> getNewRequests() => FirebaseFirestore.instance
+      .collection('swapRequest')
+      .where("receiverID", isEqualTo: receiverID)
+      .where('seenByReceiver', isEqualTo: false)
+      .snapshots()
+      .map((snapshot) => snapshot.docs
+          .map((doc) => NotificationModel.fromJson(doc.data()))
+          .toList());
 
   // Mark a swap request as seen by the receiver.
   Future<void> markRequestAsSeen(String requestID) async {

@@ -28,6 +28,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
+    AuthService _authService = AuthService();
     return StreamProvider<UserModel?>.value(
         value: AuthService().user,
         initialData: null,
@@ -40,7 +41,8 @@ class MyApp extends StatelessWidget {
             // ignore: prefer_const_constructors
             '/login': (context) => LoginScreen(),
             '/signup': (context) => SignUpScreen(),
-            '/profile': (context) => const UserProfile(),
+            '/profile': (context) =>
+                UserProfile(userID: _authService.getUserID()!),
             '/home': (context) => const HomePage(),
             '/settings': (context) => const UserSettings(),
             '/search': (context) => BookSearchPage(),

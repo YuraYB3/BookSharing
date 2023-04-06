@@ -1,5 +1,5 @@
 // ignore_for_file: file_names
-import 'package:booksshare/Services/bookSwapRequestService.dart';
+import 'package:booksshare/Services/swapRequestService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
@@ -186,8 +186,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                             width: 170,
                             child: ElevatedButton(
                               onPressed: () async {
-                                BookSwapRequestService bookSwapRequest =
-                                    BookSwapRequestService();
+                                SwapRequestService bookSwapRequest =
+                                    SwapRequestService();
                                 bookSwapRequest.addBookSwapRequest(
                                   auth.getUserID(),
                                   userdata['uid'],

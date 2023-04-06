@@ -1,6 +1,7 @@
 // ignore_for_file: file_names
 import 'package:booksshare/Services/authService.dart';
 import 'package:booksshare/Services/bookService.dart';
+import 'package:booksshare/Services/friendshipRequestService.dart';
 import 'package:booksshare/Services/reviewService.dart';
 import 'package:booksshare/Widgets/userInfo.dart';
 import 'package:flutter/material.dart';
@@ -13,7 +14,8 @@ import '../../Widgets/AppBar/userAppBar.dart';
 import '../../Widgets/Panel/userPanel.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  String userID;
+  UserProfile({required this.userID});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -26,9 +28,9 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    var userID = authService.getUserID();
     UserList userInfo = UserList();
-    BookService bookService = BookService(userID);
+    var currentUser = authService.getUserID();
+    BookService bookService = BookService(widget.userID);
     return StreamProvider<List<UserModel>?>.value(
         value: DatabaseUserService(uid: '').users,
         initialData: null,
@@ -57,11 +59,11 @@ class _UserProfileState extends State<UserProfile> {
                                 borderRadius: BorderRadius.circular(30)),
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: userInfo.UserImage(userID!))),
+                                child: userInfo.UserImage(widget.userID))),
                         Container(
                           height: 10,
                         ),
-                        userInfo.UserName(userID),
+                        userInfo.UserName(widget.userID),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
@@ -98,7 +100,37 @@ class _UserProfileState extends State<UserProfile> {
                                 height: 100,
                                 child: FutureBuilder<int>(
                                   future: reviewService
-                                      .readUserReviewsCount(userID),
+                                      .readUserReviewsCount(widget.userID),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasData) {
+                                      return Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: const [
+                                          Text(
+                                            'Друзів',
+                                            style: TextStyle(
+                                                color: AppTheme.textColor),
+                                          ),
+                                          Text(
+                                            '0',
+                                            style:
+                                                TextStyle(color: Colors.white),
+                                          )
+                                        ],
+                                      );
+                                    } else if (snapshot.hasError) {
+                                      return Text("Error: ${snapshot.error}");
+                                    } else {
+                                      return const CircularProgressIndicator();
+                                    }
+                                  },
+                                )),
+                            SizedBox(
+                                height: 100,
+                                child: FutureBuilder<int>(
+                                  future: reviewService
+                                      .readUserReviewsCount(widget.userID),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasData) {
                                       return Column(
@@ -130,6 +162,23 @@ class _UserProfileState extends State<UserProfile> {
                     ),
                   ),
                 ),
+                currentUser != widget.userID
+                    ? Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Center(
+                            child: ElevatedButton(
+                          onPressed: () async {
+                            FrienshipRequestService frienshipRequestService =
+                                FrienshipRequestService();
+                            frienshipRequestService.addFriendshipRequest(
+                                currentUser, widget.userID);
+                          },
+                          style: const ButtonStyle(
+                              backgroundColor: MaterialStatePropertyAll<Color>(
+                                  AppTheme.secondBackgroundColor)),
+                          child: const Text('Send request'),
+                        )))
+                    : Container()
               ],
             ),
             drawer: UserPanel()));

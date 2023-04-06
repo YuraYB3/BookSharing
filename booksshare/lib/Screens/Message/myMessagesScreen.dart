@@ -1,5 +1,4 @@
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter/material.dart';
 
 class MyMessageScreen extends StatefulWidget {
   const MyMessageScreen({super.key});
@@ -11,6 +10,6 @@ class MyMessageScreen extends StatefulWidget {
 class _MyMessageScreenState extends State<MyMessageScreen> {
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(appBar: AppBar());
   }
 }

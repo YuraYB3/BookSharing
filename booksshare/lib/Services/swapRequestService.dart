@@ -4,11 +4,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
-class BookSwapRequestService {
+class SwapRequestService {
   Future<void> addBookSwapRequest(
       String? senderID, String receiverID, String desiredBookID) async {
     final CollectionReference bookSwapRequestCollection =
-        FirebaseFirestore.instance.collection('swapRequest');
+        FirebaseFirestore.instance.collection('notification');
 
     // Query the collection for existing requests with the same senderID, receiverID, and desiredBookID.
     final existingRequests = await bookSwapRequestCollection
@@ -36,7 +36,8 @@ class BookSwapRequestService {
         'receiverID': receiverID,
         'desiredBookID': desiredBookID,
         'seenByReceiver': false,
-        "message": 'I want to swap book!!!!'
+        "message": 'I want to swap book!!!!',
+        'notificationType': 'Swap'
       });
       Fluttertoast.showToast(
         msg: 'Request sent',

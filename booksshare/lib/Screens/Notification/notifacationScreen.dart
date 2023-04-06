@@ -3,10 +3,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-import '../../Models/bookSwapRequestModel.dart';
+import '../../Models/notificationModel.dart';
 import '../../Services/authService.dart';
-import '../../Services/bookSwapNotifierService.dart';
-import '../../Services/bookSwapRequestService.dart';
+import '../../Services/notificationService.dart';
+import '../../Services/swapRequestService.dart';
 import '../../Services/bookSwapService.dart';
 import '../../Shared/appTheme.dart';
 import '../../Widgets/AppBar/userAppBar.dart';
@@ -23,22 +23,22 @@ class _NotificationScreenState extends State<NotificationScreen> {
   UserAppBar userAppBar = UserAppBar();
   final AuthService _authService = AuthService();
   BookSwapService bookSwap = BookSwapService();
-  BookSwapRequestService bookSwapRequest = BookSwapRequestService();
+  SwapRequestService bookSwapRequest = SwapRequestService();
 
   @override
   Widget build(BuildContext context) {
     var userID = _authService.getUserID();
     CollectionReference user = FirebaseFirestore.instance.collection("users");
-    BookSwapNotifierService bookSwapNotifier =
-        BookSwapNotifierService(receiverID: userID);
+    NotificationService bookSwapNotifier =
+        NotificationService(receiverID: userID);
     CollectionReference book = FirebaseFirestore.instance.collection("books");
     return Scaffold(
         appBar: userAppBar.headerBar(context),
         backgroundColor: AppTheme.backgroundColor,
-        body: StreamBuilder<List<BookSwapRequestModel>>(
+        body: StreamBuilder<List<NotificationModel>>(
             stream: bookSwapNotifier.getNewRequests(),
             builder: (BuildContext context,
-                AsyncSnapshot<List<BookSwapRequestModel>> snapshot) {
+                AsyncSnapshot<List<NotificationModel>> snapshot) {
               if (snapshot.hasError) {
                 return Text(snapshot.error.toString());
               }
@@ -143,13 +143,13 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                                                   notify
                                                                       .receiverID,
                                                                   notify
-                                                                      .desiredBookID);
+                                                                      .desiredBookID!);
                                                               bookSwapRequest
                                                                   .updateData(
                                                                       notify
                                                                           .swapReqID,
                                                                       notify
-                                                                          .desiredBookID);
+                                                                          .desiredBookID!);
                                                             },
                                                             icon: const Icon(
                                                               Icons.done,

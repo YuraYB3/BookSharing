@@ -1,8 +1,11 @@
 import 'package:booksshare/Models/userModel.dart';
+import 'package:booksshare/Screens/Profile/UserProfile.dart';
 import 'package:booksshare/Services/databaseUserService.dart';
 import 'package:booksshare/Shared/appTheme.dart';
 import 'package:booksshare/Widgets/Panel/userPanel.dart';
+import 'package:booksshare/Widgets/userInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 import '../../Models/bookModel.dart';
@@ -149,18 +152,29 @@ class _FriendsScreenState extends State<FriendsScreen>
                                 final query = searchQuery.toLowerCase();
                                 final containsQuery = userName.contains(query);
                                 if (searchQuery.length >= 3 && containsQuery) {
-                                  return ListTile(
-                                    title: const Text("Користувач"),
-                                    subtitle: Text(user.userNickName!),
-                                    leading: SizedBox(
-                                      height: 300,
-                                      width: 50,
-                                      child: Image.network(user.userImage!,
-                                          width: 200,
-                                          height: 300,
-                                          fit: BoxFit.cover),
+                                  return Container(
+                                    child: ListTile(
+                                      horizontalTitleGap: 20,
+                                      isThreeLine: true,
+                                      title: const Text("Користувач"),
+                                      subtitle: Text(user.userNickName!),
+                                      leading: SizedBox(
+                                        height: 300,
+                                        width: 50,
+                                        child: Image.network(user.userImage!,
+                                            width: 200,
+                                            height: 300,
+                                            fit: BoxFit.cover),
+                                      ),
+                                      onTap: () {
+                                        Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) =>
+                                                    UserProfile(
+                                                        userID: user.uid)));
+                                      },
                                     ),
-                                    onTap: () {},
                                   );
                                 } else {
                                   return Container();

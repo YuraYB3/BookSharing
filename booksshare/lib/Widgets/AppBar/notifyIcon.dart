@@ -2,14 +2,14 @@ import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../Services/authService.dart';
-import '../../Services/bookSwapNotifierService.dart';
+import '../../Services/notificationService.dart';
 
 class NotifyIcon {
   Future<IconButton> GetNotifyIcon(BuildContext context) async {
     AuthService authService = AuthService();
     var userID = authService.getUserID();
-    BookSwapNotifierService bookSwapNotifier =
-        BookSwapNotifierService(receiverID: userID);
+    NotificationService bookSwapNotifier =
+        NotificationService(receiverID: userID);
     final requestCount = await bookSwapNotifier.getNewRequestCount();
     if (requestCount != 0) {
       return IconButton(
