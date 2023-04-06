@@ -11,8 +11,6 @@ class BookSwapService {
       FirebaseFirestore.instance.collection('bookSwap');
   Future<void> addBookSwap(String swapReqID, String? senderID,
       String receiverID, String desiredBookID) async {
-    final CollectionReference bookSwapCollection =
-        FirebaseFirestore.instance.collection('bookSwap');
     final newSwapReqRef = bookSwapCollection.doc();
     try {
       await newSwapReqRef.set({
@@ -22,7 +20,9 @@ class BookSwapService {
         'receiverID': receiverID,
         'desiredBookID': desiredBookID,
       });
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Stream<List<BookSwapModel>> getBookSwap(String user, String userID) {

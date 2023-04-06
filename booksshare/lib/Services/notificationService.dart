@@ -22,7 +22,7 @@ class NotificationService {
   // Get a list of new swap requests for the receiver.
 
   Stream<List<NotificationModel>> getNewRequests() => FirebaseFirestore.instance
-      .collection('swapRequest')
+      .collection('notification')
       .where("receiverID", isEqualTo: receiverID)
       .where('seenByReceiver', isEqualTo: false)
       .snapshots()

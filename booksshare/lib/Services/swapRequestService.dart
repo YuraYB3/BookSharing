@@ -15,6 +15,7 @@ class SwapRequestService {
         .where('senderID', isEqualTo: senderID)
         .where('receiverID', isEqualTo: receiverID)
         .where('desiredBookID', isEqualTo: desiredBookID)
+        .where('notificationType', isEqualTo: 'Swap')
         .get();
 
     // If there is at least one existing request, notify the user and return without executing the request.
@@ -52,7 +53,7 @@ class SwapRequestService {
 
   Future<void> updateData(String swapReqID, String bookID) async {
     final CollectionReference swapReqRef =
-        FirebaseFirestore.instance.collection('swapRequest');
+        FirebaseFirestore.instance.collection('notification');
     final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
     final CollectionReference bookRef =
         FirebaseFirestore.instance.collection('books');
@@ -69,7 +70,7 @@ class SwapRequestService {
 
   Future<void> deleteData(String swapReqID) async {
     final CollectionReference swapReqRef =
-        FirebaseFirestore.instance.collection('swapRequest');
+        FirebaseFirestore.instance.collection('notification');
     final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
 
     try {

@@ -11,6 +11,7 @@ class FrienshipRequestService {
     final existingRequests = await friendshipRequestCollection
         .where('senderID', isEqualTo: senderID)
         .where('receiverID', isEqualTo: receiverID)
+        .where('notificationType', isEqualTo: 'Friendship')
         .get();
 
     // If there is at least one existing request, notify the user and return without executing the request.
@@ -32,7 +33,7 @@ class FrienshipRequestService {
         'receiverID': receiverID,
         'seenByReceiver': false,
         "message": 'I want to be your friend!!!',
-        'notificationType': 'Friendship'
+        'notificationType': 'Friendship',
       });
       Fluttertoast.showToast(
         msg: 'Request sent',

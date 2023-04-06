@@ -22,8 +22,6 @@ class NotificationScreen extends StatefulWidget {
 class _NotificationScreenState extends State<NotificationScreen> {
   UserAppBar userAppBar = UserAppBar();
   final AuthService _authService = AuthService();
-  BookSwapService bookSwap = BookSwapService();
-  SwapRequestService bookSwapRequest = SwapRequestService();
 
   @override
   Widget build(BuildContext context) {
@@ -72,117 +70,19 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 ConnectionState.done) {
                               Map<String, dynamic> userdata = userSnapshot.data!
                                   .data() as Map<String, dynamic>;
-                              return FutureBuilder<DocumentSnapshot>(
-                                  future: book.doc(notify.desiredBookID).get(),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<DocumentSnapshot>
-                                          bookSnapshot) {
-                                    if (bookSnapshot.connectionState ==
-                                        ConnectionState.done) {
-                                      Map<String, dynamic> bookdata =
-                                          bookSnapshot.data!.data()
-                                              as Map<String, dynamic>;
-                                      return Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          SizedBox(
-                                            height: 100,
-                                            child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  top: 10.0,
-                                                  left: 10,
-                                                  right: 10),
-                                              child: Card(
-                                                  shadowColor: Colors.blueGrey,
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
-                                                    crossAxisAlignment:
-                                                        CrossAxisAlignment
-                                                            .center,
-                                                    children: [
-                                                      Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .only(
-                                                          left: 10,
-                                                        ),
-                                                        child: Column(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceEvenly,
-                                                          crossAxisAlignment:
-                                                              CrossAxisAlignment
-                                                                  .start,
-                                                          children: [
-                                                            Text(
-                                                                "Користувач: ${userdata['name']}"),
-                                                            const Text(
-                                                                "Хоче взяти від вас книгу:"),
-                                                            Text(bookdata[
-                                                                    'name']
-                                                                .toString()),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                      Row(
-                                                        mainAxisAlignment:
-                                                            MainAxisAlignment
-                                                                .center,
-                                                        children: [
-                                                          IconButton(
-                                                            onPressed:
-                                                                () async {
-                                                              bookSwap.addBookSwap(
-                                                                  notify
-                                                                      .swapReqID,
-                                                                  notify
-                                                                      .senderID,
-                                                                  notify
-                                                                      .receiverID,
-                                                                  notify
-                                                                      .desiredBookID!);
-                                                              bookSwapRequest
-                                                                  .updateData(
-                                                                      notify
-                                                                          .swapReqID,
-                                                                      notify
-                                                                          .desiredBookID!);
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons.done,
-                                                              color:
-                                                                  Colors.green,
-                                                              size: 20,
-                                                            ),
-                                                          ),
-                                                          IconButton(
-                                                            onPressed:
-                                                                () async {
-                                                              bookSwapRequest
-                                                                  .deleteData(notify
-                                                                      .swapReqID);
-                                                            },
-                                                            icon: const Icon(
-                                                              Icons.close,
-                                                              color: Colors.red,
-                                                              size: 20,
-                                                            ),
-                                                          ),
-                                                        ],
-                                                      )
-                                                    ],
-                                                  )),
-                                            ),
-                                          )
-                                        ],
-                                      );
-                                    } else {
-                                      return Container();
-                                    }
-                                  });
+                              return Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    height: 100,
+                                    child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 10.0, left: 10, right: 10),
+                                        child:
+                                            notificationCard(userdata, notify)),
+                                  )
+                                ],
+                              );
                             } else {
                               return Container();
                             }
@@ -192,4 +92,218 @@ class _NotificationScreenState extends State<NotificationScreen> {
             }),
         drawer: UserPanel());
   }
+
+  Widget notificationCard(Map<String, dynamic> userdata, final notify) {
+    CollectionReference book = FirebaseFirestore.instance.collection("books");
+    BookSwapService bookSwap = BookSwapService();
+    SwapRequestService bookSwapRequest = SwapRequestService();
+    if (notify.notificationType == 'Swap' && notify.seenByReceiver == false) {
+      return FutureBuilder<DocumentSnapshot>(
+          future: book.doc(notify.desiredBookID).get(),
+          builder: (BuildContext context,
+              AsyncSnapshot<DocumentSnapshot> bookSnapshot) {
+            if (bookSnapshot.connectionState == ConnectionState.done) {
+              Map<String, dynamic> bookdata =
+                  bookSnapshot.data!.data() as Map<String, dynamic>;
+              return Card(
+                  shadowColor: Colors.blueGrey,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(
+                          left: 10,
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Користувач: ${userdata['name']}"),
+                            const Text("Хоче взяти від вас книгу:"),
+                            Text(bookdata['name'].toString()),
+                          ],
+                        ),
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          IconButton(
+                            onPressed: () async {
+                              bookSwap.addBookSwap(
+                                  notify.swapReqID,
+                                  notify.senderID,
+                                  notify.receiverID,
+                                  notify.desiredBookID!);
+                              bookSwapRequest.updateData(
+                                  notify.swapReqID, notify.desiredBookID!);
+                            },
+                            icon: const Icon(
+                              Icons.done,
+                              color: Colors.green,
+                              size: 20,
+                            ),
+                          ),
+                          IconButton(
+                            onPressed: () async {
+                              print(notify.swapReqID);
+                              bookSwapRequest.deleteData(notify.swapReqID);
+                            },
+                            icon: const Icon(
+                              Icons.close,
+                              color: Colors.red,
+                              size: 20,
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ));
+            }
+            return Container();
+          });
+    }
+
+    if (notify.notificationType == 'Friendship') {
+      return Card(
+          shadowColor: Colors.blueGrey,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Користувач: ${userdata['name']}"),
+                    const Text("Хоче стати вашим другом:"),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () async {},
+                    icon: const Icon(
+                      Icons.done,
+                      color: Colors.green,
+                      size: 20,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {},
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ));
+    }
+    if (notify.notificationType == 'Reminder') {
+      return Card(
+          shadowColor: Colors.blueGrey,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Користувач: ${userdata['name']}"),
+                    const Text("Нагадує вам про книгу:"),
+                    Text(''),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () async {},
+                    icon: const Icon(
+                      Icons.done,
+                      color: Colors.green,
+                      size: 20,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {},
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ));
+    } else
+      return Container();
+  }
 }
+/*
+return Card(
+          shadowColor: Colors.blueGrey,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(
+                  left: 10,
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("Користувач: ${userdata['name']}"),
+                    const Text("Хоче взяти від вас книгу:"),
+                    Text(bookdata['name'].toString()),
+                  ],
+                ),
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    onPressed: () async {
+                      bookSwap.addBookSwap(notify.swapReqID, notify.senderID,
+                          notify.receiverID, notify.desiredBookID!);
+                      bookSwapRequest.updateData(
+                          notify.swapReqID, notify.desiredBookID!);
+                    },
+                    icon: const Icon(
+                      Icons.done,
+                      color: Colors.green,
+                      size: 20,
+                    ),
+                  ),
+                  IconButton(
+                    onPressed: () async {
+                      bookSwapRequest.deleteData(notify.swapReqID);
+                    },
+                    icon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                      size: 20,
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ));*/
