@@ -35,4 +35,24 @@ class NotificationService {
     final requestRef = bookSwapRequestCollection.doc(requestID);
     await requestRef.update({'seenByReceiver': true});
   }
+
+  Future<void> updateSeenByReceiver(String swapReqID) async {
+    final CollectionReference swapReqRef =
+        FirebaseFirestore.instance.collection('notification');
+    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
+
+    try {
+      await swapReqDocRef.update({'seenByReceiver': true});
+    } catch (e) {}
+  }
+
+  Future<void> deleteData(String swapReqID) async {
+    final CollectionReference swapReqRef =
+        FirebaseFirestore.instance.collection('notification');
+    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
+
+    try {
+      await swapReqDocRef.delete();
+    } catch (e) {}
+  }
 }

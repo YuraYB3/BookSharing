@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Services/friendshipService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -78,8 +79,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                     child: Padding(
                                         padding: const EdgeInsets.only(
                                             top: 10.0, left: 10, right: 10),
-                                        child:
-                                            notificationCard(userdata, notify)),
+                                        child: notificationCard(userdata,
+                                            notify, bookSwapNotifier)),
                                   )
                                 ],
                               );
@@ -93,10 +94,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
         drawer: UserPanel());
   }
 
-  Widget notificationCard(Map<String, dynamic> userdata, final notify) {
+  Widget notificationCard(Map<String, dynamic> userdata, final notify,
+      NotificationService bookSwapNotifier) {
     CollectionReference book = FirebaseFirestore.instance.collection("books");
     BookSwapService bookSwap = BookSwapService();
     SwapRequestService bookSwapRequest = SwapRequestService();
+    FriendshipService friendshipService = FriendshipService();
     if (notify.notificationType == 'Swap' && notify.seenByReceiver == false) {
       return FutureBuilder<DocumentSnapshot>(
           future: book.doc(notify.desiredBookID).get(),
@@ -135,8 +138,10 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                   notify.senderID,
                                   notify.receiverID,
                                   notify.desiredBookID!);
-                              bookSwapRequest.updateData(
-                                  notify.swapReqID, notify.desiredBookID!);
+                              bookSwapRequest
+                                  .updateBookAvalaible(notify.bookID);
+                              bookSwapNotifier
+                                  .updateSeenByReceiver(notify.swapReqID);
                             },
                             icon: const Icon(
                               Icons.done,
@@ -146,8 +151,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                           ),
                           IconButton(
                             onPressed: () async {
-                              print(notify.swapReqID);
-                              bookSwapRequest.deleteData(notify.swapReqID);
+                              bookSwapNotifier.deleteData(notify.swapReqID);
                             },
                             icon: const Icon(
                               Icons.close,
@@ -188,7 +192,11 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   IconButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      friendshipService.addFriendship(
+                          notify.senderID, notify.receiverID);
+                      bookSwapNotifier.updateSeenByReceiver(notify.swapReqID);
+                    },
                     icon: const Icon(
                       Icons.done,
                       color: Colors.green,
@@ -196,7 +204,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                     ),
                   ),
                   IconButton(
-                    onPressed: () async {},
+                    onPressed: () async {
+                      bookSwapNotifier.deleteData(notify.swapReqID);
+                    },
                     icon: const Icon(
                       Icons.close,
                       color: Colors.red,
@@ -256,54 +266,3 @@ class _NotificationScreenState extends State<NotificationScreen> {
       return Container();
   }
 }
-/*
-return Card(
-          shadowColor: Colors.blueGrey,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(
-                  left: 10,
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text("Користувач: ${userdata['name']}"),
-                    const Text("Хоче взяти від вас книгу:"),
-                    Text(bookdata['name'].toString()),
-                  ],
-                ),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  IconButton(
-                    onPressed: () async {
-                      bookSwap.addBookSwap(notify.swapReqID, notify.senderID,
-                          notify.receiverID, notify.desiredBookID!);
-                      bookSwapRequest.updateData(
-                          notify.swapReqID, notify.desiredBookID!);
-                    },
-                    icon: const Icon(
-                      Icons.done,
-                      color: Colors.green,
-                      size: 20,
-                    ),
-                  ),
-                  IconButton(
-                    onPressed: () async {
-                      bookSwapRequest.deleteData(notify.swapReqID);
-                    },
-                    icon: const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                      size: 20,
-                    ),
-                  ),
-                ],
-              )
-            ],
-          ));*/

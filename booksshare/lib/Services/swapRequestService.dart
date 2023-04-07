@@ -51,30 +51,12 @@ class SwapRequestService {
     }
   }
 
-  Future<void> updateData(String swapReqID, String bookID) async {
-    final CollectionReference swapReqRef =
-        FirebaseFirestore.instance.collection('notification');
-    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
+  Future<void> updateBookAvalaible(String bookID) async {
     final CollectionReference bookRef =
         FirebaseFirestore.instance.collection('books');
     final DocumentReference bookDocRef = bookRef.doc(bookID);
-
-    try {
-      await swapReqDocRef.update({'seenByReceiver': true});
-    } catch (e) {}
-
     try {
       await bookDocRef.update({'available': 'no'});
-    } catch (e) {}
-  }
-
-  Future<void> deleteData(String swapReqID) async {
-    final CollectionReference swapReqRef =
-        FirebaseFirestore.instance.collection('notification');
-    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
-
-    try {
-      await swapReqDocRef.delete();
     } catch (e) {}
   }
 }
