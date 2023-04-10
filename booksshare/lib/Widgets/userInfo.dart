@@ -96,6 +96,38 @@ class UserList {
     );
   }
 
+  Widget UserNameBlack(String documnetID) {
+    return FutureBuilder<DocumentSnapshot>(
+      future: user.doc(documnetID).get(),
+      builder:
+          (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        if (snapshot.hasError) {
+          return const Text(
+            "Something went wrong!",
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.start,
+            textDirection: TextDirection.ltr,
+          );
+        }
+        if (snapshot.hasData && !snapshot.data!.exists) {
+          return const Text(
+            "Document hasnt exist",
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.start,
+            textDirection: TextDirection.ltr,
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.done) {
+          Map<String, dynamic> data =
+              snapshot.data!.data() as Map<String, dynamic>;
+          return Text("${data['name']}",
+              style: const TextStyle(color: Colors.black));
+        }
+        return const Text("");
+      },
+    );
+  }
+
   Widget UserImage(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),

@@ -17,6 +17,27 @@ class CurrentUserBooksList {
           if (snapshot.hasError) {
             return const Text("ERROR!!!");
           }
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+          if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Text("У вас тут пусто :(",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
+                  Text(
+                    'Натисни щоб додати книгу',
+                    style: TextStyle(fontSize: 14),
+                  )
+                ],
+              ),
+            );
+          }
           if (snapshot.hasData) {
             final books = snapshot.data!;
             return ListView.builder(

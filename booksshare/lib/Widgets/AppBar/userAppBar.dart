@@ -7,6 +7,7 @@ class UserAppBar {
   NotifyIcon notifyIcon = NotifyIcon();
   AppBar headerBar(BuildContext context) {
     return AppBar(
+      iconTheme: IconThemeData(color: AppTheme.iconColor),
       automaticallyImplyLeading: true,
       toolbarHeight: 80,
       backgroundColor: AppTheme.secondBackgroundColor,

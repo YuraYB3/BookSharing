@@ -70,4 +70,10 @@ class DatabaseUserService {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
+  Stream<List<UserModel>> readUser(String userID) => FirebaseFirestore.instance
+      .collection('users')
+      .where('uid', isEqualTo: userID)
+      .snapshots()
+      .map((snapshot) =>
+          snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
 }

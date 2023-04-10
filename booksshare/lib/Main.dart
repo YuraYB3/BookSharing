@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 import 'package:booksshare/Screens/Friends/friendsScreen.dart';
-import 'package:booksshare/Screens/Message/myMessagesScreen.dart';
+import 'package:booksshare/Screens/Message/messangerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -49,7 +49,7 @@ class MyApp extends StatelessWidget {
             '/notification': (context) => const NotificationScreen(),
             '/exchange': (context) => const ExchangeScreen(),
             '/friends': (context) => const FriendsScreen(),
-            '/messenger': (context) => const MyMessageScreen()
+            '/messenger': (context) => const MessangerScreen()
           },
           home: const Wrapper(),
         ));

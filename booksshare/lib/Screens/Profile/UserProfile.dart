@@ -2,6 +2,7 @@
 import 'package:booksshare/Services/authService.dart';
 import 'package:booksshare/Services/bookService.dart';
 import 'package:booksshare/Services/friendshipRequestService.dart';
+import 'package:booksshare/Services/friendshipService.dart';
 import 'package:booksshare/Services/reviewService.dart';
 import 'package:booksshare/Widgets/userInfo.dart';
 import 'package:flutter/material.dart';
@@ -22,9 +23,23 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
+  bool _areFriends = false;
   UserAppBar userAppBar = UserAppBar();
   AuthService authService = AuthService();
   ReviewService reviewService = ReviewService();
+  @override
+  void initState() {
+    super.initState();
+    _checkIfFriends();
+  }
+
+  void _checkIfFriends() async {
+    FriendshipService friendshipService = FriendshipService();
+    bool areFriends = await friendshipService.areUsersFriends(widget.userID);
+    setState(() {
+      _areFriends = areFriends;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +57,7 @@ class _UserProfileState extends State<UserProfile> {
                 Padding(
                   padding: const EdgeInsets.all(28.0),
                   child: Container(
-                    height: 250,
+                    height: 300,
                     width: double.infinity,
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(50),
@@ -54,6 +69,7 @@ class _UserProfileState extends State<UserProfile> {
                         Container(
                             height: 60,
                             width: 60,
+                            margin: const EdgeInsets.only(top: 15),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(30)),
@@ -72,6 +88,13 @@ class _UserProfileState extends State<UserProfile> {
                                 child: FutureBuilder<int>(
                                   future: bookService.readUserBooksCount(),
                                   builder: (context, snapshot) {
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator
+                                            .adaptive(),
+                                      );
+                                    }
                                     if (snapshot.hasData) {
                                       return Column(
                                         mainAxisAlignment:
@@ -86,36 +109,6 @@ class _UserProfileState extends State<UserProfile> {
                                             snapshot.data.toString(),
                                             style: const TextStyle(
                                                 color: Colors.white),
-                                          )
-                                        ],
-                                      );
-                                    } else if (snapshot.hasError) {
-                                      return Text("Error: ${snapshot.error}");
-                                    } else {
-                                      return const CircularProgressIndicator();
-                                    }
-                                  },
-                                )),
-                            SizedBox(
-                                height: 100,
-                                child: FutureBuilder<int>(
-                                  future: reviewService
-                                      .readUserReviewsCount(widget.userID),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasData) {
-                                      return Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: const [
-                                          Text(
-                                            'Друзів',
-                                            style: TextStyle(
-                                                color: AppTheme.textColor),
-                                          ),
-                                          Text(
-                                            '0',
-                                            style:
-                                                TextStyle(color: Colors.white),
                                           )
                                         ],
                                       );
@@ -152,33 +145,51 @@ class _UserProfileState extends State<UserProfile> {
                                     } else if (snapshot.hasError) {
                                       return Text("Error: ${snapshot.error}");
                                     } else {
-                                      return const CircularProgressIndicator();
+                                      return Container();
                                     }
                                   },
                                 ))
                           ],
                         ),
+                        currentUser != widget.userID
+                            ? Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: !_areFriends
+                                    ? Center(
+                                        child: ElevatedButton(
+                                        onPressed: () async {
+                                          FrienshipRequestService
+                                              frienshipRequestService =
+                                              FrienshipRequestService();
+                                          frienshipRequestService
+                                              .addFriendshipRequest(
+                                                  currentUser, widget.userID);
+                                        },
+                                        style: const ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStatePropertyAll<Color>(
+                                                    AppTheme
+                                                        .secondBackgroundColor)),
+                                        child: const Text('Send request'),
+                                      ))
+                                    : Center(
+                                        child: ElevatedButton(
+                                        onPressed: () {
+                                          Navigator.pushReplacementNamed(
+                                              context, '/messenger');
+                                        },
+                                        style: const ButtonStyle(
+                                            backgroundColor:
+                                                MaterialStatePropertyAll<Color>(
+                                                    Color.fromARGB(
+                                                        255, 208, 18, 18))),
+                                        child: const Text('Message'),
+                                      )))
+                            : Container()
                       ],
                     ),
                   ),
                 ),
-                currentUser != widget.userID
-                    ? Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Center(
-                            child: ElevatedButton(
-                          onPressed: () async {
-                            FrienshipRequestService frienshipRequestService =
-                                FrienshipRequestService();
-                            frienshipRequestService.addFriendshipRequest(
-                                currentUser, widget.userID);
-                          },
-                          style: const ButtonStyle(
-                              backgroundColor: MaterialStatePropertyAll<Color>(
-                                  AppTheme.secondBackgroundColor)),
-                          child: const Text('Send request'),
-                        )))
-                    : Container()
               ],
             ),
             drawer: UserPanel()));

@@ -1,6 +1,8 @@
+import 'package:booksshare/Models/friendshipModel.dart';
 import 'package:booksshare/Models/userModel.dart';
 import 'package:booksshare/Screens/Profile/UserProfile.dart';
 import 'package:booksshare/Services/databaseUserService.dart';
+import 'package:booksshare/Services/friendshipService.dart';
 import 'package:booksshare/Shared/appTheme.dart';
 import 'package:booksshare/Widgets/Panel/userPanel.dart';
 import 'package:booksshare/Widgets/userInfo.dart';
@@ -45,7 +47,7 @@ class _FriendsScreenState extends State<FriendsScreen>
           labelColor: AppTheme.textColor,
           tabs: const [
             Tab(text: 'Your friends'),
-            Tab(text: 'Books'),
+            Tab(text: 'Global'),
           ],
         ),
       ),
@@ -64,13 +66,55 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   Widget existFriends(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: const [
-        Center(
-          child: Text('You dont have any friends yet! HAHAHAHHA'),
-        )
-      ],
+    AuthService _auth = AuthService();
+    var uid = _auth.getUserID();
+    var userList = UserList();
+    FriendshipService friendshipService = FriendshipService();
+    return FutureBuilder<List<FriendshipModel>>(
+      future: friendshipService.getUserFriends(uid!),
+      builder: (context, snapshot) {
+        if (snapshot.hasError) {
+          return Center(
+            child: Text('Сталася помилка: ${snapshot.error}'),
+          );
+        }
+
+        if (!snapshot.hasData) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        final friends = snapshot.data!;
+        return ListView.builder(
+          itemCount: friends.length,
+          itemBuilder: (context, index) {
+            final friend = friends[index];
+            final friendID =
+                friend.user1_ID == uid ? friend.user2_ID : friend.user1_ID;
+            return Padding(
+                padding: const EdgeInsets.all(1.0),
+                child: ListTile(
+                  horizontalTitleGap: 20,
+                  isThreeLine: true,
+                  title: const Text("Користувач"),
+                  subtitle: userList.UserNameBlack(
+                    friendID,
+                  ),
+                  leading: SizedBox(
+                      height: 300,
+                      width: 50,
+                      child: userList.UserImage(friendID)),
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) =>
+                                UserProfile(userID: friendID)));
+                  },
+                ));
+          },
+        );
+      },
     );
   }
 

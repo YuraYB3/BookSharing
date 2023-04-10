@@ -59,7 +59,9 @@ class _BookSearchPageState extends State<BookSearchPage> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 24.0,
-                        decorationStyle: TextDecorationStyle.solid),
+                        decorationStyle: TextDecorationStyle.solid,
+                        fontWeight: FontWeight.bold,
+                        color: AppTheme.secondBackgroundColor),
                   ),
                 ));
               }

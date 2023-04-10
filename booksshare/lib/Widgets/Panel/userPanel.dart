@@ -58,7 +58,7 @@ class UserPanel extends StatelessWidget {
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.message, color: AppTheme.iconColor),
             onTap: () {
-              Navigator.pushReplacementNamed(context, '/messenger');
+              Navigator.popAndPushNamed(context, '/messenger');
             },
           ),
           ListTile(
