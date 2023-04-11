@@ -49,7 +49,6 @@ class MyApp extends StatelessWidget {
             '/notification': (context) => const NotificationScreen(),
             '/exchange': (context) => const ExchangeScreen(),
             '/friends': (context) => const FriendsScreen(),
-            '/messenger': (context) => const MessangerScreen()
           },
           home: const Wrapper(),
         ));

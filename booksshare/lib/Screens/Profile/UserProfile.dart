@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+import 'package:booksshare/Screens/Message/messangerScreen.dart';
 import 'package:booksshare/Services/authService.dart';
 import 'package:booksshare/Services/bookService.dart';
 import 'package:booksshare/Services/friendshipRequestService.dart';
@@ -15,7 +16,7 @@ import '../../Widgets/AppBar/userAppBar.dart';
 import '../../Widgets/Panel/userPanel.dart';
 
 class UserProfile extends StatefulWidget {
-  String userID;
+  final String userID;
   UserProfile({required this.userID});
 
   @override
@@ -174,10 +175,7 @@ class _UserProfileState extends State<UserProfile> {
                                       ))
                                     : Center(
                                         child: ElevatedButton(
-                                        onPressed: () {
-                                          Navigator.pushReplacementNamed(
-                                              context, '/messenger');
-                                        },
+                                        onPressed: () {},
                                         style: const ButtonStyle(
                                             backgroundColor:
                                                 MaterialStatePropertyAll<Color>(

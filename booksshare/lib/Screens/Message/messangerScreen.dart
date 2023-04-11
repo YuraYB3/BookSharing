@@ -1,87 +1,124 @@
+import 'package:booksshare/Services/authService.dart';
+import 'package:booksshare/Services/messageService.dart';
 import 'package:booksshare/Shared/appTheme.dart';
+import 'package:booksshare/Widgets/userInfo.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import 'messageBubble.dart';
+
 class MessangerScreen extends StatefulWidget {
-  const MessangerScreen({super.key});
+  final String friendshipID;
+  final String userID;
+
+  MessangerScreen({required this.userID, required this.friendshipID});
 
   @override
   State<MessangerScreen> createState() => _MessangerScreenState();
 }
 
 class _MessangerScreenState extends State<MessangerScreen> {
+  final _formKey = GlobalKey<FormState>();
+  UserList userList = UserList();
+  MessageService messageService = MessageService();
+  var _enteredMessage = '';
+
   @override
   Widget build(BuildContext context) {
+    AuthService authService = AuthService();
+    var currentUser = authService.getUserID();
     return Scaffold(
-        backgroundColor: AppTheme.backgroundColor,
-        appBar: AppBar(
-          toolbarHeight: 80,
-          backgroundColor: AppTheme.secondBackgroundColor,
-          title: Row(
-            children: const [Text('Name')],
-          ),
-        ),
-        body: Column(
+      backgroundColor: AppTheme.backgroundColor,
+      appBar: AppBar(
+        toolbarHeight: 80,
+        backgroundColor: AppTheme.secondBackgroundColor,
+        title: Row(
           children: [
-            Expanded(
-              child: ListView.builder(
-                itemCount: 200,
-                itemBuilder: (context, index) {
-                  if (index.isEven) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              height: 30,
-                              width: 160,
-                              decoration: BoxDecoration(
-                                  color: Colors.red,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(index.toString()),
-                              )),
-                        ),
-                      ],
+            userList.UserName(widget.userID),
+            Column(
+              children: [],
+            )
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: StreamBuilder(
+              stream: FirebaseFirestore.instance
+                  .collection('message')
+                  .doc(widget.friendshipID)
+                  .collection('dialogue')
+                  .orderBy('timeSend', descending: true)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                final chatDocs = snapshot.data!.docs;
+                return ListView.builder(
+                  reverse: true,
+                  itemCount: chatDocs.length,
+                  itemBuilder: (context, index) {
+                    return MessageBubble(
+                      message: chatDocs[index]['message'],
+                      isMe: currentUser == chatDocs[index]['senderID'],
                     );
-                  } else {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Container(
-                              height: 30,
-                              width: 160,
-                              decoration: BoxDecoration(
-                                  color: Colors.blue,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(index.toString()),
-                              )),
-                        ),
-                      ],
+                  },
+                );
+              },
+            ),
+          ),
+          newMessageWidget(currentUser!),
+        ],
+      ),
+    );
+  }
+
+  Widget newMessageWidget(String currentUser) {
+    return Container(
+      color: AppTheme.backgroundColor,
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  decoration:
+                      const InputDecoration(labelText: 'Send message...'),
+                  onChanged: (value) {
+                    _enteredMessage = value;
+                  },
+                  validator: (value) {
+                    if (value!.isEmpty) {
+                      return 'Please enter a message';
+                    }
+                    return null;
+                  },
+                ),
+              ),
+              IconButton(
+                icon: const Icon(Icons.send),
+                onPressed: () async {
+                  if (_formKey.currentState!.validate()) {
+                    messageService.sendMessage(
+                      widget.friendshipID,
+                      _enteredMessage.trim(),
+                      currentUser,
                     );
+                    _formKey.currentState!.reset();
+                    _enteredMessage = '';
                   }
                 },
               ),
-            ),
-            Container(
-              color: AppTheme.backgroundColor,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: const [
-                    Icon(Icons.more_vert),
-                    Expanded(child: TextField()),
-                    Icon(Icons.send),
-                  ],
-                ),
-              ),
-            ),
-          ],
-        ));
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }

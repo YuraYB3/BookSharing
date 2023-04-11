@@ -85,13 +85,14 @@ class UserList {
             textDirection: TextDirection.ltr,
           );
         }
-        if (snapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> data =
-              snapshot.data!.data() as Map<String, dynamic>;
-          return Text("${data['name']}",
-              style: const TextStyle(color: AppTheme.textColor));
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Text("");
         }
-        return const Text("");
+
+        Map<String, dynamic> data =
+            snapshot.data!.data() as Map<String, dynamic>;
+        return Text("${data['name']}",
+            style: const TextStyle(color: AppTheme.textColor));
       },
     );
   }

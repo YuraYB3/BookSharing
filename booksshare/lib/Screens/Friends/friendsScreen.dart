@@ -14,6 +14,7 @@ import '../../Models/bookModel.dart';
 import '../../Services/authService.dart';
 import '../../Services/bookService.dart';
 import '../Library/bookDetailsScreen.dart';
+import '../Message/messangerScreen.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
@@ -78,6 +79,16 @@ class _FriendsScreenState extends State<FriendsScreen>
             child: Text('Сталася помилка: ${snapshot.error}'),
           );
         }
+        if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Center(
+                child: Text('Зараз тут пусто...'),
+              )
+            ],
+          );
+        }
 
         if (!snapshot.hasData) {
           return const Center(
@@ -108,8 +119,10 @@ class _FriendsScreenState extends State<FriendsScreen>
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) =>
-                                UserProfile(userID: friendID)));
+                            builder: (context) => MessangerScreen(
+                                  userID: friendID,
+                                  friendshipID: friend.friendshipID,
+                                )));
                   },
                 ));
           },
