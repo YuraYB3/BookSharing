@@ -11,11 +11,11 @@ class ReviewModel {
       required this.rating});
 
   static ReviewModel fromJson(Map<String, dynamic> json) => ReviewModel(
-      userId: json['userID'],
       bookId: json['bookID'],
+      userId: json['userID'],
       review: json['review'],
       rating: json['rating']);
 
   Map<String, dynamic> toJson() =>
-      {'userID': userId, "bookID": bookId, 'review': review, 'rating': rating};
+      {'bookID': bookId, 'userID': userId, 'review': review, 'rating': rating};
 }

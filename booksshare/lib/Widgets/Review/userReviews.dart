@@ -8,54 +8,78 @@ import '../../Models/reviewModel.dart';
 import '../../Services/reviewService.dart';
 import 'readMoreButton.dart';
 
-class ReviewWidget extends StatelessWidget {
-  final String bookID;
+class UserReviews extends StatelessWidget {
+  final String userID;
 
-  const ReviewWidget({super.key, required this.bookID});
+  const UserReviews({super.key, required this.userID});
 
   @override
   Widget build(BuildContext context) {
-    CollectionReference user = FirebaseFirestore.instance.collection("users");
+    CollectionReference book = FirebaseFirestore.instance.collection("books");
     ReviewService reviewObj = ReviewService();
+    UserList userInfo = UserList();
     return Container(
         color: AppTheme.secondBackgroundColor,
         height: 550,
         child: StreamBuilder<List<ReviewModel>>(
-          stream: reviewObj.readBookReviews(bookID),
+          stream: reviewObj.readUserReviews(userID),
           builder: (BuildContext context,
               AsyncSnapshot<List<ReviewModel>> snapshot) {
-            if (snapshot.hasData) {
-              final reviewData = snapshot.data!;
-              return ListView.builder(
-                  itemCount: reviewData.length,
-                  itemBuilder: (context, index) {
-                    final review = reviewData[index];
-                    return FutureBuilder<DocumentSnapshot>(
-                        future: user.doc(review.userId).get(),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                          if (userSnapshot.connectionState ==
-                              ConnectionState.done) {
-                            Map<String, dynamic> userdata = userSnapshot.data!
-                                .data() as Map<String, dynamic>;
-                            return reviewCard(context, userdata, review);
-                          } else {
+            if (snapshot.hasError) {
+              return Text(snapshot.error.toString());
+            }
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Center(
+                    child: Text(
+                      'User doesnt have reviews',
+                      style: TextStyle(
+                          fontSize: 26,
+                          fontWeight: FontWeight.w900,
+                          color: AppTheme.textColor),
+                    ),
+                  )
+                ],
+              );
+            }
+            final reviewData = snapshot.data!;
+            return ListView.builder(
+                itemCount: reviewData.length,
+                itemBuilder: (context, index) {
+                  final review = reviewData[index];
+                  return FutureBuilder<DocumentSnapshot>(
+                      future: book.doc(review.bookId).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> bookSnapshot) {
+                        if (bookSnapshot.connectionState ==
+                            ConnectionState.done) {
+                          if (!bookSnapshot.hasData ||
+                              bookSnapshot.data!.data() == null) {
                             return const Center(
-                              child: Text('data'),
+                              child: Text(
+                                'Book was delited :(',
+                                style: TextStyle(color: Colors.white),
+                              ),
                             );
                           }
-                        });
-                  });
-            } else {
-              return const Text('here2');
-            }
+                          Map<String, dynamic> bookdata =
+                              bookSnapshot.data!.data() as Map<String, dynamic>;
+                          return ReviewCard(context, bookdata, review);
+                        } else {
+                          return const Center(
+                            child: Text('Loading...'),
+                          );
+                        }
+                      });
+                });
           },
         ));
   }
 
-  Widget reviewCard(
-      BuildContext context, Map<String, dynamic> userdata, ReviewModel review) {
-    UserList userInfo = UserList();
+  Widget ReviewCard(
+      BuildContext context, Map<String, dynamic> bookdata, ReviewModel review) {
     return Card(
         elevation: 10,
         borderOnForeground: false,
@@ -74,20 +98,15 @@ class ReviewWidget extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
                     Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(40),
-                          child: userInfo.UserImage(userdata['uid'])),
-                    ),
+                        height: 50,
+                        width: 50,
+                        child: Image.network(bookdata['cover'])),
                     SizedBox(
                       width: 50,
                       height: 20,
                       child: Center(
                         child: Text(
-                          userdata['name'],
+                          bookdata['name'],
                           style: const TextStyle(color: Colors.black),
                         ),
                       ),

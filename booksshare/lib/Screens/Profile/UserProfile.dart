@@ -5,8 +5,10 @@ import 'package:booksshare/Services/bookService.dart';
 import 'package:booksshare/Services/friendshipRequestService.dart';
 import 'package:booksshare/Services/friendshipService.dart';
 import 'package:booksshare/Services/reviewService.dart';
+import 'package:booksshare/Widgets/Review/userReviews.dart';
 import 'package:booksshare/Widgets/userInfo.dart';
 import 'package:flutter/material.dart';
+import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../Models/userModel.dart';
@@ -136,10 +138,23 @@ class _UserProfileState extends State<UserProfile> {
                                             style: TextStyle(
                                                 color: AppTheme.textColor),
                                           ),
-                                          Text(
-                                            snapshot.data.toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white),
+                                          GestureDetector(
+                                            onTap: () async {
+                                              showMaterialModalBottomSheet(
+                                                  bounce: true,
+                                                  context: context,
+                                                  enableDrag: true,
+                                                  builder:
+                                                      (BuildContext context) {
+                                                    return UserReviews(
+                                                        userID: widget.userID);
+                                                  });
+                                            },
+                                            child: Text(
+                                              snapshot.data.toString(),
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
                                           )
                                         ],
                                       );
@@ -190,6 +205,6 @@ class _UserProfileState extends State<UserProfile> {
                 ),
               ],
             ),
-            drawer: UserPanel()));
+            drawer: currentUser == widget.userID ? UserPanel() : null));
   }
 }

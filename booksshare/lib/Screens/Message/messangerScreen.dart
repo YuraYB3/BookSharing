@@ -5,6 +5,7 @@ import 'package:booksshare/Widgets/userInfo.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../Profile/userProfile.dart';
 import 'messageBubble.dart';
 
 class MessangerScreen extends StatefulWidget {
@@ -34,10 +35,25 @@ class _MessangerScreenState extends State<MessangerScreen> {
         backgroundColor: AppTheme.secondBackgroundColor,
         title: Row(
           children: [
+            GestureDetector(
+              child: Container(
+                  height: 50,
+                  width: 50,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(40),
+                      child: userList.UserImage(widget.userID))),
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            UserProfile(userID: widget.userID)));
+              },
+            ),
+            Container(
+              width: 15,
+            ),
             userList.UserName(widget.userID),
-            Column(
-              children: [],
-            )
           ],
         ),
       ),

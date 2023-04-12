@@ -17,7 +17,7 @@ class UserSettings extends StatefulWidget {
 }
 
 class _UserSettingsState extends State<UserSettings> {
-  UserAppBar u = UserAppBar();
+  UserAppBar userAppBar = UserAppBar();
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +25,7 @@ class _UserSettingsState extends State<UserSettings> {
         value: DatabaseUserService(uid: '').users,
         initialData: null,
         child: Scaffold(
-            appBar: u.headerBar(context),
+            appBar: userAppBar.headerBar(context),
             backgroundColor: AppTheme.backgroundColor,
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
