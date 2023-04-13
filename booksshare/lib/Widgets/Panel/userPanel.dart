@@ -1,9 +1,9 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 import '../../Services/authService.dart';
+import '../../Shared/appTheme.dart';
 import '../userInfo.dart';
 
 class UserPanel extends StatelessWidget {
@@ -12,7 +12,7 @@ class UserPanel extends StatelessWidget {
   UserPanel({super.key});
   @override
   Widget build(BuildContext context) {
-    UserList userList = UserList();
+    UserInformation userList = UserInformation();
     return Drawer(
       backgroundColor: AppTheme.secondBackgroundColor,
       width: 250,
@@ -22,7 +22,7 @@ class UserPanel extends StatelessWidget {
               decoration: const BoxDecoration(
                 color: AppTheme.secondBackgroundColor,
               ),
-              child: userList.UserInfo(_auth.getUserID()!)),
+              child: userList.userInfo(_auth.getUserID()!)),
           ListTile(
             title: const Text(
               'My profile',

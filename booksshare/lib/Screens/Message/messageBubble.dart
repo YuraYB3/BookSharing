@@ -1,13 +1,14 @@
-import 'package:booksshare/Shared/appTheme.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+
+import '../../Shared/appTheme.dart';
 
 class MessageBubble extends StatefulWidget {
   final String message;
   final bool isMe;
 
-  MessageBubble({required this.message, required this.isMe});
+  const MessageBubble({super.key, required this.message, required this.isMe});
 
   @override
   State<MessageBubble> createState() => _MessageBubbleState();

@@ -1,7 +1,6 @@
 // ignore_for_file: file_names
 
 import 'package:booksshare/Screens/Friends/friendsScreen.dart';
-import 'package:booksshare/Screens/Message/messangerScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
   const MyApp({super.key});
   @override
   Widget build(BuildContext context) {
-    AuthService _authService = AuthService();
+    AuthService authService = AuthService();
     return StreamProvider<UserModel?>.value(
         value: AuthService().user,
         initialData: null,
@@ -40,12 +39,12 @@ class MyApp extends StatelessWidget {
           routes: {
             // ignore: prefer_const_constructors
             '/login': (context) => LoginScreen(),
-            '/signup': (context) => SignUpScreen(),
+            '/signup': (context) => const SignUpScreen(),
             '/profile': (context) =>
-                UserProfile(userID: _authService.getUserID()!),
+                UserProfile(userID: authService.getUserID()!),
             '/home': (context) => const HomePage(),
             '/settings': (context) => const UserSettings(),
-            '/search': (context) => BookSearchPage(),
+            '/search': (context) => const BookSearchPage(),
             '/notification': (context) => const NotificationScreen(),
             '/exchange': (context) => const ExchangeScreen(),
             '/friends': (context) => const FriendsScreen(),

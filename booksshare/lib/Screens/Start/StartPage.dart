@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
-
-import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
+
+import '../../Shared/appTheme.dart';
 
 class StartPage extends StatefulWidget {
   const StartPage({super.key, required this.title});

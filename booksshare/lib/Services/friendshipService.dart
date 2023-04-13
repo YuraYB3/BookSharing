@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:booksshare/Services/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -15,6 +17,7 @@ class FriendshipService {
         'user2_ID': receiverID,
       });
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
     }
   }

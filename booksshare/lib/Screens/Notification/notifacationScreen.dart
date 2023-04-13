@@ -1,11 +1,11 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Services/friendshipService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 import '../../Models/notificationModel.dart';
 import '../../Services/authService.dart';
+import '../../Services/friendshipService.dart';
 import '../../Services/notificationService.dart';
 import '../../Services/swapRequestService.dart';
 import '../../Services/bookSwapService.dart';
@@ -30,7 +30,6 @@ class _NotificationScreenState extends State<NotificationScreen> {
     CollectionReference user = FirebaseFirestore.instance.collection("users");
     NotificationService bookSwapNotifier =
         NotificationService(receiverID: userID);
-    CollectionReference book = FirebaseFirestore.instance.collection("books");
     return Scaffold(
         appBar: userAppBar.headerBar(context),
         backgroundColor: AppTheme.backgroundColor,
@@ -105,8 +104,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
     }
     if (notify.notificationType == 'Reminder') {
       return remindCard(userdata);
-    } else
+    } else {
       return Container();
+    }
   }
 
   Widget swapCard(NotificationModel notify, Map<String, dynamic> userdata,
@@ -251,7 +251,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 children: [
                   Text("Користувач: ${userdata['name']}"),
                   const Text("Нагадує вам про книгу:"),
-                  Text(''),
+                  const Text(''),
                 ],
               ),
             ),

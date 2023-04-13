@@ -1,5 +1,4 @@
 // ignore_for_file: file_names
-import 'package:booksshare/Services/swapRequestService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
@@ -7,8 +6,9 @@ import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../Services/authService.dart';
 import '../../Services/bookService.dart';
+import '../../Services/swapRequestService.dart';
 import '../../Shared/appTheme.dart';
-import '../../Widgets/Review/reviewWidget.dart';
+import '../../Widgets/Review/bookReviews.dart';
 
 class BookDetailsScreen extends StatefulWidget {
   final String? bookID;
@@ -71,12 +71,11 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         userSnapshot.data!.data() as Map<String, dynamic>;
 
                     return FlipCard(
-                        fill: Fill
-                            .fillBack, // Fill the back side of the card to make in the same size as the front.
-                        direction: FlipDirection.HORIZONTAL, // default
-                        side: CardSide.FRONT, // The side to initially display.
-                        front: FrontSide(auth, bookdata, userdata),
-                        back: BackSide(auth, bookdata));
+                        fill: Fill.fillBack,
+                        direction: FlipDirection.HORIZONTAL,
+                        side: CardSide.FRONT,
+                        front: frontSide(auth, bookdata, userdata),
+                        back: backSide(auth, bookdata));
                   } else {
                     return const Text('');
                   }
@@ -88,7 +87,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     );
   }
 
-  Widget FrontSide(AuthService auth, Map<String, dynamic> bookdata,
+  Widget frontSide(AuthService auth, Map<String, dynamic> bookdata,
       Map<String, dynamic> userdata) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -179,46 +178,47 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         ],
                       ),
                     ),
-                    Expanded(child: Container()),
-                    widget.userID != auth.getUserID()
-                        ? SizedBox(
-                            height: 40,
-                            width: 170,
-                            child: ElevatedButton(
-                              onPressed: () async {
-                                SwapRequestService bookSwapRequest =
-                                    SwapRequestService();
-                                bookSwapRequest.addBookSwapRequest(
-                                  auth.getUserID(),
-                                  userdata['uid'],
-                                  bookdata['bookID'],
-                                );
-                                Navigator.pop(context);
-                              },
-                              style: ButtonStyle(
-                                foregroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                  AppTheme.textColor,
+                    Container(
+                      height: 110,
+                    ),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        widget.userID != auth.getUserID()
+                            ? SizedBox(
+                                height: 40,
+                                width: 170,
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    SwapRequestService bookSwapRequest =
+                                        SwapRequestService();
+                                    bookSwapRequest.addBookSwapRequest(
+                                      auth.getUserID(),
+                                      userdata['uid'],
+                                      bookdata['bookID'],
+                                    );
+                                    Navigator.pop(context);
+                                  },
+                                  style: ButtonStyle(
+                                    foregroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      AppTheme.textColor,
+                                    ),
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                      AppTheme.secondBackgroundColor,
+                                    ),
+                                  ),
+                                  child: const Text(
+                                    "Send request ",
+                                    style: TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                                backgroundColor:
-                                    MaterialStateProperty.all<Color>(
-                                  AppTheme.secondBackgroundColor,
-                                ),
-                              ),
-                              child: const Text(
-                                "Send request ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          )
-                        : Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              SizedBox(
+                              )
+                            : SizedBox(
                                 height: 40,
                                 width: 170,
                                 child: ElevatedButton(
@@ -266,6 +266,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                           BookService(auth.getUserID());
                                       bookService
                                           .deleteBook(bookdata['bookID']);
+                                      // ignore: use_build_context_synchronously
                                       Navigator.pop(context);
                                     }
                                   },
@@ -284,43 +285,39 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                   ),
                                 ),
                               ),
-                              const SizedBox(
-                                height: 10,
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        SizedBox(
+                          height: 40,
+                          width: 170,
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              showMaterialModalBottomSheet(
+                                  bounce: true,
+                                  context: context,
+                                  enableDrag: true,
+                                  builder: (BuildContext context) {
+                                    return ReviewWidget(
+                                        bookID: bookdata['bookID']);
+                                  });
+                            },
+                            style: ButtonStyle(
+                              backgroundColor: MaterialStateProperty.all<Color>(
+                                AppTheme.secondBackgroundColor,
                               ),
-                              SizedBox(
-                                height: 40,
-                                width: 170,
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    showMaterialModalBottomSheet(
-                                        bounce: true,
-                                        context: context,
-                                        enableDrag: true,
-                                        builder: (BuildContext context) {
-                                          return ReviewWidget(
-                                              bookID: bookdata['bookID']);
-                                        });
-                                  },
-                                  style: ButtonStyle(
-                                    backgroundColor:
-                                        MaterialStateProperty.all<Color>(
-                                      AppTheme.secondBackgroundColor,
-                                    ),
-                                  ),
-                                  child: const Text(
-                                    "Відгуки",
-                                    style: TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
+                            ),
+                            child: const Text(
+                              "Відгуки",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
                               ),
-                            ],
+                            ),
                           ),
-                    const SizedBox(
-                      height: 10,
-                    ),
+                        ),
+                      ],
+                    )
                   ],
                 )
               ],
@@ -331,7 +328,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     );
   }
 
-  Widget BackSide(AuthService auth, Map<String, dynamic> bookdata) {
+  Widget backSide(AuthService auth, Map<String, dynamic> bookdata) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [

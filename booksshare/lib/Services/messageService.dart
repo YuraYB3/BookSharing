@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class MessageService {
@@ -14,6 +16,7 @@ class MessageService {
         'timeSend': Timestamp.now()
       });
     } catch (e) {
+      // ignore: avoid_print
       print(e.toString());
     }
   }

@@ -1,13 +1,13 @@
 // ignore_for_file: file_names
-
-import 'package:booksshare/Shared/appTheme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class UserList {
+import '../Shared/appTheme.dart';
+
+class UserInformation {
   CollectionReference user = FirebaseFirestore.instance.collection("users");
 
-  Widget UserInfo(String documnetID) {
+  Widget userInfo(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:
@@ -64,7 +64,7 @@ class UserList {
     );
   }
 
-  Widget UserName(String documnetID) {
+  Widget userName(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:
@@ -97,7 +97,7 @@ class UserList {
     );
   }
 
-  Widget UserNameBlack(String documnetID) {
+  Widget userNameBlack(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:
@@ -129,7 +129,7 @@ class UserList {
     );
   }
 
-  Widget UserImage(String documnetID) {
+  Widget userImage(String documnetID) {
     return FutureBuilder<DocumentSnapshot>(
       future: user.doc(documnetID).get(),
       builder:

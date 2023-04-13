@@ -43,28 +43,28 @@ class _UserSettingsState extends State<UserSettings> {
                           children: [
                             GestureDetector(
                               onTap: () {},
-                              child: Text('Змінити пароль'),
+                              child: const Text('Змінити пароль'),
                             ),
                             Container(
                               height: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Text('Змінити email'),
+                              child: const Text('Змінити email'),
                             ),
                             Container(
                               height: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Text('Змінити фото'),
+                              child: const Text('Змінити фото'),
                             ),
                             Container(
                               height: 10,
                             ),
                             GestureDetector(
                               onTap: () {},
-                              child: Text('Видалити профіль'),
+                              child: const Text('Видалити профіль'),
                             )
                           ],
                         ),

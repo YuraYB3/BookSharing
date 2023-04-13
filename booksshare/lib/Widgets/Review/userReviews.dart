@@ -1,11 +1,14 @@
-import 'package:booksshare/Shared/appTheme.dart';
-import 'package:booksshare/Widgets/userInfo.dart';
+// ignore_for_file: file_names
+
+import 'package:booksshare/Services/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../Models/reviewModel.dart';
+import '../../Screens/Library/bookDetailsScreen.dart';
 import '../../Services/reviewService.dart';
+import '../../Shared/appTheme.dart';
 import 'readMoreButton.dart';
 
 class UserReviews extends StatelessWidget {
@@ -17,7 +20,6 @@ class UserReviews extends StatelessWidget {
   Widget build(BuildContext context) {
     CollectionReference book = FirebaseFirestore.instance.collection("books");
     ReviewService reviewObj = ReviewService();
-    UserList userInfo = UserList();
     return Container(
         color: AppTheme.secondBackgroundColor,
         height: 550,
@@ -66,7 +68,7 @@ class UserReviews extends StatelessWidget {
                           }
                           Map<String, dynamic> bookdata =
                               bookSnapshot.data!.data() as Map<String, dynamic>;
-                          return ReviewCard(context, bookdata, review);
+                          return reviewCard(context, bookdata, review);
                         } else {
                           return const Center(
                             child: Text('Loading...'),
@@ -78,7 +80,7 @@ class UserReviews extends StatelessWidget {
         ));
   }
 
-  Widget ReviewCard(
+  Widget reviewCard(
       BuildContext context, Map<String, dynamic> bookdata, ReviewModel review) {
     return Card(
         elevation: 10,
@@ -97,10 +99,25 @@ class UserReviews extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                        height: 50,
-                        width: 50,
-                        child: Image.network(bookdata['cover'])),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => BookDetailsScreen(
+                                bookID: bookdata['bookID'],
+                                userID: bookdata['userID']),
+                          ),
+                        );
+                      },
+                      child: SizedBox(
+                          height: 100,
+                          width: 100,
+                          child: Image.network(
+                            bookdata['cover'],
+                            fit: BoxFit.contain,
+                          )),
+                    ),
                     SizedBox(
                       width: 50,
                       height: 20,

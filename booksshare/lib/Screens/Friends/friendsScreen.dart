@@ -1,20 +1,18 @@
-import 'package:booksshare/Models/friendshipModel.dart';
-import 'package:booksshare/Models/userModel.dart';
-import 'package:booksshare/Screens/Profile/UserProfile.dart';
-import 'package:booksshare/Services/databaseUserService.dart';
-import 'package:booksshare/Services/friendshipService.dart';
-import 'package:booksshare/Shared/appTheme.dart';
-import 'package:booksshare/Widgets/Panel/userPanel.dart';
-import 'package:booksshare/Widgets/userInfo.dart';
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
-import '../../Models/bookModel.dart';
+import '../../Models/friendshipModel.dart';
+import '../../Models/userModel.dart';
 import '../../Services/authService.dart';
-import '../../Services/bookService.dart';
-import '../Library/bookDetailsScreen.dart';
+import '../../Services/databaseUserService.dart';
+import '../../Services/friendshipService.dart';
+import '../../Shared/appTheme.dart';
+import '../../Widgets/Panel/userPanel.dart';
+import '../../Widgets/userInfo.dart';
 import '../Message/messangerScreen.dart';
+import '../Profile/userProfile.dart';
 
 class FriendsScreen extends StatefulWidget {
   const FriendsScreen({super.key});
@@ -67,9 +65,9 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   Widget existFriends(BuildContext context) {
-    AuthService _auth = AuthService();
-    var uid = _auth.getUserID();
-    var userList = UserList();
+    AuthService auth = AuthService();
+    var uid = auth.getUserID();
+    var userList = UserInformation();
     FriendshipService friendshipService = FriendshipService();
     return FutureBuilder<List<FriendshipModel>>(
       future: friendshipService.getUserFriends(uid!),
@@ -101,20 +99,20 @@ class _FriendsScreenState extends State<FriendsScreen>
           itemBuilder: (context, index) {
             final friend = friends[index];
             final friendID =
-                friend.user1_ID == uid ? friend.user2_ID : friend.user1_ID;
+                friend.firstUser == uid ? friend.secondUser : friend.firstUser;
             return Padding(
                 padding: const EdgeInsets.all(1.0),
                 child: ListTile(
                   horizontalTitleGap: 20,
                   isThreeLine: true,
                   title: const Text("Користувач"),
-                  subtitle: userList.UserNameBlack(
+                  subtitle: userList.userNameBlack(
                     friendID,
                   ),
                   leading: SizedBox(
                       height: 300,
                       width: 50,
-                      child: userList.UserImage(friendID)),
+                      child: userList.userImage(friendID)),
                   onTap: () {
                     Navigator.push(
                         context,
@@ -132,12 +130,11 @@ class _FriendsScreenState extends State<FriendsScreen>
   }
 
   Widget searchFriends(BuildContext context) {
-    AuthService _auth = AuthService();
-    var uid = _auth.getUserID();
+    AuthService auth = AuthService();
+    var uid = auth.getUserID();
     DatabaseUserService userService = DatabaseUserService(uid: uid);
     CollectionReference userColection =
         FirebaseFirestore.instance.collection("users");
-    var bookList = BookService(uid!);
 
     return SingleChildScrollView(
       child: Column(
@@ -209,29 +206,26 @@ class _FriendsScreenState extends State<FriendsScreen>
                                 final query = searchQuery.toLowerCase();
                                 final containsQuery = userName.contains(query);
                                 if (searchQuery.length >= 3 && containsQuery) {
-                                  return Container(
-                                    child: ListTile(
-                                      horizontalTitleGap: 20,
-                                      isThreeLine: true,
-                                      title: const Text("Користувач"),
-                                      subtitle: Text(user.userNickName!),
-                                      leading: SizedBox(
-                                        height: 300,
-                                        width: 50,
-                                        child: Image.network(user.userImage!,
-                                            width: 200,
-                                            height: 300,
-                                            fit: BoxFit.cover),
-                                      ),
-                                      onTap: () {
-                                        Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) =>
-                                                    UserProfile(
-                                                        userID: user.uid)));
-                                      },
+                                  return ListTile(
+                                    horizontalTitleGap: 20,
+                                    isThreeLine: true,
+                                    title: const Text("Користувач"),
+                                    subtitle: Text(user.userNickName!),
+                                    leading: SizedBox(
+                                      height: 300,
+                                      width: 50,
+                                      child: Image.network(user.userImage!,
+                                          width: 200,
+                                          height: 300,
+                                          fit: BoxFit.cover),
                                     ),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => UserProfile(
+                                                  userID: user.uid)));
+                                    },
                                   );
                                 } else {
                                   return Container();

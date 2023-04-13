@@ -1,4 +1,5 @@
-// ignore: file_names
+// ignore_for_file: file_names, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../Models/reviewModel.dart';
@@ -16,7 +17,9 @@ class ReviewService {
         'review': review,
         'rating': rating
       });
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Stream<List<ReviewModel>> readBookReviews(String bookID) =>
@@ -27,6 +30,7 @@ class ReviewService {
           .map((snapshot) => snapshot.docs
               .map((doc) => ReviewModel.fromJson(doc.data()))
               .toList());
+
   Stream<List<ReviewModel>> readUserReviews(String userID) =>
       FirebaseFirestore.instance
           .collection('review')
@@ -35,6 +39,7 @@ class ReviewService {
           .map((snapshot) => snapshot.docs
               .map((doc) => ReviewModel.fromJson(doc.data()))
               .toList());
+
   Future<int> readUserReviewsCount(String userID) async {
     var querySnapshot = await FirebaseFirestore.instance
         .collection('review')

@@ -1,13 +1,15 @@
-import 'package:booksshare/Shared/appTheme.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
+import '../../Shared/appTheme.dart';
 import 'notifyIcon.dart';
 
 class UserAppBar {
   NotifyIcon notifyIcon = NotifyIcon();
   AppBar headerBar(BuildContext context) {
     return AppBar(
-      iconTheme: IconThemeData(color: AppTheme.iconColor),
+      iconTheme: const IconThemeData(color: AppTheme.iconColor),
       automaticallyImplyLeading: true,
       toolbarHeight: 80,
       backgroundColor: AppTheme.secondBackgroundColor,
@@ -22,7 +24,7 @@ class UserAppBar {
           },
         ),
         FutureBuilder(
-          future: NotifyIcon().GetNotifyIcon(context),
+          future: NotifyIcon().getNotifyIcon(context),
           builder: (BuildContext context, AsyncSnapshot<IconButton> snapshot) {
             if (snapshot.hasData) {
               return snapshot.data!;

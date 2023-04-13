@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -16,6 +16,7 @@ class DatabaseUserService {
 
   Future updateUserData(String name, int age, String password, String email,
       XFile imageURL) async {
+    // ignore: unnecessary_null_comparison
     if (imageURL != null) {
       String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
       uniqueFileName += imageURL.name;
@@ -34,7 +35,9 @@ class DatabaseUserService {
           'userPassword': password,
           'userImage': imgURL
         });
-      } catch (e) {}
+      } catch (e) {
+        print(e.toString());
+      }
     } else {
       return await usersCollection.doc(uid).set({
         'name': name,
@@ -70,6 +73,7 @@ class DatabaseUserService {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
+
   Stream<List<UserModel>> readUser(String userID) => FirebaseFirestore.instance
       .collection('users')
       .where('uid', isEqualTo: userID)

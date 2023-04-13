@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -9,8 +11,10 @@ import '../../Widgets/Panel/userPanel.dart';
 import 'bookDetailsScreen.dart';
 
 class BookSearchPage extends StatefulWidget {
+  const BookSearchPage({super.key});
+
   @override
-  _BookSearchPageState createState() => _BookSearchPageState();
+  State<BookSearchPage> createState() => _BookSearchPageState();
 }
 
 class _BookSearchPageState extends State<BookSearchPage> {

@@ -1,5 +1,4 @@
 // ignore_for_file: file_names
-import 'package:booksshare/Shared/appTheme.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +11,7 @@ import '../../Services/authService.dart';
 import '../../Services/bookSwapService.dart';
 import '../../Services/databaseUserService.dart';
 import '../../Services/reviewService.dart';
+import '../../Shared/appTheme.dart';
 import '../../Widgets/Panel/userPanel.dart';
 
 class ExchangeScreen extends StatefulWidget {
@@ -30,9 +30,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
     _tabController = TabController(length: 2, vsync: this);
   }
 
+  @override
   Widget build(BuildContext context) {
-    AuthService authService = AuthService();
-    var id = authService.getUserID();
     return StreamProvider<List<UserModel>?>.value(
         value: DatabaseUserService(uid: '').users,
         initialData: null,
@@ -225,7 +224,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                 return AlertDialog(
                   title: const Text("Залиште відгук"),
                   content: SingleChildScrollView(
-                    child: Container(
+                    child: SizedBox(
                       width: 450,
                       height: 250,
                       child: Column(

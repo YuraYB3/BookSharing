@@ -1,5 +1,5 @@
-import 'package:booksshare/Shared/appTheme.dart';
-import 'package:booksshare/Widgets/CurrentUserBooksList.dart';
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -8,9 +8,11 @@ import '../../Models/userModel.dart';
 import '../../Services/authService.dart';
 import '../../Services/bookService.dart';
 import '../../Services/databaseUserService.dart';
+import '../../Shared/appTheme.dart';
 import '../../Widgets/AddBook/addBookWidget.dart';
 import '../../Widgets/AppBar/userAppBar.dart';
 import '../../Widgets/Panel/userPanel.dart';
+import '../../Widgets/currentUserBooksList.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -37,7 +39,7 @@ class _HomePageState extends State<HomePage> {
         child: Scaffold(
             appBar: userBar.headerBar(context),
             backgroundColor: AppTheme.backgroundColor,
-            body: booksList.ListOfBooks(bookService),
+            body: booksList.listOfBooks(bookService),
             floatingActionButton: const AddBookWidget(),
             bottomNavigationBar: BottomAppBar(
               color: AppTheme.backgroundColor,

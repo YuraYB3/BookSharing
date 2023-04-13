@@ -2,8 +2,6 @@
 
 // ignore: use_key_in_widget_constructors
 import 'dart:io';
-
-import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
@@ -11,9 +9,12 @@ import 'package:provider/provider.dart';
 import '../../Models/userModel.dart';
 import '../../Services/authService.dart';
 import '../../Services/databaseUserService.dart';
+import '../../Shared/appTheme.dart';
 import '../../Shared/constants.dart';
 
 class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
   @override
   State<SignUpScreen> createState() => _SignUpScreenState();
 }
@@ -187,6 +188,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                                       error = "ERROR";
                                     });
                                   } else {
+                                    // ignore: use_build_context_synchronously
                                     Navigator.pop(context);
                                   }
                                 }

@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -10,7 +10,6 @@ class SwapRequestService {
     final CollectionReference bookSwapRequestCollection =
         FirebaseFirestore.instance.collection('notification');
 
-    // Query the collection for existing requests with the same senderID, receiverID, and desiredBookID.
     final existingRequests = await bookSwapRequestCollection
         .where('senderID', isEqualTo: senderID)
         .where('receiverID', isEqualTo: receiverID)
@@ -18,7 +17,6 @@ class SwapRequestService {
         .where('notificationType', isEqualTo: 'Swap')
         .get();
 
-    // If there is at least one existing request, notify the user and return without executing the request.
     if (existingRequests.docs.isNotEmpty) {
       Fluttertoast.showToast(
         msg: 'You have already sent a request for this book.',
@@ -28,7 +26,6 @@ class SwapRequestService {
       );
       return;
     }
-    // Otherwise, execute the request and notify the user.
     final newSwapReqRef = bookSwapRequestCollection.doc();
     try {
       await newSwapReqRef.set({
@@ -47,7 +44,7 @@ class SwapRequestService {
         textColor: Colors.white,
       );
     } catch (e) {
-      // Handle any errors that occur during the request.
+      print(e.toString());
     }
   }
 
@@ -57,6 +54,8 @@ class SwapRequestService {
     final DocumentReference bookDocRef = bookRef.doc(bookID);
     try {
       await bookDocRef.update({'available': 'no'});
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

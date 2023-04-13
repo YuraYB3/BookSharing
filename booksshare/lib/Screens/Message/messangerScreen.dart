@@ -1,10 +1,12 @@
-import 'package:booksshare/Services/authService.dart';
-import 'package:booksshare/Services/messageService.dart';
-import 'package:booksshare/Shared/appTheme.dart';
-import 'package:booksshare/Widgets/userInfo.dart';
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../../Services/authService.dart';
+import '../../Services/messageService.dart';
+import '../../Shared/appTheme.dart';
+import '../../Widgets/userInfo.dart';
 import '../Profile/userProfile.dart';
 import 'messageBubble.dart';
 
@@ -12,7 +14,8 @@ class MessangerScreen extends StatefulWidget {
   final String friendshipID;
   final String userID;
 
-  MessangerScreen({required this.userID, required this.friendshipID});
+  const MessangerScreen(
+      {super.key, required this.userID, required this.friendshipID});
 
   @override
   State<MessangerScreen> createState() => _MessangerScreenState();
@@ -20,7 +23,7 @@ class MessangerScreen extends StatefulWidget {
 
 class _MessangerScreenState extends State<MessangerScreen> {
   final _formKey = GlobalKey<FormState>();
-  UserList userList = UserList();
+  UserInformation userList = UserInformation();
   MessageService messageService = MessageService();
   var _enteredMessage = '';
 
@@ -36,12 +39,12 @@ class _MessangerScreenState extends State<MessangerScreen> {
         title: Row(
           children: [
             GestureDetector(
-              child: Container(
+              child: SizedBox(
                   height: 50,
                   width: 50,
                   child: ClipRRect(
                       borderRadius: BorderRadius.circular(40),
-                      child: userList.UserImage(widget.userID))),
+                      child: userList.userImage(widget.userID))),
               onTap: () {
                 Navigator.push(
                     context,
@@ -53,7 +56,7 @@ class _MessangerScreenState extends State<MessangerScreen> {
             Container(
               width: 15,
             ),
-            userList.UserName(widget.userID),
+            userList.userName(widget.userID),
           ],
         ),
       ),

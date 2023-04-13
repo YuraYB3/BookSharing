@@ -1,25 +1,25 @@
 // ignore_for_file: file_names
-import 'package:booksshare/Screens/Message/messangerScreen.dart';
-import 'package:booksshare/Services/authService.dart';
-import 'package:booksshare/Services/bookService.dart';
-import 'package:booksshare/Services/friendshipRequestService.dart';
-import 'package:booksshare/Services/friendshipService.dart';
-import 'package:booksshare/Services/reviewService.dart';
-import 'package:booksshare/Widgets/Review/userReviews.dart';
-import 'package:booksshare/Widgets/userInfo.dart';
+
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
 
 import '../../Models/userModel.dart';
+import '../../Services/authService.dart';
+import '../../Services/bookService.dart';
 import '../../Services/databaseUserService.dart';
+import '../../Services/friendshipRequestService.dart';
+import '../../Services/friendshipService.dart';
+import '../../Services/reviewService.dart';
 import '../../Shared/appTheme.dart';
 import '../../Widgets/AppBar/userAppBar.dart';
 import '../../Widgets/Panel/userPanel.dart';
+import '../../Widgets/Review/userReviews.dart';
+import '../../Widgets/userInfo.dart';
 
 class UserProfile extends StatefulWidget {
   final String userID;
-  UserProfile({required this.userID});
+  const UserProfile({super.key, required this.userID});
 
   @override
   State<UserProfile> createState() => _UserProfileState();
@@ -46,7 +46,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
-    UserList userInfo = UserList();
+    UserInformation userInfo = UserInformation();
     var currentUser = authService.getUserID();
     BookService bookService = BookService(widget.userID);
     return StreamProvider<List<UserModel>?>.value(
@@ -78,11 +78,11 @@ class _UserProfileState extends State<UserProfile> {
                                 borderRadius: BorderRadius.circular(30)),
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(40),
-                                child: userInfo.UserImage(widget.userID))),
+                                child: userInfo.userImage(widget.userID))),
                         Container(
                           height: 10,
                         ),
-                        userInfo.UserName(widget.userID),
+                        userInfo.userName(widget.userID),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [

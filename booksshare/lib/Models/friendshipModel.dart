@@ -1,22 +1,24 @@
+// ignore_for_file: file_names
+
 class FriendshipModel {
-  final String user1_ID;
-  final String user2_ID;
+  final String firstUser;
+  final String secondUser;
   final String friendshipID;
 
   FriendshipModel(
-      {required this.user1_ID,
-      required this.user2_ID,
+      {required this.firstUser,
+      required this.secondUser,
       required this.friendshipID});
 
   static FriendshipModel fromJson(Map<String, dynamic> json) => FriendshipModel(
-        user1_ID: json['user1_ID'],
-        user2_ID: json['user2_ID'],
+        firstUser: json['user1_ID'],
+        secondUser: json['user2_ID'],
         friendshipID: json['friendshipID'],
       );
 
   Map<String, dynamic> toJson() => {
-        'user1_ID': user1_ID,
-        'user2_ID': user2_ID,
+        'user1_ID': firstUser,
+        'user2_ID': secondUser,
         'friendshipID': friendshipID,
       };
 }

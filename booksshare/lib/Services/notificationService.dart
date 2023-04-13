@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -11,15 +11,12 @@ class NotificationService {
 
   NotificationService({required this.receiverID});
 
-  // Get the number of new swap requests for the receiver.
   Future<int> getNewRequestCount() async {
     final querySnapshot = await bookSwapRequestCollection
         .where('receiverID', isEqualTo: receiverID)
         .get();
     return querySnapshot.docs.length;
   }
-
-  // Get a list of new swap requests for the receiver.
 
   Stream<List<NotificationModel>> getNewRequests() => FirebaseFirestore.instance
       .collection('notification')
@@ -30,7 +27,6 @@ class NotificationService {
           .map((doc) => NotificationModel.fromJson(doc.data()))
           .toList());
 
-  // Mark a swap request as seen by the receiver.
   Future<void> markRequestAsSeen(String requestID) async {
     final requestRef = bookSwapRequestCollection.doc(requestID);
     await requestRef.update({'seenByReceiver': true});
@@ -43,7 +39,9 @@ class NotificationService {
 
     try {
       await swapReqDocRef.update({'seenByReceiver': true});
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 
   Future<void> deleteData(String swapReqID) async {
@@ -53,6 +51,8 @@ class NotificationService {
 
     try {
       await swapReqDocRef.delete();
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

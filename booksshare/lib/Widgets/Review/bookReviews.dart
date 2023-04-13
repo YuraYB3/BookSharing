@@ -1,11 +1,13 @@
-import 'package:booksshare/Shared/appTheme.dart';
-import 'package:booksshare/Widgets/userInfo.dart';
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 import '../../Models/reviewModel.dart';
 import '../../Services/reviewService.dart';
+import '../../Shared/appTheme.dart';
+import '../userInfo.dart';
 import 'readMoreButton.dart';
 
 class ReviewWidget extends StatelessWidget {
@@ -55,7 +57,7 @@ class ReviewWidget extends StatelessWidget {
 
   Widget reviewCard(
       BuildContext context, Map<String, dynamic> userdata, ReviewModel review) {
-    UserList userInfo = UserList();
+    UserInformation userInfo = UserInformation();
     return Card(
         elevation: 10,
         borderOnForeground: false,
@@ -80,7 +82,7 @@ class ReviewWidget extends StatelessWidget {
                           borderRadius: BorderRadius.circular(20)),
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(40),
-                          child: userInfo.UserImage(userdata['uid'])),
+                          child: userInfo.userImage(userdata['uid'])),
                     ),
                     SizedBox(
                       width: 50,

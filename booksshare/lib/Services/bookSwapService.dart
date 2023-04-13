@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +57,8 @@ class BookSwapService {
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
-    } catch (e) {}
+    } catch (e) {
+      print(e.toString());
+    }
   }
 }

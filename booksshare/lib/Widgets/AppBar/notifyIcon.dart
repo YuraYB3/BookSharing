@@ -1,11 +1,13 @@
-import 'package:booksshare/Shared/appTheme.dart';
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 
 import '../../Services/authService.dart';
 import '../../Services/notificationService.dart';
+import '../../Shared/appTheme.dart';
 
 class NotifyIcon {
-  Future<IconButton> GetNotifyIcon(BuildContext context) async {
+  Future<IconButton> getNotifyIcon(BuildContext context) async {
     AuthService authService = AuthService();
     var userID = authService.getUserID();
     NotificationService bookSwapNotifier =
@@ -18,7 +20,6 @@ class NotifyIcon {
           color: AppTheme.iconColor,
         ),
         onPressed: () {
-          const snackBar = SnackBar(content: Text('Has request'));
           Navigator.pushNamed(context, '/notification');
         },
       );

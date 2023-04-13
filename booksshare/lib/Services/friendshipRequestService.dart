@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -7,14 +9,12 @@ class FrienshipRequestService {
     final CollectionReference friendshipRequestCollection =
         FirebaseFirestore.instance.collection('notification');
 
-    // Query the collection for existing requests with the same senderID, receiverID, and desiredBookID.
     final existingRequests = await friendshipRequestCollection
         .where('senderID', isEqualTo: senderID)
         .where('receiverID', isEqualTo: receiverID)
         .where('notificationType', isEqualTo: 'Friendship')
         .get();
 
-    // If there is at least one existing request, notify the user and return without executing the request.
     if (existingRequests.docs.isNotEmpty) {
       Fluttertoast.showToast(
         msg: 'You have already sent a request for friendship',
@@ -24,7 +24,6 @@ class FrienshipRequestService {
       );
       return;
     }
-    // Otherwise, execute the request and notify the user.
     final newSwapReqRef = friendshipRequestCollection.doc();
     try {
       await newSwapReqRef.set({
