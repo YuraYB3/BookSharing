@@ -13,7 +13,7 @@ class MessageService {
       await newReviewRef.doc().set({
         'message': message,
         'senderID': userID,
-        'timeSend': Timestamp.now()
+        'timeSend': FieldValue.serverTimestamp()
       });
     } catch (e) {
       // ignore: avoid_print

@@ -52,6 +52,11 @@ class CurrentUserBooksList {
                             builder: (context) => BookDetailsScreen(
                               bookID: book.bookId,
                               userID: book.userId,
+                              bookAvalaible: book.available,
+                              bookCover: book.cover,
+                              bookDescription: book.description,
+                              bookName: book.name,
+                              bookTitle: book.title,
                             ),
                           ));
                     },
@@ -68,8 +73,8 @@ class CurrentUserBooksList {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SizedBox(
-                                  height: 100,
-                                  width: 90,
+                                  height: 150,
+                                  width: 120,
                                   child: Image(
                                       image: CachedNetworkImageProvider(
                                         book.cover,

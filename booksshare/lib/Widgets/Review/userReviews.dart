@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Services/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
@@ -102,13 +101,18 @@ class UserReviews extends StatelessWidget {
                     GestureDetector(
                       onTap: () {
                         Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => BookDetailsScreen(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => BookDetailsScreen(
                                 bookID: bookdata['bookID'],
-                                userID: bookdata['userID']),
-                          ),
-                        );
+                                userID: bookdata['userID'],
+                                bookAvalaible: bookdata['available'],
+                                bookCover: bookdata['cover'],
+                                bookDescription: bookdata['description'],
+                                bookName: bookdata['name'],
+                                bookTitle: bookdata['title'],
+                              ),
+                            ));
                       },
                       child: SizedBox(
                           height: 100,

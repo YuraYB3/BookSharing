@@ -1,11 +1,9 @@
 // ignore_for_file: file_names
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class MessageModel {
   final String message;
   final String senderID;
-  final Timestamp sendTime;
+  final DateTime sendTime;
 
   MessageModel(
       {required this.message, required this.senderID, required this.sendTime});

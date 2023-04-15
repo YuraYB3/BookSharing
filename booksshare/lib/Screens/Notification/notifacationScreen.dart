@@ -46,9 +46,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   children: const [
                     Center(
                       child: Text(
-                        'У тебе немає сповіщеннь!',
+                        'У тебе немає сповіщеннь',
                         style: TextStyle(
-                            fontSize: 26,
+                            fontSize: 22,
                             fontWeight: FontWeight.w900,
                             color: AppTheme.secondBackgroundColor),
                       ),
@@ -147,14 +147,14 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         IconButton(
                           onPressed: () async {
                             bookSwap.addBookSwap(
-                                notify.swapReqID,
+                                notify.notificationID,
                                 notify.senderID,
                                 notify.receiverID,
                                 notify.desiredBookID!);
                             bookSwapRequest
                                 .updateBookAvalaible(notify.desiredBookID!);
                             bookSwapNotifier
-                                .updateSeenByReceiver(notify.swapReqID);
+                                .updateSeenByReceiver(notify.notificationID);
                           },
                           icon: const Icon(
                             Icons.done,
@@ -164,7 +164,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                         IconButton(
                           onPressed: () async {
-                            bookSwapNotifier.deleteData(notify.swapReqID);
+                            bookSwapNotifier.deleteData(notify.notificationID);
                           },
                           icon: const Icon(
                             Icons.close,
@@ -210,7 +210,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   onPressed: () async {
                     friendshipService.addFriendship(
                         notify.senderID, notify.receiverID);
-                    bookSwapNotifier.updateSeenByReceiver(notify.swapReqID);
+                    bookSwapNotifier
+                        .updateSeenByReceiver(notify.notificationID);
                   },
                   icon: const Icon(
                     Icons.done,
@@ -220,7 +221,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    bookSwapNotifier.deleteData(notify.swapReqID);
+                    bookSwapNotifier.deleteData(notify.notificationID);
                   },
                   icon: const Icon(
                     Icons.close,

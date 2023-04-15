@@ -41,6 +41,11 @@ class AllUsersBookList {
                                       builder: (context) => BookDetailsScreen(
                                         bookID: book.bookId,
                                         userID: book.userId,
+                                        bookAvalaible: book.available,
+                                        bookCover: book.cover,
+                                        bookDescription: book.description,
+                                        bookName: book.name,
+                                        bookTitle: book.title,
                                       ),
                                     ));
                               },

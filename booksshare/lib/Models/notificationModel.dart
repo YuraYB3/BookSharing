@@ -1,7 +1,7 @@
 // ignore_for_file: file_names
 
 class NotificationModel {
-  final String swapReqID;
+  final String notificationID;
   final String senderID;
   final String receiverID;
   final String message;
@@ -10,7 +10,7 @@ class NotificationModel {
   final String? desiredBookID;
 
   NotificationModel({
-    required this.swapReqID,
+    required this.notificationID,
     required this.message,
     required this.receiverID,
     required this.senderID,
@@ -21,7 +21,7 @@ class NotificationModel {
 
   static NotificationModel fromJson(Map<String, dynamic> json) =>
       NotificationModel(
-        swapReqID: json['swapReqID'],
+        notificationID: json['swapReqID'],
         senderID: json['senderID'],
         receiverID: json['receiverID'],
         message: json['message'],
@@ -31,7 +31,7 @@ class NotificationModel {
       );
 
   Map<String, dynamic> toJson() => {
-        'swapReqID': swapReqID,
+        'swapReqID': notificationID,
         'senderID': senderID,
         'receiverID': receiverID,
         "message": message,

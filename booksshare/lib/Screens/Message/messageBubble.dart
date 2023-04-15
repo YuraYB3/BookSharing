@@ -25,7 +25,13 @@ class _MessageBubbleState extends State<MessageBubble> {
           decoration: BoxDecoration(
               color:
                   widget.isMe ? AppTheme.secondBackgroundColor : Colors.amber,
-              borderRadius: BorderRadius.circular(12)),
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(12),
+                  topRight: Radius.circular(12),
+                  bottomLeft:
+                      !widget.isMe ? Radius.circular(0) : Radius.circular(12),
+                  bottomRight:
+                      widget.isMe ? Radius.circular(0) : Radius.circular(12))),
           width: 180,
           padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
           margin: const EdgeInsets.symmetric(vertical: 4, horizontal: 8),

@@ -1,12 +1,16 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Shared/appTheme.dart';
 import 'package:flutter/material.dart';
 
 var textInputDecoration = const InputDecoration(
     fillColor: Colors.white,
-    filled: true,
     labelStyle: TextStyle(color: Colors.grey),
     enabledBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Colors.white, width: 2.0)),
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide:
+            BorderSide(color: AppTheme.secondBackgroundColor, width: 1.0)),
     focusedBorder: OutlineInputBorder(
-        borderSide: BorderSide(color: Color(0xff008787), width: 1.0)));
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide:
+            BorderSide(color: AppTheme.secondBackgroundColor, width: 2.0)));

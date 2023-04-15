@@ -6,8 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'Models/userModel.dart';
-import 'Screens/Authentication/loginScreen.dart';
-import 'Screens/Authentication/signUpScreen.dart';
 import 'Screens/Exchange/exchangeScreen.dart';
 import 'Screens/Home/homePage.dart';
 import 'Screens/Library/bookSearchPage.dart';
@@ -38,8 +36,6 @@ class MyApp extends StatelessWidget {
           initialRoute: '/',
           routes: {
             // ignore: prefer_const_constructors
-            '/login': (context) => LoginScreen(),
-            '/signup': (context) => const SignUpScreen(),
             '/profile': (context) =>
                 UserProfile(userID: authService.getUserID()!),
             '/home': (context) => const HomePage(),

@@ -1,5 +1,4 @@
 // ignore_for_file: file_names
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -11,11 +10,23 @@ import '../../Shared/appTheme.dart';
 import '../../Widgets/Review/bookReviews.dart';
 
 class BookDetailsScreen extends StatefulWidget {
-  final String? bookID;
-  final String? userID;
+  final String bookID;
+  final String userID;
+  final String bookName;
+  final String bookTitle;
+  final String bookCover;
+  final String bookAvalaible;
+  final String bookDescription;
 
   const BookDetailsScreen(
-      {super.key, required this.bookID, required this.userID});
+      {super.key,
+      required this.bookID,
+      required this.userID,
+      required this.bookName,
+      required this.bookCover,
+      required this.bookAvalaible,
+      required this.bookDescription,
+      required this.bookTitle});
 
   @override
   State<BookDetailsScreen> createState() => _BookDetailsScreenState();
@@ -24,71 +35,35 @@ class BookDetailsScreen extends StatefulWidget {
 class _BookDetailsScreenState extends State<BookDetailsScreen> {
   @override
   Widget build(BuildContext context) {
-    CollectionReference book = FirebaseFirestore.instance.collection("books");
-    CollectionReference user = FirebaseFirestore.instance.collection("users");
     AuthService auth = AuthService();
-
-    return FutureBuilder<DocumentSnapshot>(
-      future: book.doc(widget.bookID).get(),
-      builder:
-          (BuildContext context, AsyncSnapshot<DocumentSnapshot> bookSnapshot) {
-        if (bookSnapshot.hasError) {
-          return const Text(
-            "Something went wrong!",
-            style: TextStyle(color: AppTheme.textColor),
-            textAlign: TextAlign.start,
-            textDirection: TextDirection.ltr,
-          );
-        }
-        if (bookSnapshot.hasData && !bookSnapshot.data!.exists) {
-          return Text(
-            "${widget.bookID}",
-            style: const TextStyle(color: AppTheme.textColor, fontSize: 20),
-            textAlign: TextAlign.center,
-            textDirection: TextDirection.ltr,
-          );
-        }
-        if (bookSnapshot.connectionState == ConnectionState.done) {
-          Map<String, dynamic> bookdata =
-              bookSnapshot.data!.data() as Map<String, dynamic>;
-          return Scaffold(
-            backgroundColor: AppTheme.backgroundColor,
-            appBar: AppBar(
-              automaticallyImplyLeading: true,
-              toolbarHeight: 80,
-              backgroundColor: AppTheme.secondBackgroundColor,
-              title: Text(
-                "${bookdata['name']}",
-                style: const TextStyle(color: AppTheme.textColor),
-              ),
-            ),
-            body: FutureBuilder<DocumentSnapshot>(
-                future: user.doc(widget.userID).get(),
-                builder: (BuildContext context,
-                    AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                  if (userSnapshot.connectionState == ConnectionState.done) {
-                    Map<String, dynamic> userdata =
-                        userSnapshot.data!.data() as Map<String, dynamic>;
-
-                    return FlipCard(
-                        fill: Fill.fillBack,
-                        direction: FlipDirection.HORIZONTAL,
-                        side: CardSide.FRONT,
-                        front: frontSide(auth, bookdata, userdata),
-                        back: backSide(auth, bookdata));
-                  } else {
-                    return const Text('');
-                  }
-                }),
-          );
-        }
-        return const Text("");
-      },
-    );
+    return Scaffold(
+        backgroundColor: AppTheme.backgroundColor,
+        appBar: AppBar(
+          automaticallyImplyLeading: true,
+          toolbarHeight: 80,
+          backgroundColor: AppTheme.secondBackgroundColor,
+          title: Text(
+            widget.bookName,
+            style: const TextStyle(color: AppTheme.textColor),
+          ),
+        ),
+        body: FlipCard(
+            fill: Fill.fillBack,
+            direction: FlipDirection.HORIZONTAL,
+            side: CardSide.FRONT,
+            front: frontSide(
+                auth,
+                widget.bookCover,
+                widget.bookName,
+                widget.bookTitle,
+                widget.bookAvalaible,
+                widget.bookID,
+                widget.userID),
+            back: backSide(auth, widget.bookDescription)));
   }
 
-  Widget frontSide(AuthService auth, Map<String, dynamic> bookdata,
-      Map<String, dynamic> userdata) {
+  Widget frontSide(AuthService auth, String bookCover, String bookName,
+      String bookTitle, String bookAvalaible, String bookID, String userID) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -108,9 +83,18 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                   child: SizedBox(
                     height: 280,
                     width: 190,
-                    child: Image.network(
-                      bookdata['cover'],
-                      fit: BoxFit.fill,
+                    child: Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        const CircularProgressIndicator(
+                          color: Colors.amber,
+                          backgroundColor: Colors.white,
+                        ), // Show the progress indicator
+                        Image.network(
+                          bookCover,
+                          fit: BoxFit.fill,
+                        ),
+                      ],
                     ),
                   ),
                 ),
@@ -127,7 +111,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       child: Row(
                         children: [
                           Text(
-                            bookdata['name'],
+                            bookName,
                             style: const TextStyle(
                                 color: AppTheme.textColor,
                                 fontSize: 18,
@@ -142,7 +126,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
-                          Text(bookdata['title'],
+                          Text(bookTitle,
                               style: const TextStyle(
                                   color: AppTheme.textColor,
                                   fontSize: 18,
@@ -164,7 +148,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                           Container(
                             width: 30,
                           ),
-                          bookdata['available'] == 'yes'
+                          bookAvalaible == 'yes'
                               ? const Text('Yes',
                                   style: TextStyle(
                                       color: AppTheme.textColor,
@@ -194,8 +178,8 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                         SwapRequestService();
                                     bookSwapRequest.addBookSwapRequest(
                                       auth.getUserID(),
-                                      userdata['uid'],
-                                      bookdata['bookID'],
+                                      userID,
+                                      bookID,
                                     );
                                     Navigator.pop(context);
                                   },
@@ -264,8 +248,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                     if (confirmDelete == true) {
                                       BookService bookService =
                                           BookService(auth.getUserID());
-                                      bookService
-                                          .deleteBook(bookdata['bookID']);
+                                      bookService.deleteBook(bookID);
                                       // ignore: use_build_context_synchronously
                                       Navigator.pop(context);
                                     }
@@ -298,8 +281,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                   context: context,
                                   enableDrag: true,
                                   builder: (BuildContext context) {
-                                    return ReviewWidget(
-                                        bookID: bookdata['bookID']);
+                                    return ReviewWidget(bookID: bookID);
                                   });
                             },
                             style: ButtonStyle(
@@ -328,7 +310,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
     );
   }
 
-  Widget backSide(AuthService auth, Map<String, dynamic> bookdata) {
+  Widget backSide(AuthService auth, String bookDescription) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
@@ -357,7 +339,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Text(
-                        bookdata['description'],
+                        bookDescription,
                         style: const TextStyle(
                             color: AppTheme.textColor,
                             fontStyle: FontStyle.normal,

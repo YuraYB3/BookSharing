@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -13,9 +14,7 @@ class Wrapper extends StatelessWidget {
   Widget build(BuildContext context) {
     final user = Provider.of<UserModel?>(context);
     if (user == null) {
-      return const StartPage(
-        title: '',
-      );
+      return const StartPage();
     } else {
       return const HomePage();
     }
