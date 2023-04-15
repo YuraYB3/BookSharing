@@ -88,6 +88,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                             }
                           });
                     }
+                    return null;
                   });
             }),
         drawer: UserPanel());
