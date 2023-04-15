@@ -7,13 +7,14 @@ import '../Models/notificationModel.dart';
 class NotificationService {
   final String? receiverID;
   final CollectionReference bookSwapRequestCollection =
-      FirebaseFirestore.instance.collection('swapRequest');
+      FirebaseFirestore.instance.collection('notification');
 
   NotificationService({required this.receiverID});
 
   Future<int> getNewRequestCount() async {
     final querySnapshot = await bookSwapRequestCollection
         .where('receiverID', isEqualTo: receiverID)
+        .where('seenByReceiver', isEqualTo: false)
         .get();
     return querySnapshot.docs.length;
   }

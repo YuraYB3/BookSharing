@@ -119,17 +119,17 @@ class _StartPageState extends State<StartPage> {
               ),
             ),
             TextButton(
-                onPressed: () {},
-                child: const Text(
-                  'I dont have account',
-                  style: TextStyle(color: AppTheme.secondBackgroundColor),
-                )),
-            TextButton(
                 onPressed: () {
                   setState(() {
                     isLoginScreen = !isLoginScreen;
                   });
                 },
+                child: const Text(
+                  'I dont have account',
+                  style: TextStyle(color: AppTheme.secondBackgroundColor),
+                )),
+            TextButton(
+                onPressed: () {},
                 child: const Text(
                   'Forget password',
                   style: TextStyle(color: AppTheme.secondBackgroundColor),

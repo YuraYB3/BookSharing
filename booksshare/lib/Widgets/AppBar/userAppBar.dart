@@ -23,19 +23,13 @@ class UserAppBar {
             Navigator.pushNamed(context, '/search');
           },
         ),
-        FutureBuilder(
+        FutureBuilder<IconButton>(
           future: NotifyIcon().getNotifyIcon(context),
-          builder: (BuildContext context, AsyncSnapshot<IconButton> snapshot) {
-            if (snapshot.hasData) {
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
               return snapshot.data!;
             } else {
-              return IconButton(
-                icon: const Icon(
-                  Icons.notifications_off_rounded,
-                  color: AppTheme.iconColor,
-                ),
-                onPressed: () {},
-              );
+              return Container();
             }
           },
         ),
