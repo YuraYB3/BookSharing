@@ -44,6 +44,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
           backgroundColor: AppTheme.secondBackgroundColor,
           title: Text(
             widget.bookName,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: AppTheme.textColor),
           ),
         ),
@@ -89,7 +90,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         const CircularProgressIndicator(
                           color: Colors.amber,
                           backgroundColor: Colors.white,
-                        ), // Show the progress indicator
+                        ),
                         Image.network(
                           bookCover,
                           fit: BoxFit.fill,
@@ -110,13 +111,21 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                       padding: const EdgeInsets.only(top: 30.0),
                       child: Row(
                         children: [
-                          Text(
-                            bookName,
-                            style: const TextStyle(
-                                color: AppTheme.textColor,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
+                          bookName.length > 14
+                              ? Text(
+                                  "${bookName.substring(0, 14)}...",
+                                  style: const TextStyle(
+                                      color: AppTheme.textColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              : Text(
+                                  bookName,
+                                  style: const TextStyle(
+                                      color: AppTheme.textColor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold),
+                                )
                         ],
                       ),
                     ),
@@ -127,9 +136,10 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.end,
                         children: [
                           Text(bookTitle,
+                              overflow: TextOverflow.ellipsis,
                               style: const TextStyle(
                                   color: AppTheme.textColor,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold))
                         ],
                       ),
@@ -143,21 +153,21 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                           const Text('Доступна:',
                               style: TextStyle(
                                   color: AppTheme.textColor,
-                                  fontSize: 18,
+                                  fontSize: 16,
                                   fontWeight: FontWeight.bold)),
                           Container(
-                            width: 30,
+                            width: 15,
                           ),
                           bookAvalaible == 'yes'
-                              ? const Text('Yes',
+                              ? const Text('Так',
                                   style: TextStyle(
                                       color: AppTheme.textColor,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold))
-                              : const Text("No",
+                              : const Text("Ні",
                                   style: TextStyle(
                                       color: AppTheme.textColor,
-                                      fontSize: 18,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold))
                         ],
                       ),
@@ -194,7 +204,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                     ),
                                   ),
                                   child: const Text(
-                                    "Send request ",
+                                    "Запит",
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -214,12 +224,12 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                           backgroundColor:
                                               AppTheme.secondBackgroundColor,
                                           title: const Text(
-                                            'Delete Book',
+                                            'Видалити книгу',
                                             style: TextStyle(
                                                 color: AppTheme.textColor),
                                           ),
                                           content: const Text(
-                                            'Are you sure you want to delete this book?',
+                                            'Ви дійсно хочете видалити книгу?',
                                             style: TextStyle(
                                                 color: AppTheme.textColor),
                                           ),
@@ -228,7 +238,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                               onPressed: () =>
                                                   Navigator.pop(context, false),
                                               child: const Text(
-                                                'Cancel',
+                                                'Відмінити',
                                                 style: TextStyle(
                                                     color: AppTheme.iconColor),
                                               ),
@@ -236,7 +246,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                             TextButton(
                                               onPressed: () =>
                                                   Navigator.pop(context, true),
-                                              child: const Text('Delete',
+                                              child: const Text('Видалити',
                                                   style: TextStyle(
                                                       color:
                                                           AppTheme.iconColor)),
@@ -260,7 +270,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                     ),
                                   ),
                                   child: const Text(
-                                    "Delete",
+                                    "Видалити",
                                     style: TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
@@ -327,7 +337,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    const Text('DESCRIPTION:',
+                    const Text('Опис:',
                         style: TextStyle(
                             color: AppTheme.textColor,
                             fontStyle: FontStyle.normal,

@@ -12,7 +12,7 @@ import '../../Shared/appTheme.dart';
 import '../../Widgets/AddBook/addBookWidget.dart';
 import '../../Widgets/AppBar/userAppBar.dart';
 import '../../Widgets/Panel/userPanel.dart';
-import '../../Widgets/currentUserBooksList.dart';
+import '../../Widgets/userBooksList.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     var uId = auth.getUserID();
     var bookService = BookService(uId!);
     UserAppBar userBar = UserAppBar();
-    CurrentUserBooksList booksList = CurrentUserBooksList();
+    UserBooksList booksList = UserBooksList();
 
     return StreamProvider<List<UserModel>?>.value(
         value: DatabaseUserService(uid: '').users,

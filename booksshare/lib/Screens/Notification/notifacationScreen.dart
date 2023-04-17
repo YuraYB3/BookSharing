@@ -46,7 +46,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   children: const [
                     Center(
                       child: Text(
-                        'У тебе немає сповіщеннь',
+                        'У вас немає сповіщеннь',
                         style: TextStyle(
                             fontSize: 22,
                             fontWeight: FontWeight.w900,

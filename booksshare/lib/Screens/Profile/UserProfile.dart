@@ -1,5 +1,6 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Widgets/userBooksList.dart';
 import 'package:flutter/material.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 import 'package:provider/provider.dart';
@@ -108,11 +109,76 @@ class _UserProfileState extends State<UserProfile> {
                                             style: TextStyle(
                                                 color: AppTheme.textColor),
                                           ),
-                                          Text(
-                                            snapshot.data.toString(),
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          )
+                                          ElevatedButton(
+                                            onPressed: () async {
+                                              if (snapshot.data! > 0) {
+                                                UserBooksList userBooksList =
+                                                    UserBooksList();
+                                                BookService bookService =
+                                                    BookService(widget.userID);
+                                                userBooksList
+                                                    .listOfBooks(bookService);
+                                                showMaterialModalBottomSheet(
+                                                    bounce: true,
+                                                    context: context,
+                                                    enableDrag: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Container(
+                                                        height: 550,
+                                                        color: AppTheme
+                                                            .secondBackgroundColor,
+                                                        child: userBooksList
+                                                            .listOfBooks(
+                                                                bookService),
+                                                      );
+                                                    });
+                                              } else {
+                                                showMaterialModalBottomSheet(
+                                                    bounce: true,
+                                                    context: context,
+                                                    enableDrag: true,
+                                                    builder:
+                                                        (BuildContext context) {
+                                                      return Container(
+                                                          height: 550,
+                                                          color: AppTheme
+                                                              .secondBackgroundColor,
+                                                          child: const Center(
+                                                            child: Text(
+                                                              'У користувача немає книг!',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w900,
+                                                                  fontSize: 22),
+                                                            ),
+                                                          ));
+                                                    });
+                                              }
+                                            },
+                                            style: ButtonStyle(
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                                AppTheme.textColor,
+                                              ),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                                AppTheme.secondBackgroundColor,
+                                              ),
+                                            ),
+                                            child: Text(
+                                              snapshot.data.toString(),
+                                              style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
+                                          ),
                                         ],
                                       );
                                     } else if (snapshot.hasError) {
@@ -138,8 +204,8 @@ class _UserProfileState extends State<UserProfile> {
                                             style: TextStyle(
                                                 color: AppTheme.textColor),
                                           ),
-                                          GestureDetector(
-                                            onTap: () async {
+                                          ElevatedButton(
+                                            onPressed: () async {
                                               showMaterialModalBottomSheet(
                                                   bounce: true,
                                                   context: context,
@@ -150,12 +216,26 @@ class _UserProfileState extends State<UserProfile> {
                                                         userID: widget.userID);
                                                   });
                                             },
+                                            style: ButtonStyle(
+                                              foregroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                                AppTheme.textColor,
+                                              ),
+                                              backgroundColor:
+                                                  MaterialStateProperty.all<
+                                                      Color>(
+                                                AppTheme.secondBackgroundColor,
+                                              ),
+                                            ),
                                             child: Text(
                                               snapshot.data.toString(),
                                               style: const TextStyle(
-                                                  color: Colors.white),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                              ),
                                             ),
-                                          )
+                                          ),
                                         ],
                                       );
                                     } else if (snapshot.hasError) {
@@ -186,7 +266,7 @@ class _UserProfileState extends State<UserProfile> {
                                                 MaterialStatePropertyAll<Color>(
                                                     AppTheme
                                                         .secondBackgroundColor)),
-                                        child: const Text('Send request'),
+                                        child: const Text('Надіслати запит'),
                                       ))
                                     : Center(
                                         child: ElevatedButton(
@@ -196,7 +276,7 @@ class _UserProfileState extends State<UserProfile> {
                                                 MaterialStatePropertyAll<Color>(
                                                     Color.fromARGB(
                                                         255, 208, 18, 18))),
-                                        child: const Text('Message'),
+                                        child: const Text('Повідомлення'),
                                       )))
                             : Container()
                       ],

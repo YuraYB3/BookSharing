@@ -7,14 +7,17 @@ import '../Screens/Library/bookDetailsScreen.dart';
 import '../Services/bookService.dart';
 import '../Shared/appTheme.dart';
 
-class CurrentUserBooksList {
+class UserBooksList {
   StreamBuilder listOfBooks(BookService bookList) {
     return StreamBuilder<List<BookModel>>(
         stream: bookList.readUserBooks(),
         builder:
             (BuildContext context, AsyncSnapshot<List<BookModel>> snapshot) {
           if (snapshot.hasError) {
-            return const Text("ERROR!!!");
+            return const Text(
+              "ПОМИЛКА!",
+              style: TextStyle(color: Colors.red),
+            );
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -27,9 +30,11 @@ class CurrentUserBooksList {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Text("У вас тут пусто :(",
+                      overflow: TextOverflow.clip,
                       style:
                           TextStyle(fontWeight: FontWeight.bold, fontSize: 24)),
                   Text(
+                    overflow: TextOverflow.clip,
                     'Натисни щоб додати книгу',
                     style: TextStyle(fontSize: 14),
                   )
@@ -81,7 +86,7 @@ class CurrentUserBooksList {
                                       ),
                                       fit: BoxFit.cover)),
                               Padding(
-                                padding: const EdgeInsets.only(left: 50),
+                                padding: const EdgeInsets.only(left: 10),
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -96,11 +101,29 @@ class CurrentUserBooksList {
                                         Container(
                                           width: 1,
                                         ),
-                                        Text(
-                                          book.name,
-                                          style: const TextStyle(
-                                              color: Colors.grey),
-                                        ),
+                                        book.name.length > 12
+                                            ? Text(
+                                                "${book.name.substring(0, 12)}...",
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: Colors.grey),
+                                                maxLines: 2,
+                                                softWrap: true,
+                                                //або будь-яке інше значення менше за ширину контейнера
+                                              )
+                                            : Text(
+                                                book.name,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: Colors.grey),
+                                                maxLines: 2,
+                                                softWrap: true,
+                                                //або будь-яке інше значення менше за ширину контейнера
+                                              )
                                       ],
                                     ),
                                     Row(
@@ -113,9 +136,23 @@ class CurrentUserBooksList {
                                         Container(
                                           width: 1,
                                         ),
-                                        Text(book.title,
-                                            style: const TextStyle(
-                                                color: Colors.grey)),
+                                        book.title.length > 12
+                                            ? Text(
+                                                '${book.title.substring(0, 12)}...',
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: Colors.grey),
+                                              )
+                                            : Text(
+                                                book.title,
+                                                overflow: TextOverflow.ellipsis,
+                                                style: const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.w900,
+                                                    color: Colors.grey),
+                                              )
                                       ],
                                     ),
                                   ],

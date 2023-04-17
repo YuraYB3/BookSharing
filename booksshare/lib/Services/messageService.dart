@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MessageService {
   Future<void> sendMessage(
@@ -16,8 +18,12 @@ class MessageService {
         'timeSend': FieldValue.serverTimestamp()
       });
     } catch (e) {
-      // ignore: avoid_print
-      print(e.toString());
+      Fluttertoast.showToast(
+        msg: 'Щось пішло не так',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 187, 38, 38),
+        textColor: Colors.white,
+      );
     }
   }
 }

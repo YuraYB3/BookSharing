@@ -34,12 +34,16 @@ class UserReviews extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: const [
                   Center(
-                    child: Text(
-                      'User doesnt have reviews',
-                      style: TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w900,
-                          color: AppTheme.textColor),
+                    child: Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'Користувач не залишав відгуків',
+                        overflow: TextOverflow.clip,
+                        style: TextStyle(
+                            fontSize: 22,
+                            fontWeight: FontWeight.w900,
+                            color: AppTheme.textColor),
+                      ),
                     ),
                   )
                 ],
@@ -60,7 +64,7 @@ class UserReviews extends StatelessWidget {
                               bookSnapshot.data!.data() == null) {
                             return const Center(
                               child: Text(
-                                'Book was delited :(',
+                                'Книгу було видалено :(',
                                 style: TextStyle(color: Colors.white),
                               ),
                             );

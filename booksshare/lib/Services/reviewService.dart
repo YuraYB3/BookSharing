@@ -1,6 +1,8 @@
 // ignore_for_file: file_names, avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../Models/reviewModel.dart';
 
@@ -18,7 +20,12 @@ class ReviewService {
         'rating': rating
       });
     } catch (e) {
-      print(e.toString());
+      Fluttertoast.showToast(
+        msg: 'Щось пішло не так',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 187, 38, 38),
+        textColor: Colors.white,
+      );
     }
   }
 

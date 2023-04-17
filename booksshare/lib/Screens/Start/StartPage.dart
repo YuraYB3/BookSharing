@@ -61,7 +61,7 @@ class _StartPageState extends State<StartPage> {
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 decoration: textInputDecoration.copyWith(hintText: "E-Mail"),
-                validator: (value) => value!.isEmpty ? 'Enter an email' : null,
+                validator: (value) => value!.isEmpty ? 'Введіть email' : null,
                 style: const TextStyle(),
                 onChanged: (val) {
                   setState(() {
@@ -74,11 +74,10 @@ class _StartPageState extends State<StartPage> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
-                decoration: textInputDecoration.copyWith(hintText: "Password"),
+                decoration: textInputDecoration.copyWith(hintText: "Пароль"),
                 obscureText: true,
-                validator: (value) => value!.length < 8
-                    ? 'Enter a password 8+ charactercs'
-                    : null,
+                validator: (value) =>
+                    value!.length < 8 ? 'Введіть пароль з 8+ символів' : null,
                 style: const TextStyle(),
                 onChanged: (val) {
                   setState(() {
@@ -114,7 +113,7 @@ class _StartPageState extends State<StartPage> {
                     backgroundColor: const MaterialStatePropertyAll<Color>(
                         AppTheme.secondBackgroundColor)),
                 child: const Text(
-                  'SIGN IN',
+                  'Увійти',
                 ),
               ),
             ),
@@ -125,13 +124,13 @@ class _StartPageState extends State<StartPage> {
                   });
                 },
                 child: const Text(
-                  'I dont have account',
+                  'Я не маю акаунту',
                   style: TextStyle(color: AppTheme.secondBackgroundColor),
                 )),
             TextButton(
                 onPressed: () {},
                 child: const Text(
-                  'Forget password',
+                  'Забули пароль?',
                   style: TextStyle(color: AppTheme.secondBackgroundColor),
                 ))
           ],
@@ -211,8 +210,8 @@ class _StartPageState extends State<StartPage> {
                             maxLength: 15,
                             textCapitalization: TextCapitalization.words,
                             validator: (value) => value!.isEmpty ? '' : null,
-                            decoration:
-                                textInputDecoration.copyWith(hintText: "Name"),
+                            decoration: textInputDecoration.copyWith(
+                                hintText: "Нікнейм"),
                             style: const TextStyle(),
                             onChanged: (val) {
                               setState(() {
@@ -234,7 +233,7 @@ class _StartPageState extends State<StartPage> {
                             ),
                             validator: (value) => value!.isEmpty ? '' : null,
                             decoration:
-                                textInputDecoration.copyWith(hintText: "Age"),
+                                textInputDecoration.copyWith(hintText: "Вік"),
                             style: const TextStyle(),
                             onChanged: (val) {
                               setState(() {
@@ -252,9 +251,6 @@ class _StartPageState extends State<StartPage> {
                 ],
               ),
             ),
-            Container(
-              height: 25,
-            ),
             Padding(
               padding:
                   const EdgeInsets.only(right: 15, left: 15, top: 8, bottom: 8),
@@ -265,7 +261,7 @@ class _StartPageState extends State<StartPage> {
                   children: [
                     TextFormField(
                       validator: (value) =>
-                          value!.isEmpty ? 'Enter an email' : null,
+                          value!.isEmpty ? 'Введіть email' : null,
                       decoration:
                           textInputDecoration.copyWith(hintText: "Email"),
                       style: const TextStyle(),
@@ -275,12 +271,15 @@ class _StartPageState extends State<StartPage> {
                         });
                       },
                     ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     TextFormField(
                       validator: (value) => value!.length < 8
-                          ? 'Enter a password 8+ charactercs'
+                          ? 'Введіть пароль з 8+ символами'
                           : null,
                       decoration:
-                          textInputDecoration.copyWith(hintText: "Password"),
+                          textInputDecoration.copyWith(hintText: "Пароль"),
                       obscureText: true,
                       style: const TextStyle(),
                       onChanged: (val) {
@@ -289,12 +288,14 @@ class _StartPageState extends State<StartPage> {
                         });
                       },
                     ),
+                    const SizedBox(
+                      height: 8,
+                    ),
                     TextFormField(
-                      validator: (value) => value != password
-                          ? 'Difference between password!'
-                          : null,
+                      validator: (value) =>
+                          value != password ? 'Різниця між паролями!' : null,
                       decoration: textInputDecoration.copyWith(
-                          hintText: "Repeat password"),
+                          hintText: "Повторіть пароль"),
                       obscureText: true,
                       style: const TextStyle(),
                       onChanged: (val) {
@@ -302,6 +303,9 @@ class _StartPageState extends State<StartPage> {
                           repeatedPassword = val;
                         });
                       },
+                    ),
+                    const SizedBox(
+                      height: 5,
                     ),
                     SizedBox(
                       width: 180,
@@ -332,7 +336,7 @@ class _StartPageState extends State<StartPage> {
                                 const MaterialStatePropertyAll<Color>(
                                     AppTheme.secondBackgroundColor)),
                         child: const Text(
-                          'SIGN UP',
+                          'Увійти',
                         ),
                       ),
                     ),
@@ -343,7 +347,7 @@ class _StartPageState extends State<StartPage> {
                           });
                         },
                         child: const Text(
-                          'I have an account',
+                          'У мене є акаунт',
                           style:
                               TextStyle(color: AppTheme.secondBackgroundColor),
                         ))

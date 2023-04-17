@@ -47,8 +47,8 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                 indicatorWeight: 3,
                 labelColor: AppTheme.textColor,
                 tabs: const [
-                  Tab(text: 'Received'),
-                  Tab(text: 'Sent'),
+                  Tab(text: 'Отримані'),
+                  Tab(text: 'Надіслані'),
                 ],
               ),
             ),
@@ -272,7 +272,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                         onPressed: () {
                           Navigator.pop(context);
                         },
-                        child: const Text("CANCEL")),
+                        child: const Text("Відмінити")),
                     TextButton(
                         onPressed: () {
                           bookSwap.returnBook(bookSwapID, bookID);
@@ -280,11 +280,11 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                               bookID, userID, description, rating);
                           Navigator.pop(context);
                         },
-                        child: const Text("OK"))
+                        child: const Text("ОК"))
                   ],
                 );
               });
         },
-        child: const Text('Return book'));
+        child: const Text('Повернути книгу'));
   }
 }

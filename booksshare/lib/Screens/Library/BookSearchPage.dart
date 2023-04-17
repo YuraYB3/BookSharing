@@ -33,7 +33,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
           title: Card(
             child: TextField(
               decoration: const InputDecoration(
-                hintText: 'Search .....',
+                hintText: 'Пошук .....',
                 prefixIcon: Icon(Icons.search),
               ),
               onChanged: (value) {
@@ -53,16 +53,6 @@ class _BookSearchPageState extends State<BookSearchPage> {
                 AsyncSnapshot<List<BookModel>> snapshot) {
               if (snapshot.hasError) {
                 return Text("{$snapshot.error}");
-              }
-              if (!snapshot.hasData || snapshot.data!.isEmpty) {
-                return Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Center(
-                      child: Text('Книг немає...'),
-                    )
-                  ],
-                );
               }
               if (searchQuery.isEmpty) {
                 return const Center(
@@ -85,53 +75,69 @@ class _BookSearchPageState extends State<BookSearchPage> {
                 itemBuilder: (context, index) {
                   final book = books[index];
                   return FutureBuilder<DocumentSnapshot>(
-                    future: user.doc(book.userId).get(),
-                    builder: (BuildContext context,
-                        AsyncSnapshot<DocumentSnapshot> userSnapshot) {
-                      if (userSnapshot.connectionState ==
-                          ConnectionState.done) {
-                        final bookName = book.name.toString().toLowerCase();
-                        final bookTitle = book.title.toString().toLowerCase();
-                        final query = searchQuery.toLowerCase();
-                        final startsWithQuery = bookName.startsWith(query) ||
-                            bookTitle.startsWith(query);
-                        if (searchQuery.length >= 3 &&
-                            book.available == 'yes' &&
-                            startsWithQuery) {
-                          return ListTile(
-                            title: const Text("Назва книги:"),
-                            subtitle: Text(book.name),
-                            leading: SizedBox(
-                              height: 300,
-                              width: 50,
-                              child: Image.network(book.cover,
-                                  width: 200, height: 300, fit: BoxFit.cover),
-                            ),
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => BookDetailsScreen(
-                                    bookID: book.bookId,
-                                    userID: book.userId,
-                                    bookAvalaible: book.available,
-                                    bookCover: book.cover,
-                                    bookDescription: book.description,
-                                    bookName: book.name,
-                                    bookTitle: book.title,
+                      future: user.doc(book.userId).get(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot> userSnapshot) {
+                        if (userSnapshot.connectionState ==
+                            ConnectionState.done) {
+                          final bookName = book.name.toString().toLowerCase();
+                          final bookTitle = book.title.toString().toLowerCase();
+                          final query = searchQuery.toLowerCase();
+                          final startsWithQuery = bookName.startsWith(query) ||
+                              bookTitle.startsWith(query);
+                          if (searchQuery.length >= 3 &&
+                              book.available == 'yes' &&
+                              startsWithQuery) {
+                            return ListTile(
+                              title: const Text("Назва книги:"),
+                              subtitle: Text(book.name),
+                              leading: SizedBox(
+                                height: 300,
+                                width: 50,
+                                child: Image.network(book.cover,
+                                    width: 200, height: 300, fit: BoxFit.cover),
+                              ),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => BookDetailsScreen(
+                                      bookID: book.bookId,
+                                      userID: book.userId,
+                                      bookAvalaible: book.available,
+                                      bookCover: book.cover,
+                                      bookDescription: book.description,
+                                      bookName: book.name,
+                                      bookTitle: book.title,
+                                    ),
                                   ),
-                                ),
-                              );
-                            },
-                          );
+                                );
+                              },
+                            );
+                          } else {
+                            return const Center(
+                              child: Text('Введіть більше трьох символів',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 24.0,
+                                      decorationStyle:
+                                          TextDecorationStyle.solid,
+                                      fontWeight: FontWeight.bold,
+                                      color: AppTheme.secondBackgroundColor)),
+                            );
+                          }
                         } else {
-                          return Container();
+                          return const Center(
+                            child: Text('Введіть більше трьох символів',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                    fontSize: 24.0,
+                                    decorationStyle: TextDecorationStyle.solid,
+                                    fontWeight: FontWeight.bold,
+                                    color: AppTheme.secondBackgroundColor)),
+                          );
                         }
-                      } else {
-                        return const SizedBox.shrink();
-                      }
-                    },
-                  );
+                      });
                 },
               );
             }),

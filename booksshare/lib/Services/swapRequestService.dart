@@ -19,7 +19,7 @@ class SwapRequestService {
 
     if (existingRequests.docs.isNotEmpty) {
       Fluttertoast.showToast(
-        msg: 'You have already sent a request for this book.',
+        msg: 'Ви вже відправляли запит на цю книгу',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -38,7 +38,7 @@ class SwapRequestService {
         'notificationType': 'Swap'
       });
       Fluttertoast.showToast(
-        msg: 'Request sent',
+        msg: 'Запит надіслано!',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.green,
         textColor: Colors.white,

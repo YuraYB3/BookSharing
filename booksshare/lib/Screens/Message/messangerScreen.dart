@@ -107,14 +107,14 @@ class _MessangerScreenState extends State<MessangerScreen> {
             children: [
               Expanded(
                 child: TextFormField(
-                  decoration:
-                      const InputDecoration(labelText: 'Send message...'),
+                  decoration: const InputDecoration(
+                      labelText: 'Введіть повідмолення...'),
                   onChanged: (value) {
                     _enteredMessage = value;
                   },
                   validator: (value) {
                     if (value!.isEmpty) {
-                      return 'Please enter a message';
+                      return 'Будь-ласка введіть повідомлення :(';
                     }
                     return null;
                   },

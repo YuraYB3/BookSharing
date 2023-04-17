@@ -53,14 +53,14 @@ class BookService {
         'description': description
       });
       Fluttertoast.showToast(
-        msg: 'Book added successfully!',
+        msg: 'Книгу додано успішно',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
     } catch (e) {
       Fluttertoast.showToast(
-        msg: 'Book not added!',
+        msg: 'Щось пішло не так',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: const Color.fromARGB(255, 187, 38, 38),
         textColor: Colors.white,

@@ -52,13 +52,18 @@ class BookSwapService {
       await bookDocRef.update({'available': 'yes'});
       await bookSwapDocRef.delete();
       Fluttertoast.showToast(
-        msg: 'Book returned',
+        msg: 'Книгу повернуто!',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
     } catch (e) {
-      print(e.toString());
+      Fluttertoast.showToast(
+        msg: 'Щось пішло не так',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color.fromARGB(255, 187, 38, 38),
+        textColor: Colors.white,
+      );
     }
   }
 }

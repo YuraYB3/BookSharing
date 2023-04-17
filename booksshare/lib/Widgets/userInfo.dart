@@ -13,19 +13,23 @@ class UserInformation {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          return const Text(
-            "Something went wrong!",
-            style: TextStyle(color: Colors.white),
-            textAlign: TextAlign.start,
-            textDirection: TextDirection.ltr,
+          return const Center(
+            child: Text(
+              "Щось пішло не так :(",
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.start,
+              textDirection: TextDirection.ltr,
+              overflow: TextOverflow.clip,
+            ),
           );
         }
         if (snapshot.hasData && !snapshot.data!.exists) {
           return const Text(
-            "Document hasnt exist",
+            "Користувача не існує :(",
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.start,
             textDirection: TextDirection.ltr,
+            overflow: TextOverflow.clip,
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
@@ -70,23 +74,29 @@ class UserInformation {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          return const Text(
-            "Something went wrong!",
-            style: TextStyle(color: Colors.white),
-            textAlign: TextAlign.start,
-            textDirection: TextDirection.ltr,
+          return const Center(
+            child: Text(
+              "Щось пішло не так :(",
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.start,
+              textDirection: TextDirection.ltr,
+              overflow: TextOverflow.clip,
+            ),
           );
         }
         if (snapshot.hasData && !snapshot.data!.exists) {
           return const Text(
-            "Document hasnt exist",
+            "Користувача не існує :(",
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.start,
             textDirection: TextDirection.ltr,
+            overflow: TextOverflow.clip,
           );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("");
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
         }
 
         Map<String, dynamic> data =
@@ -103,19 +113,28 @@ class UserInformation {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          return const Text(
-            "Something went wrong!",
-            style: TextStyle(color: Colors.white),
-            textAlign: TextAlign.start,
-            textDirection: TextDirection.ltr,
+          return const Center(
+            child: Text(
+              "Щось пішло не так :(",
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.start,
+              textDirection: TextDirection.ltr,
+              overflow: TextOverflow.clip,
+            ),
           );
         }
         if (snapshot.hasData && !snapshot.data!.exists) {
           return const Text(
-            "Document hasnt exist",
+            "Користувача не існує :(",
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.start,
             textDirection: TextDirection.ltr,
+            overflow: TextOverflow.clip,
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {
@@ -135,19 +154,28 @@ class UserInformation {
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
         if (snapshot.hasError) {
-          return const Text(
-            "Something went wrong!",
-            style: TextStyle(color: Colors.white),
-            textAlign: TextAlign.start,
-            textDirection: TextDirection.ltr,
+          return const Center(
+            child: Text(
+              "Щось пішло не так :(",
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.start,
+              textDirection: TextDirection.ltr,
+              overflow: TextOverflow.clip,
+            ),
           );
         }
         if (snapshot.hasData && !snapshot.data!.exists) {
           return const Text(
-            "Document hasnt exist",
+            "Користувача не існує :(",
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.start,
             textDirection: TextDirection.ltr,
+            overflow: TextOverflow.clip,
+          );
+        }
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
           );
         }
         if (snapshot.connectionState == ConnectionState.done) {

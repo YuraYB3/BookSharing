@@ -35,7 +35,7 @@ class ReadMoreButton extends StatelessWidget {
                     TextButton(
                       onPressed: () => Navigator.pop(context, false),
                       child: const Text(
-                        'Close',
+                        'Закрити',
                         style: TextStyle(color: AppTheme.iconColor),
                       ),
                     ),
@@ -51,7 +51,7 @@ class ReadMoreButton extends StatelessWidget {
           ),
         ),
         child: const Text(
-          "Read more",
+          "Більше",
           style: TextStyle(
             fontSize: 18,
             fontWeight: FontWeight.bold,

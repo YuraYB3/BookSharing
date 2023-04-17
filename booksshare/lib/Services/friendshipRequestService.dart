@@ -17,7 +17,7 @@ class FrienshipRequestService {
 
     if (existingRequests.docs.isNotEmpty) {
       Fluttertoast.showToast(
-        msg: 'You have already sent a request for friendship',
+        msg: 'Ви вже надсилали цьому користувачу запит',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.red,
         textColor: Colors.white,
@@ -35,13 +35,18 @@ class FrienshipRequestService {
         'notificationType': 'Friendship',
       });
       Fluttertoast.showToast(
-        msg: 'Request sent',
+        msg: 'Запит надіслано!',
         gravity: ToastGravity.BOTTOM,
         backgroundColor: Colors.green,
         textColor: Colors.white,
       );
     } catch (e) {
-      // Handle any errors that occur during the request.
+      Fluttertoast.showToast(
+        msg: 'Щось пішло не так!',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.red,
+        textColor: Colors.white,
+      );
     }
   }
 }

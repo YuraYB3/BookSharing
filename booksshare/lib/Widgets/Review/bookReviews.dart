@@ -26,6 +26,23 @@ class ReviewWidget extends StatelessWidget {
           stream: reviewObj.readBookReviews(bookID),
           builder: (BuildContext context,
               AsyncSnapshot<List<ReviewModel>> snapshot) {
+            if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  Center(
+                    child: Text(
+                      'В книги немає рецензій',
+                      overflow: TextOverflow.clip,
+                      style: TextStyle(
+                          fontSize: 22,
+                          fontWeight: FontWeight.w900,
+                          color: AppTheme.textColor),
+                    ),
+                  )
+                ],
+              );
+            }
             if (snapshot.hasData) {
               final reviewData = snapshot.data!;
               return ListView.builder(
@@ -43,13 +60,15 @@ class ReviewWidget extends StatelessWidget {
                             return reviewCard(context, userdata, review);
                           } else {
                             return const Center(
-                              child: Text('data'),
+                              child: CircularProgressIndicator(),
                             );
                           }
                         });
                   });
             } else {
-              return const Text('here2');
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
           },
         ));

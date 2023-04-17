@@ -25,7 +25,7 @@ class UserPanel extends StatelessWidget {
               child: userList.userInfo(_auth.getUserID()!)),
           ListTile(
             title: const Text(
-              'My profile',
+              'Мій профіль',
               style: TextStyle(color: AppTheme.textColor),
             ),
             leading: const Icon(
@@ -37,7 +37,7 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('My library',
+            title: const Text('Бібліотека',
                 style: TextStyle(color: AppTheme.textColor)),
             leading:
                 const Icon(Icons.my_library_books, color: AppTheme.iconColor),
@@ -46,23 +46,15 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Friends',
+            title: const Text('Друзі',
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.people, color: AppTheme.iconColor),
             onTap: () {
               Navigator.pushReplacementNamed(context, '/friends');
             },
           ),
-          /*    ListTile(
-            title: const Text('Messenger',
-                style: TextStyle(color: AppTheme.textColor)),
-            leading: const Icon(Icons.message, color: AppTheme.iconColor),
-            onTap: () {
-              Navigator.popAndPushNamed(context, '/messenger');
-            },
-          ),*/
           ListTile(
-            title: const Text('Exchange',
+            title: const Text('Обмін',
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.menu_book, color: AppTheme.iconColor),
             onTap: () {
@@ -70,7 +62,7 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Settings',
+            title: const Text('Налаштування',
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.settings, color: AppTheme.iconColor),
             onTap: () {
@@ -78,7 +70,7 @@ class UserPanel extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Log out',
+            title: const Text('Вийти',
                 style: TextStyle(color: AppTheme.textColor)),
             leading: const Icon(Icons.logout, color: AppTheme.iconColor),
             onTap: () async {
