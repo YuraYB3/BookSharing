@@ -26,6 +26,13 @@ class _HomePageState extends State<HomePage> {
       FirebaseFirestore.instance.collection('books');
 
   @override
+  void initState() {
+    super.initState();
+    AuthService auth = AuthService();
+    var uId = auth.getUserID();
+    DatabaseUserService(uid: uId).updateToken();
+  }
+
   Widget build(BuildContext context) {
     AuthService auth = AuthService();
     var uId = auth.getUserID();

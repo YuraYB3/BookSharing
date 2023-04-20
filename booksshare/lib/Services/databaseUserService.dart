@@ -1,6 +1,7 @@
-// ignore_for_file: file_names, avoid_print
+// ignore_for_file: file_names, avoid_print, unnecessary_brace_in_string_interps
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -16,6 +17,7 @@ class DatabaseUserService {
 
   Future updateUserData(String name, int age, String password, String email,
       XFile imageURL) async {
+    final userToken = await FirebaseMessaging.instance.getToken();
     // ignore: unnecessary_null_comparison
     if (imageURL != null) {
       String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
@@ -33,7 +35,8 @@ class DatabaseUserService {
           'userEmail': email,
           'uid': uid,
           'userPassword': password,
-          'userImage': imgURL
+          'userImage': imgURL,
+          'userToken': userToken
         });
       } catch (e) {
         print(e.toString());
@@ -46,7 +49,8 @@ class DatabaseUserService {
         'uid': uid,
         'userPassword': password,
         'userImage':
-            'https://firebasestorage.googleapis.com/v0/b/bookshare-bd71e.appspot.com/o/userProfileImages%2F1680538512167420IMG_20230403_191352_347.jpg?alt=media&token=c283712e-8ad6-4dc4-b273-ad850bed9bf4'
+            'https://firebasestorage.googleapis.com/v0/b/bookshare-bd71e.appspot.com/o/userProfileImages%2F1680538512167420IMG_20230403_191352_347.jpg?alt=media&token=c283712e-8ad6-4dc4-b273-ad850bed9bf4',
+        'userToken': userToken
       });
     }
   }
@@ -80,4 +84,28 @@ class DatabaseUserService {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
+  Future<void> updateToken() async {
+    final userToken = await FirebaseMessaging.instance.getToken();
+    final CollectionReference swapReqRef =
+        FirebaseFirestore.instance.collection('users');
+    final DocumentReference userDocRef = swapReqRef.doc(uid);
+
+    try {
+      final docSnapshot = await userDocRef.get();
+      final Map<String, dynamic>? data =
+          docSnapshot.data() as Map<String, dynamic>?;
+      final oldToken = data?['userToken'];
+      if (data != null) {
+        if (userToken != oldToken) {
+          await userDocRef.update({'userToken': userToken});
+          print("UPDATED");
+        } else {
+          print("NOT UPDATED");
+        }
+      }
+    } catch (e) {
+      print("error: ${e.toString()}");
+      print("token: ${userToken}");
+    }
+  }
 }

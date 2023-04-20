@@ -2,6 +2,7 @@
 
 import 'package:booksshare/Screens/Friends/friendsScreen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -15,9 +16,16 @@ import 'Screens/Settings/userSettings.dart';
 import 'Services/authService.dart';
 import 'Wrapper.dart';
 
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  print('Handling a background message ${message.messageId}');
+  print('Handling a background message ${message.notification!.title}');
+  print('Handling a background message ${message.notification!.body}');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp(const MyApp());
 }
 

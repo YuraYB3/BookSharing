@@ -9,6 +9,7 @@ class UserModel {
   final int? userAge;
   final String? userPassword;
   final String uid;
+  final String? userToken;
 
   UserModel(
       {required this.uid,
@@ -16,7 +17,8 @@ class UserModel {
       this.userEmail,
       this.userAge,
       this.userImage,
-      this.userPassword});
+      this.userPassword,
+      this.userToken});
 
   toJson() {
     return {
@@ -25,28 +27,17 @@ class UserModel {
       'userImage': userImage,
       'userAge': userAge,
       'userPassword': userPassword,
-      'uid': uid
+      'uid': uid,
+      'userToken': userToken
     };
   }
 
-  factory UserModel.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    final data = document.data()!;
-    return UserModel(
-        userNickName: data['name'],
-        userEmail: data['email'],
-        userImage: data['userImage'],
-        userAge: data['userAge'],
-        userPassword: data['userPassword'],
-        uid: data['uid']);
-  }
-
   static UserModel fromJson(Map<String, dynamic> json) => UserModel(
-        userNickName: json['name'],
-        userEmail: json['email'],
-        userImage: json['userImage'],
-        userAge: json['userAge'],
-        userPassword: json['userPassword'],
-        uid: json['uid'],
-      );
+      userNickName: json['name'],
+      userEmail: json['email'],
+      userImage: json['userImage'],
+      userAge: json['userAge'],
+      userPassword: json['userPassword'],
+      uid: json['uid'],
+      userToken: json['userToken']);
 }
