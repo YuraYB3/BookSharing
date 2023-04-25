@@ -123,82 +123,114 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                 Map<String, dynamic> bookdata =
                                     bookSnapshot.data!.data()
                                         as Map<String, dynamic>;
-                                return Card(
-                                  borderOnForeground: true,
-                                  elevation: 5.5,
-                                  shadowColor: AppTheme.secondBackgroundColor,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.start,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      SizedBox(
-                                          height: 100,
-                                          width: 90,
-                                          child: Image(
-                                              image: CachedNetworkImageProvider(
-                                                bookdata['cover'],
-                                              ),
-                                              fit: BoxFit.cover)),
-                                      Padding(
-                                        padding:
-                                            const EdgeInsets.only(left: 10),
-                                        child: Column(
+                                return Padding(
+                                  padding: const EdgeInsets.all(8.0),
+                                  child: Card(
+                                    borderOnForeground: true,
+                                    elevation: 5.5,
+                                    shadowColor: AppTheme.secondBackgroundColor,
+                                    child: Column(
+                                      children: [
+                                        Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.start,
                                           crossAxisAlignment:
-                                              CrossAxisAlignment.start,
+                                              CrossAxisAlignment.center,
                                           children: [
-                                            Row(
-                                              children: [
-                                                const Text(
-                                                  "Назва книги:",
-                                                  style: TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Container(
-                                                  width: 1,
-                                                ),
-                                                Text(
-                                                  '${bookdata['name']}',
-                                                  style: const TextStyle(
-                                                      color: Colors.grey),
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: [
-                                                Text(
-                                                  exchangeType == 'sender'
-                                                      ? "Власник книги:"
-                                                      : "Орендар:",
-                                                  style: const TextStyle(
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                Container(
-                                                  width: 1,
-                                                ),
-                                                Text('${userdata['name']}',
-                                                    style: const TextStyle(
-                                                        color: Colors.grey)),
-                                              ],
+                                            SizedBox(
+                                                height: 150,
+                                                width: 120,
+                                                child: Image(
+                                                    image:
+                                                        CachedNetworkImageProvider(
+                                                      bookdata['cover'],
+                                                    ),
+                                                    fit: BoxFit.cover)),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
+                                              child: Column(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.start,
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: [
+                                                  Row(
+                                                    children: [
+                                                      const Text(
+                                                        "Назва книги:",
+                                                        style: TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Container(
+                                                        width: 1,
+                                                      ),
+                                                      Text(
+                                                        '${bookdata['name']}',
+                                                        style: const TextStyle(
+                                                            color: Colors.grey),
+                                                      ),
+                                                    ],
+                                                  ),
+                                                  Row(
+                                                    children: [
+                                                      Text(
+                                                        exchangeType == 'sender'
+                                                            ? "Власник книги:"
+                                                            : "Орендар:",
+                                                        style: const TextStyle(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold),
+                                                      ),
+                                                      Container(
+                                                        width: 1,
+                                                      ),
+                                                      Text(
+                                                          '${userdata['name']}',
+                                                          style:
+                                                              const TextStyle(
+                                                                  color: Colors
+                                                                      .grey)),
+                                                    ],
+                                                  ),
+                                                ],
+                                              ),
                                             ),
                                           ],
                                         ),
-                                      ),
-                                      Expanded(child: Container()),
-                                      exchangeType == "sender"
-                                          ? Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 2),
-                                              child: returnBookButton(
-                                                  bookswap.desiredBookID,
-                                                  bookswap.bookSwapID,
-                                                  bookswap.senderID))
-                                          : Container(),
-                                    ],
+                                        exchangeType == "sender"
+                                            ? Container(
+                                                color: AppTheme
+                                                    .secondBackgroundColor,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      color: AppTheme
+                                                          .secondBackgroundColor,
+                                                      child: Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                      .only(
+                                                                  right: 2),
+                                                          child: returnBookButton(
+                                                              bookswap
+                                                                  .desiredBookID,
+                                                              bookswap
+                                                                  .bookSwapID,
+                                                              bookswap
+                                                                  .senderID)),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )
+                                            : Container(),
+                                      ],
+                                    ),
                                   ),
                                 );
                               }
@@ -285,6 +317,9 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                 );
               });
         },
-        child: const Text('Повернути книгу'));
+        child: const Text(
+          'Повернути книгу',
+          style: TextStyle(color: Colors.white),
+        ));
   }
 }

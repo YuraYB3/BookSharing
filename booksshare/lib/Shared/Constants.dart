@@ -14,3 +14,13 @@ var textInputDecoration = const InputDecoration(
         borderRadius: BorderRadius.all(Radius.circular(20)),
         borderSide:
             BorderSide(color: AppTheme.secondBackgroundColor, width: 2.0)));
+var textInputDecorationWhite = const InputDecoration(
+    hintText: "Hint Text",
+    hintStyle: TextStyle(color: Colors.white), // змінити колір тексту на білий
+    labelStyle: TextStyle(color: Colors.white),
+    enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide: BorderSide(color: AppTheme.textColor, width: 1.0)),
+    focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.all(Radius.circular(20)),
+        borderSide: BorderSide(color: AppTheme.textColor, width: 2.0)));

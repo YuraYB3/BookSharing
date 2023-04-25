@@ -62,11 +62,24 @@ class UserReviews extends StatelessWidget {
                             ConnectionState.done) {
                           if (!bookSnapshot.hasData ||
                               bookSnapshot.data!.data() == null) {
-                            return const Center(
-                              child: Text(
-                                'Книгу було видалено :(',
-                                style: TextStyle(color: Colors.white),
-                              ),
+                            return SizedBox(
+                              height: 80,
+                              child: Card(
+                                  elevation: 10,
+                                  borderOnForeground: false,
+                                  shadowColor: AppTheme.secondBackgroundColor,
+                                  color: Colors.amber[100],
+                                  margin: const EdgeInsets.all(10),
+                                  child: Container(
+                                    color: Colors.amber[50],
+                                    margin: const EdgeInsets.all(10),
+                                    child: const Center(
+                                      child: Text(
+                                        'Книгу було видалено :(',
+                                        style: TextStyle(color: Colors.black),
+                                      ),
+                                    ),
+                                  )),
                             );
                           }
                           Map<String, dynamic> bookdata =
@@ -150,7 +163,9 @@ class UserReviews extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text('${review.review.substring(0, 32)}...'),
+                        child: review.review.length > 32
+                            ? Text('${review.review.substring(0, 32)}...')
+                            : Text('${review.review}...'),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

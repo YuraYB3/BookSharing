@@ -127,7 +127,9 @@ class ReviewWidget extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(top: 8.0),
-                        child: Text('${review.review.substring(0, 32)}...'),
+                        child: review.review.length > 32
+                            ? Text('${review.review.substring(0, 32)}...')
+                            : Text('${review.review}...'),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,

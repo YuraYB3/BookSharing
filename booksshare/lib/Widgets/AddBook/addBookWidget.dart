@@ -106,8 +106,24 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                     height: 50,
                                     width: 200,
                                     child: TextFormField(
-                                        decoration: textInputDecoration
-                                            .copyWith(hintText: "Назва книги"),
+                                        decoration: const InputDecoration(
+                                            hintText: "Назва книги",
+                                            hintStyle:
+                                                TextStyle(color: Colors.white),
+                                            labelStyle:
+                                                TextStyle(color: Colors.white),
+                                            enabledBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                                borderSide: BorderSide(
+                                                    color: AppTheme.textColor,
+                                                    width: 1.0)),
+                                            focusedBorder: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(20)),
+                                                borderSide: BorderSide(
+                                                    color: AppTheme.textColor,
+                                                    width: 2.0))),
                                         validator: (value) => value!.isEmpty
                                             ? 'Введіть назву книги'
                                             : null,
@@ -122,8 +138,24 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                     height: 50,
                                     width: 200,
                                     child: TextFormField(
-                                      decoration: textInputDecoration.copyWith(
-                                          hintText: "Автор книги"),
+                                      decoration: const InputDecoration(
+                                          hintText: "Автор книги",
+                                          hintStyle:
+                                              TextStyle(color: Colors.white),
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              borderSide: BorderSide(
+                                                  color: AppTheme.textColor,
+                                                  width: 1.0)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              borderSide: BorderSide(
+                                                  color: AppTheme.textColor,
+                                                  width: 2.0))),
                                       validator: (value) => value!.isEmpty
                                           ? 'Введіть автор книги'
                                           : null,
@@ -139,8 +171,24 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                     height: 50,
                                     width: 200,
                                     child: TextFormField(
-                                      decoration: textInputDecoration.copyWith(
-                                          hintText: "Опис"),
+                                      decoration: const InputDecoration(
+                                          hintText: "Опис",
+                                          hintStyle:
+                                              TextStyle(color: Colors.white),
+                                          labelStyle:
+                                              TextStyle(color: Colors.white),
+                                          enabledBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              borderSide: BorderSide(
+                                                  color: AppTheme.textColor,
+                                                  width: 1.0)),
+                                          focusedBorder: OutlineInputBorder(
+                                              borderRadius: BorderRadius.all(
+                                                  Radius.circular(20)),
+                                              borderSide: BorderSide(
+                                                  color: AppTheme.textColor,
+                                                  width: 2.0))),
                                       validator: (value) => value!.isEmpty
                                           ? 'Введіть опис книги'
                                           : null,

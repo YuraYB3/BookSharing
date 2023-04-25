@@ -268,16 +268,7 @@ class _UserProfileState extends State<UserProfile> {
                                                         .secondBackgroundColor)),
                                         child: const Text('Надіслати запит'),
                                       ))
-                                    : Center(
-                                        child: ElevatedButton(
-                                        onPressed: () {},
-                                        style: const ButtonStyle(
-                                            backgroundColor:
-                                                MaterialStatePropertyAll<Color>(
-                                                    Color.fromARGB(
-                                                        255, 208, 18, 18))),
-                                        child: const Text('Повідомлення'),
-                                      )))
+                                    : Container())
                             : Container()
                       ],
                     ),

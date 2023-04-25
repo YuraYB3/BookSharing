@@ -54,7 +54,10 @@ class _HomePageState extends State<HomePage> {
               ),
               backgroundColor: AppTheme.backgroundColor,
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                  backgroundColor: Colors.white,
+                ),
               ));
         }
         List<UserModel> users = snapshot.data!;
@@ -66,7 +69,10 @@ class _HomePageState extends State<HomePage> {
               ),
               backgroundColor: AppTheme.secondBackgroundColor,
               body: const Center(
-                child: CircularProgressIndicator(),
+                child: CircularProgressIndicator(
+                  color: Colors.amber,
+                  backgroundColor: Colors.white,
+                ),
               ));
         }
         var user = users.first;

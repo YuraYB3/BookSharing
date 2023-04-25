@@ -115,27 +115,10 @@ class _BookSearchPageState extends State<BookSearchPage> {
                               },
                             );
                           } else {
-                            return const Center(
-                              child: Text('Введіть більше трьох символів',
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                      fontSize: 24.0,
-                                      decorationStyle:
-                                          TextDecorationStyle.solid,
-                                      fontWeight: FontWeight.bold,
-                                      color: AppTheme.secondBackgroundColor)),
-                            );
+                            return Container();
                           }
                         } else {
-                          return const Center(
-                            child: Text('Введіть більше трьох символів',
-                                textAlign: TextAlign.center,
-                                style: TextStyle(
-                                    fontSize: 24.0,
-                                    decorationStyle: TextDecorationStyle.solid,
-                                    fontWeight: FontWeight.bold,
-                                    color: AppTheme.secondBackgroundColor)),
-                          );
+                          return Container();
                         }
                       });
                 },

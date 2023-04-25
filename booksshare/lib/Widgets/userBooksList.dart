@@ -79,12 +79,20 @@ class UserBooksList {
                             children: [
                               SizedBox(
                                   height: 150,
-                                  width: 120,
-                                  child: Image(
-                                      image: CachedNetworkImageProvider(
-                                        book.cover,
-                                      ),
-                                      fit: BoxFit.cover)),
+                                  width: 112.5,
+                                  child: Stack(
+                                      alignment: Alignment.center,
+                                      children: [
+                                        const CircularProgressIndicator(
+                                          color: Colors.amber,
+                                          backgroundColor: Colors.white,
+                                        ),
+                                        Image(
+                                            image: CachedNetworkImageProvider(
+                                              book.cover,
+                                            ),
+                                            fit: BoxFit.cover),
+                                      ])),
                               Padding(
                                 padding: const EdgeInsets.only(left: 10),
                                 child: Column(

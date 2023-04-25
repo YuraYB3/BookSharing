@@ -1,6 +1,7 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, use_build_context_synchronously
 import 'package:flutter/material.dart';
 import 'package:flip_card/flip_card.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
 
 import '../../Services/authService.dart';
@@ -217,49 +218,60 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                                 width: 170,
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    bool confirmDelete = await showDialog(
-                                      context: context,
-                                      builder: (BuildContext context) {
-                                        return AlertDialog(
-                                          backgroundColor:
-                                              AppTheme.secondBackgroundColor,
-                                          title: const Text(
-                                            'Видалити книгу',
-                                            style: TextStyle(
-                                                color: AppTheme.textColor),
-                                          ),
-                                          content: const Text(
-                                            'Ви дійсно хочете видалити книгу?',
-                                            style: TextStyle(
-                                                color: AppTheme.textColor),
-                                          ),
-                                          actions: [
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, false),
-                                              child: const Text(
-                                                'Відмінити',
-                                                style: TextStyle(
-                                                    color: AppTheme.iconColor),
-                                              ),
+                                    try {
+                                      bool confirmDelete = await showDialog(
+                                        context: context,
+                                        barrierDismissible: true,
+                                        builder: (BuildContext context) {
+                                          return AlertDialog(
+                                            backgroundColor:
+                                                AppTheme.secondBackgroundColor,
+                                            title: const Text(
+                                              'Видалити книгу',
+                                              style: TextStyle(
+                                                  color: AppTheme.textColor),
                                             ),
-                                            TextButton(
-                                              onPressed: () =>
-                                                  Navigator.pop(context, true),
-                                              child: const Text('Видалити',
+                                            content: const Text(
+                                              'Ви дійсно хочете видалити книгу?',
+                                              style: TextStyle(
+                                                  color: AppTheme.textColor),
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, false),
+                                                child: const Text(
+                                                  'Відмінити',
                                                   style: TextStyle(
                                                       color:
-                                                          AppTheme.iconColor)),
-                                            ),
-                                          ],
+                                                          AppTheme.iconColor),
+                                                ),
+                                              ),
+                                              TextButton(
+                                                onPressed: () => Navigator.pop(
+                                                    context, true),
+                                                child: const Text('Видалити',
+                                                    style: TextStyle(
+                                                        color: AppTheme
+                                                            .iconColor)),
+                                              ),
+                                            ],
+                                          );
+                                        },
+                                      );
+                                      if (confirmDelete == true) {
+                                        BookService bookService =
+                                            BookService(auth.getUserID());
+                                        bookService.deleteBook(bookID);
+                                        Navigator.pop(context);
+                                        Fluttertoast.showToast(
+                                          msg: 'Книгу видалено!',
+                                          gravity: ToastGravity.BOTTOM,
+                                          backgroundColor: Colors.green,
+                                          textColor: Colors.white,
                                         );
-                                      },
-                                    );
-                                    if (confirmDelete == true) {
-                                      BookService bookService =
-                                          BookService(auth.getUserID());
-                                      bookService.deleteBook(bookID);
-                                      // ignore: use_build_context_synchronously
+                                      }
+                                    } catch (e) {
                                       Navigator.pop(context);
                                     }
                                   },
