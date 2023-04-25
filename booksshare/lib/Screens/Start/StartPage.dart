@@ -2,6 +2,7 @@
 
 // ignore: use_key_in_widget_constructors
 import 'dart:io';
+import 'package:booksshare/Screens/Start/forgotPasswordPage.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -128,7 +129,10 @@ class _StartPageState extends State<StartPage> {
                   style: TextStyle(color: AppTheme.secondBackgroundColor),
                 )),
             TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (context) => ForgotPasswordPage()));
+                },
                 child: const Text(
                   'Забули пароль?',
                   style: TextStyle(color: AppTheme.secondBackgroundColor),

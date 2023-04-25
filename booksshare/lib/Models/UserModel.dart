@@ -7,9 +7,9 @@ class UserModel {
   final String? userEmail;
   final String? userImage;
   final int? userAge;
-  final String? userPassword;
   final String uid;
   final String? userToken;
+  final bool? emailVerified;
 
   UserModel(
       {required this.uid,
@@ -17,8 +17,8 @@ class UserModel {
       this.userEmail,
       this.userAge,
       this.userImage,
-      this.userPassword,
-      this.userToken});
+      this.userToken,
+      this.emailVerified});
 
   toJson() {
     return {
@@ -26,9 +26,9 @@ class UserModel {
       "email": userEmail,
       'userImage': userImage,
       'userAge': userAge,
-      'userPassword': userPassword,
       'uid': uid,
-      'userToken': userToken
+      'userToken': userToken,
+      'emailVerified': emailVerified
     };
   }
 
@@ -37,7 +37,7 @@ class UserModel {
       userEmail: json['email'],
       userImage: json['userImage'],
       userAge: json['userAge'],
-      userPassword: json['userPassword'],
       uid: json['uid'],
-      userToken: json['userToken']);
+      userToken: json['userToken'],
+      emailVerified: json['emailVerified']);
 }

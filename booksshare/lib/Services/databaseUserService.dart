@@ -36,7 +36,8 @@ class DatabaseUserService {
           'uid': uid,
           'userPassword': password,
           'userImage': imgURL,
-          'userToken': userToken
+          'userToken': userToken,
+          'emailVerified': false
         });
       } catch (e) {
         print(e.toString());
@@ -62,7 +63,6 @@ class DatabaseUserService {
           uid: doc.get('uid'),
           userAge: doc.get('userAge'),
           userEmail: doc.get('userEmail'),
-          userPassword: doc.get('userPassword'),
           userImage: doc.get('userImage'));
     }).toList();
   }
@@ -84,6 +84,7 @@ class DatabaseUserService {
       .snapshots()
       .map((snapshot) =>
           snapshot.docs.map((doc) => UserModel.fromJson(doc.data())).toList());
+
   Future<void> updateToken() async {
     final userToken = await FirebaseMessaging.instance.getToken();
     final CollectionReference swapReqRef =

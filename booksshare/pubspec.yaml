@@ -55,6 +55,7 @@ dependencies:
   flutter_rating_bar: ^4.0.1
   badges: ^3.0.3
   flutter_local_notifications: ^13.0.0
+  email_validator: ^2.1.17
 
 
 dev_dependencies:
