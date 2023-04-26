@@ -1,4 +1,4 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, avoid_print
 
 import 'package:booksshare/Screens/Friends/friendsScreen.dart';
 import 'package:firebase_core/firebase_core.dart';

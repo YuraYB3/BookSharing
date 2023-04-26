@@ -207,7 +207,7 @@ class _UserSettingsState extends State<UserSettings> {
           ),
         ),
         AnimatedContainer(
-          duration: Duration(),
+          duration: const Duration(),
           height: 50,
           color: const Color.fromARGB(255, 232, 232, 228),
           child: Padding(
