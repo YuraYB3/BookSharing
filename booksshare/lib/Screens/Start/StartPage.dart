@@ -131,7 +131,7 @@ class _StartPageState extends State<StartPage> {
             TextButton(
                 onPressed: () {
                   Navigator.of(context).push(MaterialPageRoute(
-                      builder: (context) => ForgotPasswordPage()));
+                      builder: (context) => const ForgotPasswordPage()));
                 },
                 child: const Text(
                   'Забули пароль?',

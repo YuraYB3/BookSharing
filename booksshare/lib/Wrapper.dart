@@ -1,6 +1,5 @@
 // ignore_for_file: file_names
 
-import 'package:booksshare/Screens/Start/verifyEmailPage.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

@@ -78,5 +78,9 @@ class BookService {
 
   Future<void> deleteBook(String bookId) async {
     await FirebaseFirestore.instance.collection('books').doc(bookId).delete();
+    await FirebaseFirestore.instance
+        .collection('bookSwap')
+        .doc(bookId)
+        .delete();
   }
 }

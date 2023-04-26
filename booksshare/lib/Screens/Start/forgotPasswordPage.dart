@@ -1,10 +1,9 @@
+// ignore_for_file: file_names
+
 import 'package:booksshare/Shared/appTheme.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../Shared/constants.dart';

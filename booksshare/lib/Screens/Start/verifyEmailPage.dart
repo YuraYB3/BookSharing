@@ -1,14 +1,11 @@
 // ignore_for_file: file_names
 
 import 'dart:async';
-import 'package:booksshare/Screens/Home/homePage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:provider/provider.dart';
 
-import '../../Models/userModel.dart';
 import '../../Shared/appTheme.dart';
 
 class VerifyEmailPage extends StatefulWidget {
@@ -58,7 +55,7 @@ class _VerifyEmailPageState extends State<VerifyEmailPage> {
         Fluttertoast.showToast(
           msg: 'Підтверджено!',
           gravity: ToastGravity.BOTTOM,
-          backgroundColor: Color.fromARGB(255, 47, 231, 93),
+          backgroundColor: const Color.fromARGB(255, 47, 231, 93),
           textColor: Colors.white,
         );
       } catch (e) {

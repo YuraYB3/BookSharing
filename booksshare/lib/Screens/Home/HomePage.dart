@@ -2,7 +2,6 @@
 
 import 'package:booksshare/Screens/Start/verifyEmailPage.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -35,6 +34,7 @@ class _HomePageState extends State<HomePage> {
     DatabaseUserService(uid: uId).updateToken();
   }
 
+  @override
   Widget build(BuildContext context) {
     AuthService auth = AuthService();
     var uId = auth.getUserID();
