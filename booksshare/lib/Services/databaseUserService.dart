@@ -9,6 +9,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../Models/userModel.dart';
+import '../Screens/Start/startPage.dart';
 
 class DatabaseUserService {
   final String? uid = FirebaseAuth.instance.currentUser!.uid;
@@ -110,9 +111,9 @@ class DatabaseUserService {
   }
 
   Future<void> updateName(String newName) async {
-    final CollectionReference swapReqRef =
+    final CollectionReference updateRegRef =
         FirebaseFirestore.instance.collection('users');
-    final DocumentReference userDocRef = swapReqRef.doc(uid);
+    final DocumentReference userDocRef = updateRegRef.doc(uid);
 
     await userDocRef.update({'name': newName});
     print("UPDATED");
@@ -132,6 +133,25 @@ class DatabaseUserService {
     }
   }
 
+  Future<void> updateProfileImage(XFile imageURL) async {
+    final CollectionReference updateReqRef =
+        FirebaseFirestore.instance.collection('users');
+    final DocumentReference userDocRef = updateReqRef.doc(uid);
+    String uniqueFileName = DateTime.now().microsecondsSinceEpoch.toString();
+    uniqueFileName += imageURL.name;
+    Reference reference = FirebaseStorage.instance.ref();
+    Reference referenceDirImages = reference.child('userProfileImages');
+    Reference referenceImagesToUpload =
+        referenceDirImages.child(uniqueFileName);
+    try {
+      await referenceImagesToUpload.putFile(File(imageURL.path));
+      var imgURL = await referenceImagesToUpload.getDownloadURL();
+      await userDocRef.update({'userImage': imgURL});
+    } catch (e) {}
+
+    print("UPDATED");
+  }
+
   String? _getCurrentUserEmail() {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser != null) {
@@ -139,5 +159,25 @@ class DatabaseUserService {
     } else {
       return null;
     }
+  }
+
+  Future<void> deleteAccount(BuildContext context) async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    final userID = currentUser!.uid;
+
+    await currentUser.delete();
+    // ignore: use_build_context_synchronously
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const StartPage()),
+      (route) => false,
+    );
+
+    Fluttertoast.showToast(
+      msg: 'Профіль видалено!',
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+    );
   }
 }

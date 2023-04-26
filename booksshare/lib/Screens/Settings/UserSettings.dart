@@ -3,6 +3,7 @@
 import 'package:booksshare/Services/databaseUserService.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../Shared/appTheme.dart';
 import '../../Widgets/AppBar/userAppBar.dart';
@@ -212,6 +213,38 @@ class _UserSettingsState extends State<UserSettings> {
               ),
             ),
           ),
+          onTap: () async {
+            ImagePicker imagePicker = ImagePicker();
+
+            XFile? file =
+                await imagePicker.pickImage(source: ImageSource.gallery);
+
+            if (file != null) {
+              try {
+                databaseUserService.updateProfileImage(file);
+                Fluttertoast.showToast(
+                  msg: 'Оновлено',
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: const Color.fromARGB(255, 43, 200, 29),
+                  textColor: Colors.white,
+                );
+              } catch (e) {
+                Fluttertoast.showToast(
+                  msg: e.toString(),
+                  gravity: ToastGravity.BOTTOM,
+                  backgroundColor: const Color.fromARGB(255, 200, 29, 29),
+                  textColor: Colors.white,
+                );
+              }
+            } else {
+              Fluttertoast.showToast(
+                msg: 'Ви не обрали фото',
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: const Color.fromARGB(255, 200, 29, 29),
+                textColor: Colors.white,
+              );
+            }
+          },
         ),
       ],
     );
@@ -288,6 +321,9 @@ class _UserSettingsState extends State<UserSettings> {
               ),
             ),
           ),
+          onTap: () async {
+            await databaseUserService.deleteAccount(context);
+          },
         ),
       ],
     );
@@ -334,7 +370,43 @@ class _UserSettingsState extends State<UserSettings> {
               ),
             ),
           ),
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (context) {
+                  return infoWidget();
+                });
+          },
         ),
+      ],
+    );
+  }
+
+  Widget infoWidget() {
+    return AlertDialog(
+      title: const Center(
+          child: Text(
+        "Інформація",
+        style: TextStyle(color: Colors.white),
+      )),
+      backgroundColor: AppTheme.secondBackgroundColor,
+      content: const SizedBox(
+        height: 170,
+        width: 250,
+        child: Text(
+          'Додаток створив: \nСтудент IV курсу\nспеціальості комп\'ютерних наук\nБережник Юрій Юрійович \n\nДодаток було створено під час виконання дипломної роботи.\n\nТНТУ, 2023',
+          style: TextStyle(color: Colors.white),
+        ),
+      ),
+      actions: [
+        TextButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            child: const Text(
+              "Закрити",
+              style: TextStyle(color: Colors.white),
+            )),
       ],
     );
   }

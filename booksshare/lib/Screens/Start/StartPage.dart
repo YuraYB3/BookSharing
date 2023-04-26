@@ -163,45 +163,38 @@ class _StartPageState extends State<StartPage> {
                   Padding(
                     padding: const EdgeInsets.only(top: 8, left: 15),
                     child: Container(
-                      height: 80,
-                      width: 80,
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(40),
-                          color: Colors.grey.shade300),
-                      child: isImageLoaded == true
-                          ? GestureDetector(
-                              onTap: () async {
-                                ImagePicker imagePicker = ImagePicker();
-                                XFile? f = await imagePicker.pickImage(
-                                    source: ImageSource.gallery);
+                        height: 80,
+                        width: 80,
+                        decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(40),
+                            color: Colors.grey.shade300),
+                        child: GestureDetector(
+                          onTap: () async {
+                            ImagePicker imagePicker = ImagePicker();
+                            try {
+                              XFile? f = await imagePicker.pickImage(
+                                  source: ImageSource.gallery);
+                              if (f != null) {
                                 setState(() {
                                   file = f;
                                   isImageLoaded = true;
                                 });
-                              },
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(40),
-                                child: Image.file(File(file!.path),
-                                    fit: BoxFit.cover),
-                              ),
-                            )
-                          : Center(
-                              child: IconButton(
-                                  onPressed: () async {
-                                    ImagePicker imagePicker = ImagePicker();
-                                    XFile? f = await imagePicker.pickImage(
-                                        source: ImageSource.gallery);
-                                    setState(() {
-                                      file = f;
-                                      isImageLoaded = true;
-                                    });
-                                  },
-                                  icon: const Icon(
+                              }
+                            } catch (e) {}
+                          },
+                          child: isImageLoaded
+                              ? ClipRRect(
+                                  borderRadius: BorderRadius.circular(40),
+                                  child: Image.file(File(file!.path),
+                                      fit: BoxFit.cover),
+                                )
+                              : const Center(
+                                  child: Icon(
                                     Icons.add_a_photo,
                                     color: Colors.black87,
-                                  )),
-                            ),
-                    ),
+                                  ),
+                                ),
+                        )),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(right: 15, top: 15),
