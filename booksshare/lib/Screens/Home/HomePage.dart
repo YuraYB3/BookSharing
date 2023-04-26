@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
     AuthService auth = AuthService();
     var uId = auth.getUserID();
-    DatabaseUserService(uid: uId).updateToken();
+    DatabaseUserService().updateToken();
   }
 
   @override
@@ -41,7 +41,7 @@ class _HomePageState extends State<HomePage> {
     var bookService = BookService(uId!);
     UserAppBar userBar = UserAppBar();
     UserBooksList booksList = UserBooksList();
-    DatabaseUserService databaseUserService = DatabaseUserService(uid: uId);
+    DatabaseUserService databaseUserService = DatabaseUserService();
     var userStream = databaseUserService.readUser(uId);
     return StreamBuilder(
       stream: userStream,
@@ -81,7 +81,7 @@ class _HomePageState extends State<HomePage> {
           return const VerifyEmailPage();
         }
         return StreamProvider<List<UserModel>?>.value(
-            value: DatabaseUserService(uid: '').users,
+            value: DatabaseUserService().users,
             initialData: null,
             child: Scaffold(
                 appBar: userBar.headerBar(context),

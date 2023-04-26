@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
+import 'package:booksshare/Services/databaseUserService.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../Shared/appTheme.dart';
 import '../../Widgets/AppBar/userAppBar.dart';
@@ -17,6 +19,8 @@ class _UserSettingsState extends State<UserSettings> {
   UserAppBar userAppBar = UserAppBar();
   bool isChangeNameClicked = false;
   bool isChangePasswordClicked = false;
+  var _newNickName = '';
+  DatabaseUserService databaseUserService = DatabaseUserService();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,7 +111,7 @@ class _UserSettingsState extends State<UserSettings> {
           color: const Color.fromARGB(255, 232, 232, 228),
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: isChangeNameClicked
+            child: isChangeNameClicked == false
                 ? Row(
                     children: [
                       const Icon(
@@ -146,10 +150,37 @@ class _UserSettingsState extends State<UserSettings> {
                       const SizedBox(
                         width: 5,
                       ),
-                      const SizedBox(width: 150, child: TextField()),
+                      SizedBox(
+                          width: 150,
+                          child: TextField(
+                            onChanged: (value) {
+                              _newNickName = value;
+                            },
+                          )),
                       Expanded(child: Container()),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () async {
+                          if (_newNickName.trim().isEmpty) {
+                            Fluttertoast.showToast(
+                              msg: 'Введіть нікнейм!!!',
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.red,
+                              textColor: Colors.white,
+                            );
+                          } else {
+                            await databaseUserService.updateName(_newNickName);
+                            setState(() {
+                              isChangeNameClicked = !isChangeNameClicked;
+                              _newNickName = '';
+                            });
+                            Fluttertoast.showToast(
+                              msg: 'Нікнейм оновлено!',
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor: Colors.green,
+                              textColor: Colors.white,
+                            );
+                          }
+                        },
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20)),
@@ -206,65 +237,35 @@ class _UserSettingsState extends State<UserSettings> {
             ],
           ),
         ),
-        AnimatedContainer(
-          duration: const Duration(),
-          height: 50,
-          color: const Color.fromARGB(255, 232, 232, 228),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: isChangePasswordClicked
-                ? Row(
-                    children: [
-                      const Icon(
-                        Icons.password,
-                        color: Colors.black,
-                      ),
-                      const SizedBox(
-                        width: 15,
-                      ),
-                      const Text('Змінити пароль'),
-                      Expanded(child: Container()),
-                      IconButton(
-                        icon: const Icon(Icons.arrow_forward_ios),
-                        onPressed: () {
-                          setState(() {
-                            isChangePasswordClicked = !isChangePasswordClicked;
-                          });
-                        },
-                      )
-                    ],
-                  )
-                : Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back_ios),
-                        onPressed: () {
-                          setState(() {
-                            isChangePasswordClicked = !isChangePasswordClicked;
-                          });
-                        },
-                      ),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const Text('Новий пароль:'),
-                      const SizedBox(
-                        width: 5,
-                      ),
-                      const SizedBox(width: 150, child: TextField()),
-                      Expanded(child: Container()),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20)),
-                          backgroundColor: AppTheme.secondBackgroundColor,
-                        ),
-                        child: const Text('ОК'),
-                      )
-                    ],
-                  ),
+        GestureDetector(
+          child: Container(
+            height: 50,
+            color: const Color.fromARGB(255, 232, 232, 228),
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    const Icon(
+                      Icons.password,
+                      color: Colors.black,
+                    ),
+                    const SizedBox(
+                      width: 15,
+                    ),
+                    const Text('Змінити пароль'),
+                    Expanded(child: Container()),
+                  ],
+                )),
           ),
+          onTap: () async {
+            await databaseUserService.updatePassword();
+            Fluttertoast.showToast(
+              msg: 'Лист відправлено!',
+              gravity: ToastGravity.BOTTOM,
+              backgroundColor: const Color.fromARGB(255, 29, 200, 38),
+              textColor: Colors.white,
+            );
+          },
         ),
         GestureDetector(
           child: Container(

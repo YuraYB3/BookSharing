@@ -33,7 +33,7 @@ class _ExchangeScreenState extends State<ExchangeScreen>
   @override
   Widget build(BuildContext context) {
     return StreamProvider<List<UserModel>?>.value(
-        value: DatabaseUserService(uid: '').users,
+        value: DatabaseUserService().users,
         initialData: null,
         child: Scaffold(
             drawer: UserPanel(),

@@ -51,7 +51,7 @@ class _UserProfileState extends State<UserProfile> {
     var currentUser = authService.getUserID();
     BookService bookService = BookService(widget.userID);
     return StreamProvider<List<UserModel>?>.value(
-        value: DatabaseUserService(uid: '').users,
+        value: DatabaseUserService().users,
         initialData: null,
         child: Scaffold(
             appBar: userAppBar.headerBar(context),

@@ -45,8 +45,8 @@ class _FriendsScreenState extends State<FriendsScreen>
           indicatorWeight: 3,
           labelColor: AppTheme.textColor,
           tabs: const [
-            Tab(text: 'Your friends'),
-            Tab(text: 'Global'),
+            Tab(text: 'Ваші друзі'),
+            Tab(text: 'Пошук'),
           ],
         ),
       ),
@@ -105,7 +105,6 @@ class _FriendsScreenState extends State<FriendsScreen>
                 child: ListTile(
                   horizontalTitleGap: 20,
                   isThreeLine: true,
-                  title: const Text("Користувач"),
                   subtitle: userList.userNameBlack(
                     friendID,
                   ),
@@ -132,7 +131,7 @@ class _FriendsScreenState extends State<FriendsScreen>
   Widget searchFriends(BuildContext context) {
     AuthService auth = AuthService();
     var uid = auth.getUserID();
-    DatabaseUserService userService = DatabaseUserService(uid: uid);
+    DatabaseUserService userService = DatabaseUserService();
     CollectionReference userColection =
         FirebaseFirestore.instance.collection("users");
 
@@ -149,7 +148,7 @@ class _FriendsScreenState extends State<FriendsScreen>
                     fillColor: AppTheme.secondBackgroundColor,
                     hoverColor: AppTheme.secondBackgroundColor,
                     focusColor: AppTheme.secondBackgroundColor,
-                    hintText: '   Search .....',
+                    hintText: '   Пошук...',
                     enabledBorder: OutlineInputBorder(
                         borderSide:
                             BorderSide(color: Colors.white, width: 2.0)),
@@ -209,7 +208,6 @@ class _FriendsScreenState extends State<FriendsScreen>
                                   return ListTile(
                                     horizontalTitleGap: 20,
                                     isThreeLine: true,
-                                    title: const Text("Користувач"),
                                     subtitle: Text(user.userNickName!),
                                     leading: SizedBox(
                                       height: 300,
