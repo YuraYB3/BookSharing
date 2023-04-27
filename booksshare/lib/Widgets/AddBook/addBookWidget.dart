@@ -1,5 +1,7 @@
 // ignore_for_file: file_names
 
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_bottom_sheet/modal_bottom_sheet.dart';
@@ -68,31 +70,31 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                           children: [
                             Padding(
                               padding: const EdgeInsets.only(left: 28.0),
-                              child: Container(
-                                height: 250,
-                                width: 150,
-                                color: Colors.white,
-                                child: isImageLoaded == true
-                                    ? const Center(
-                                        child: Text("Зображення"),
-                                      )
-                                    : Center(
-                                        child: IconButton(
-                                            onPressed: () async {
-                                              ImagePicker imagePicker =
-                                                  ImagePicker();
-                                              XFile? f =
-                                                  await imagePicker.pickImage(
-                                                      source:
-                                                          ImageSource.gallery);
-                                              setState(() {
-                                                file = f;
-                                                isImageLoaded = true;
-                                              });
-                                            },
-                                            icon:
-                                                const Icon(Icons.add_a_photo)),
-                                      ),
+                              child: GestureDetector(
+                                onTap: () async {
+                                  ImagePicker imagePicker = ImagePicker();
+                                  XFile? f = await imagePicker.pickImage(
+                                      source: ImageSource.gallery);
+
+                                  if (f != null) {
+                                    setState(() {
+                                      file = f;
+                                      isImageLoaded = true;
+                                    });
+                                  }
+                                },
+                                child: Container(
+                                  height: 250,
+                                  width: 150,
+                                  color: Colors.white,
+                                  child: isImageLoaded == true
+                                      ? Center(
+                                          child: Image.file(File(file!.path),
+                                              fit: BoxFit.fill),
+                                        )
+                                      : const Center(
+                                          child: Icon(Icons.add_a_photo)),
+                                ),
                               ),
                             ),
                             SizedBox(

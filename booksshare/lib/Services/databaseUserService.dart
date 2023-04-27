@@ -56,6 +56,10 @@ class DatabaseUserService {
     }
   }
 
+  Stream<List<UserModel>?> get users {
+    return usersCollection.snapshots().map(_userListFromSnapshot);
+  }
+
   List<UserModel>? _userListFromSnapshot(QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
       return UserModel(
@@ -65,10 +69,6 @@ class DatabaseUserService {
           userEmail: doc.get('userEmail'),
           userImage: doc.get('userImage'));
     }).toList();
-  }
-
-  Stream<List<UserModel>?> get users {
-    return usersCollection.snapshots().map(_userListFromSnapshot);
   }
 
   Stream<List<UserModel>> readAllUsers() => FirebaseFirestore.instance
