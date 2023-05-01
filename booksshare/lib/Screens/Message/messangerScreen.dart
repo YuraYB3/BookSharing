@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import '../../Services/authService.dart';
 import '../../Services/messageService.dart';
 import '../../Shared/appTheme.dart';
+import '../../Shared/constants.dart';
 import '../../Widgets/userInfo.dart';
 import '../Profile/userProfile.dart';
 import 'messageBubble.dart';
@@ -103,38 +104,44 @@ class _MessangerScreenState extends State<MessangerScreen> {
         padding: const EdgeInsets.all(8.0),
         child: Form(
           key: _formKey,
-          child: Row(
-            children: [
-              Expanded(
-                child: TextFormField(
-                  decoration: const InputDecoration(
-                      labelText: 'Введіть повідмолення...'),
-                  onChanged: (value) {
-                    _enteredMessage = value;
-                  },
-                  validator: (value) {
-                    if (value!.isEmpty) {
-                      return 'Будь-ласка введіть повідомлення :(';
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: textInputDecoration.copyWith(
+                        hintText: 'Введіть повідмовлення...'),
+                    onChanged: (value) {
+                      _enteredMessage = value;
+                    },
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Будь-ласка введіть повідомлення :(';
+                      }
+                      return null;
+                    },
+                  ),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.send,
+                    color: AppTheme.secondBackgroundColor,
+                  ),
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      messageService.sendMessage(
+                        widget.friendshipID,
+                        _enteredMessage.trim(),
+                        currentUser,
+                      );
+                      _formKey.currentState!.reset();
+                      _enteredMessage = '';
                     }
-                    return null;
                   },
                 ),
-              ),
-              IconButton(
-                icon: const Icon(Icons.send),
-                onPressed: () async {
-                  if (_formKey.currentState!.validate()) {
-                    messageService.sendMessage(
-                      widget.friendshipID,
-                      _enteredMessage.trim(),
-                      currentUser,
-                    );
-                    _formKey.currentState!.reset();
-                    _enteredMessage = '';
-                  }
-                },
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
