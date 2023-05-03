@@ -19,7 +19,7 @@ class AddBookWidget extends StatefulWidget {
 
 class _AddBookWidgetState extends State<AddBookWidget> {
   final _formKey = GlobalKey<FormState>();
-  String autorBook = '';
+  String authorBook = '';
   String nameBook = '';
   String descriptionBook = '';
   late XFile? file;
@@ -163,7 +163,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                       style: const TextStyle(),
                                       onChanged: (val) {
                                         setState(() {
-                                          autorBook = val;
+                                          authorBook = val;
                                         });
                                       },
                                     ),
@@ -215,7 +215,7 @@ class _AddBookWidgetState extends State<AddBookWidget> {
                                         Colors.amber)),
                             onPressed: () {
                               if (_formKey.currentState!.validate()) {
-                                bookList.addBooks(nameBook, autorBook, file!,
+                                bookList.addBooks(nameBook, authorBook, file!,
                                     descriptionBook);
                                 Navigator.pop(context);
                               }

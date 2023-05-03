@@ -7,13 +7,10 @@ import 'package:fluttertoast/fluttertoast.dart';
 import '../Models/notificationModel.dart';
 
 class NotificationService {
-  final String? receiverID;
   final CollectionReference bookSwapRequestCollection =
       FirebaseFirestore.instance.collection('notification');
 
-  NotificationService({required this.receiverID});
-
-  Future<int> getNewRequestCount() async {
+  Future<int> getNewRequestCount(String receiverID) async {
     final querySnapshot = await bookSwapRequestCollection
         .where('receiverID', isEqualTo: receiverID)
         .where('seenByReceiver', isEqualTo: false)
@@ -21,24 +18,20 @@ class NotificationService {
     return querySnapshot.docs.length;
   }
 
-  Stream<List<NotificationModel>> getNewRequests() => FirebaseFirestore.instance
-      .collection('notification')
-      .where("receiverID", isEqualTo: receiverID)
-      .where('seenByReceiver', isEqualTo: false)
-      .snapshots()
-      .map((snapshot) => snapshot.docs
-          .map((doc) => NotificationModel.fromJson(doc.data()))
-          .toList());
+  Stream<List<NotificationModel>> getNewRequests(String receiverID) =>
+      FirebaseFirestore.instance
+          .collection('notification')
+          .where("receiverID", isEqualTo: receiverID)
+          .where('seenByReceiver', isEqualTo: false)
+          .snapshots()
+          .map((snapshot) => snapshot.docs
+              .map((doc) => NotificationModel.fromJson(doc.data()))
+              .toList());
 
-  Future<void> markRequestAsSeen(String requestID) async {
-    final requestRef = bookSwapRequestCollection.doc(requestID);
-    await requestRef.update({'seenByReceiver': true});
-  }
-
-  Future<void> updateSeenByReceiver(String swapReqID) async {
+  Future<void> updateSeenByReceiver(String notifyID) async {
     final CollectionReference swapReqRef =
         FirebaseFirestore.instance.collection('notification');
-    final DocumentReference swapReqDocRef = swapReqRef.doc(swapReqID);
+    final DocumentReference swapReqDocRef = swapReqRef.doc(notifyID);
 
     try {
       await swapReqDocRef.update({'seenByReceiver': true});

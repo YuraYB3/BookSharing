@@ -2,6 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../../Models/notificationModel.dart';
 import '../../Services/authService.dart';
@@ -28,13 +29,12 @@ class _NotificationScreenState extends State<NotificationScreen> {
   Widget build(BuildContext context) {
     var userID = _authService.getUserID();
     CollectionReference user = FirebaseFirestore.instance.collection("users");
-    NotificationService bookSwapNotifier =
-        NotificationService(receiverID: userID);
+    NotificationService bookSwapNotifier = NotificationService();
     return Scaffold(
         appBar: userAppBar.headerBar(context),
         backgroundColor: AppTheme.backgroundColor,
         body: StreamBuilder<List<NotificationModel>>(
-            stream: bookSwapNotifier.getNewRequests(),
+            stream: bookSwapNotifier.getNewRequests(userID!),
             builder: (BuildContext context,
                 AsyncSnapshot<List<NotificationModel>> snapshot) {
               if (snapshot.hasError) {
@@ -103,15 +103,20 @@ class _NotificationScreenState extends State<NotificationScreen> {
     if (notify.notificationType == 'Friendship') {
       return friendshipCard(notify, userdata, bookSwapNotifier);
     }
-    if (notify.notificationType == 'Reminder') {
-      return remindCard(userdata);
+    if (notify.notificationType == 'Reminder' &&
+        notify.seenByReceiver == false) {
+      return remindCard(
+        notify,
+        userdata,
+        bookSwapNotifier,
+      );
     } else {
       return Container();
     }
   }
 
   Widget swapCard(NotificationModel notify, Map<String, dynamic> userdata,
-      NotificationService bookSwapNotifier) {
+      NotificationService bookSwapNotifierService) {
     BookSwapService bookSwap = BookSwapService();
     SwapRequestService bookSwapRequest = SwapRequestService();
     CollectionReference book = FirebaseFirestore.instance.collection("books");
@@ -154,8 +159,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                                 notify.desiredBookID!);
                             bookSwapRequest
                                 .updateBookAvalaible(notify.desiredBookID!);
-                            bookSwapNotifier
+                            bookSwapNotifierService
                                 .updateSeenByReceiver(notify.notificationID);
+                            acceptMessage();
                           },
                           icon: const Icon(
                             Icons.done,
@@ -165,7 +171,9 @@ class _NotificationScreenState extends State<NotificationScreen> {
                         ),
                         IconButton(
                           onPressed: () async {
-                            bookSwapNotifier.deleteData(notify.notificationID);
+                            bookSwapNotifierService
+                                .deleteData(notify.notificationID);
+                            rejectMessage();
                           },
                           icon: const Icon(
                             Icons.close,
@@ -183,7 +191,7 @@ class _NotificationScreenState extends State<NotificationScreen> {
   }
 
   Widget friendshipCard(NotificationModel notify, Map<String, dynamic> userdata,
-      NotificationService bookSwapNotifier) {
+      NotificationService notifyService) {
     FriendshipService friendshipService = FriendshipService();
     return Card(
         shadowColor: Colors.blueGrey,
@@ -211,8 +219,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                   onPressed: () async {
                     friendshipService.addFriendship(
                         notify.senderID, notify.receiverID);
-                    bookSwapNotifier
-                        .updateSeenByReceiver(notify.notificationID);
+                    notifyService.updateSeenByReceiver(notify.notificationID);
+                    acceptMessage();
                   },
                   icon: const Icon(
                     Icons.done,
@@ -222,7 +230,8 @@ class _NotificationScreenState extends State<NotificationScreen> {
                 ),
                 IconButton(
                   onPressed: () async {
-                    bookSwapNotifier.deleteData(notify.notificationID);
+                    notifyService.deleteData(notify.notificationID);
+                    rejectMessage();
                   },
                   icon: const Icon(
                     Icons.close,
@@ -236,49 +245,74 @@ class _NotificationScreenState extends State<NotificationScreen> {
         ));
   }
 
-  Widget remindCard(Map<String, dynamic> userdata) {
-    return Card(
-        shadowColor: Colors.blueGrey,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 10,
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text("Користувач: ${userdata['name']}"),
-                  const Text("Нагадує вам про книгу:"),
-                  const Text(''),
-                ],
-              ),
-            ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                IconButton(
-                  onPressed: () async {},
-                  icon: const Icon(
-                    Icons.done,
-                    color: Colors.green,
-                    size: 20,
-                  ),
-                ),
-                IconButton(
-                  onPressed: () async {},
-                  icon: const Icon(
-                    Icons.close,
-                    color: Colors.red,
-                    size: 20,
-                  ),
-                ),
-              ],
-            )
-          ],
-        ));
+  Widget remindCard(NotificationModel notify, Map<String, dynamic> userdata,
+      NotificationService notifyService) {
+    CollectionReference book = FirebaseFirestore.instance.collection("books");
+    return FutureBuilder<DocumentSnapshot>(
+        future: book.doc(notify.desiredBookID).get(),
+        builder: (BuildContext context,
+            AsyncSnapshot<DocumentSnapshot> bookSnapshot) {
+          if (bookSnapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> bookdata =
+                bookSnapshot.data!.data() as Map<String, dynamic>;
+            return Card(
+                shadowColor: Colors.blueGrey,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(
+                        left: 10,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text("Користувач: ${userdata['name']}"),
+                          const Text("Нагадує вам про книгу:"),
+                          Text(bookdata['name'].toString()),
+                        ],
+                      ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton(
+                          onPressed: () async {
+                            notifyService
+                                .updateSeenByReceiver(notify.notificationID);
+                          },
+                          icon: const Icon(
+                            Icons.done,
+                            color: Colors.green,
+                            size: 20,
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ));
+          }
+          return Container();
+        });
+  }
+
+  void acceptMessage() {
+    Fluttertoast.showToast(
+      msg: 'Заявку прийнято',
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.white,
+    );
+  }
+
+  void rejectMessage() {
+    Fluttertoast.showToast(
+      msg: 'Заявку відхилено',
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.red,
+      textColor: Colors.white,
+    );
   }
 }

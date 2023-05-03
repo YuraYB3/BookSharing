@@ -1,4 +1,5 @@
 // ignore_for_file: file_names
+import 'package:booksshare/Services/reminderService.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -228,7 +229,45 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                                                   ],
                                                 ),
                                               )
-                                            : Container(),
+                                            : Container(
+                                                color: AppTheme
+                                                    .secondBackgroundColor,
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Container(
+                                                      color: AppTheme
+                                                          .secondBackgroundColor,
+                                                      child: Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .only(right: 2),
+                                                        child: TextButton(
+                                                            onPressed:
+                                                                () async {
+                                                              ReminderService
+                                                                  reminderService =
+                                                                  ReminderService();
+                                                              reminderService.sendBookReminder(
+                                                                  bookswap
+                                                                      .senderID,
+                                                                  bookswap
+                                                                      .receiverID,
+                                                                  bookswap
+                                                                      .desiredBookID);
+                                                            },
+                                                            child: const Text(
+                                                              'Нагадати про книгу',
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white),
+                                                            )),
+                                                      ),
+                                                    )
+                                                  ],
+                                                ),
+                                              ),
                                       ],
                                     ),
                                   ),
@@ -265,10 +304,10 @@ class _ExchangeScreenState extends State<ExchangeScreen>
                           SizedBox(
                               height: 150,
                               child: TextFormField(
-                                validator: (value) => value!.isEmpty ||
-                                        value.length < 50
-                                    ? 'You should enter the title of the book'
-                                    : null,
+                                validator: (value) =>
+                                    value!.isEmpty || value.length < 50
+                                        ? 'Ви повинні написати відгук!'
+                                        : null,
                                 decoration: const InputDecoration(
                                     hintText: "Введіть відгук"),
                                 maxLength: 250,

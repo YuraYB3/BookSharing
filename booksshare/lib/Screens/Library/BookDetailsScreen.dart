@@ -14,7 +14,7 @@ class BookDetailsScreen extends StatefulWidget {
   final String bookID;
   final String userID;
   final String bookName;
-  final String bookTitle;
+  final String bookAuthor;
   final String bookCover;
   final String bookAvalaible;
   final String bookDescription;
@@ -27,7 +27,7 @@ class BookDetailsScreen extends StatefulWidget {
       required this.bookCover,
       required this.bookAvalaible,
       required this.bookDescription,
-      required this.bookTitle});
+      required this.bookAuthor});
 
   @override
   State<BookDetailsScreen> createState() => _BookDetailsScreenState();
@@ -57,7 +57,7 @@ class _BookDetailsScreenState extends State<BookDetailsScreen> {
                 auth,
                 widget.bookCover,
                 widget.bookName,
-                widget.bookTitle,
+                widget.bookAuthor,
                 widget.bookAvalaible,
                 widget.bookID,
                 widget.userID),

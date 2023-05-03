@@ -61,7 +61,7 @@ class UserBooksList {
                               bookCover: book.cover,
                               bookDescription: book.description,
                               bookName: book.name,
-                              bookTitle: book.title,
+                              bookAuthor: book.author,
                             ),
                           ));
                     },
@@ -144,9 +144,9 @@ class UserBooksList {
                                         Container(
                                           width: 1,
                                         ),
-                                        book.title.length > 12
+                                        book.author.length > 12
                                             ? Text(
-                                                '${book.title.substring(0, 12)}...',
+                                                '${book.author.substring(0, 12)}...',
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     fontSize: 12,
@@ -154,7 +154,7 @@ class UserBooksList {
                                                     color: Colors.grey),
                                               )
                                             : Text(
-                                                book.title,
+                                                book.author,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
                                                     fontSize: 12,

@@ -81,7 +81,8 @@ class _BookSearchPageState extends State<BookSearchPage> {
                         if (userSnapshot.connectionState ==
                             ConnectionState.done) {
                           final bookName = book.name.toString().toLowerCase();
-                          final bookTitle = book.title.toString().toLowerCase();
+                          final bookTitle =
+                              book.author.toString().toLowerCase();
                           final query = searchQuery.toLowerCase();
                           final startsWithQuery = bookName.startsWith(query) ||
                               bookTitle.startsWith(query);
@@ -108,7 +109,7 @@ class _BookSearchPageState extends State<BookSearchPage> {
                                       bookCover: book.cover,
                                       bookDescription: book.description,
                                       bookName: book.name,
-                                      bookTitle: book.title,
+                                      bookAuthor: book.author,
                                     ),
                                   ),
                                 );

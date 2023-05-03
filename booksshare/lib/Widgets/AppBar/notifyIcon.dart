@@ -10,9 +10,8 @@ class NotifyIcon {
   Future<IconButton> getNotifyIcon(BuildContext context) async {
     AuthService authService = AuthService();
     var userID = authService.getUserID();
-    NotificationService bookSwapNotifier =
-        NotificationService(receiverID: userID);
-    final requestCount = await bookSwapNotifier.getNewRequestCount();
+    NotificationService bookSwapNotifier = NotificationService();
+    final requestCount = await bookSwapNotifier.getNewRequestCount(userID!);
     if (requestCount != 0) {
       return IconButton(
         icon: const Icon(

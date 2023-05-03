@@ -34,7 +34,6 @@ class SwapRequestService {
         'receiverID': receiverID,
         'desiredBookID': desiredBookID,
         'seenByReceiver': false,
-        "message": 'I want to swap book!!!!',
         'notificationType': 'Swap'
       });
       Fluttertoast.showToast(

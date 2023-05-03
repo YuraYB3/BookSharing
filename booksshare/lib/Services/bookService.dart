@@ -29,7 +29,7 @@ class BookService {
           snapshot.docs.map((doc) => BookModel.fromJson(doc.data())).toList());
 
   Future<void> addBooks(
-      String name, String title, XFile file, String description) async {
+      String name, String author, XFile file, String description) async {
     String imageURL = '';
     final CollectionReference booksCollection =
         FirebaseFirestore.instance.collection('books');
@@ -45,7 +45,7 @@ class BookService {
       imageURL = await referenceImagesToUpload.getDownloadURL();
       await newDocRef.set({
         'name': name,
-        'title': title,
+        'author': author,
         "userID": documnetID,
         "bookID": newDocRef.id,
         "available": 'yes',

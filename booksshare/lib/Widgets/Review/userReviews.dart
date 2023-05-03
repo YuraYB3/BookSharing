@@ -127,7 +127,7 @@ class UserReviews extends StatelessWidget {
                                 bookCover: bookdata['cover'],
                                 bookDescription: bookdata['description'],
                                 bookName: bookdata['name'],
-                                bookTitle: bookdata['title'],
+                                bookAuthor: bookdata['author'],
                               ),
                             ));
                       },

@@ -31,7 +31,6 @@ class FrienshipRequestService {
         'senderID': senderID,
         'receiverID': receiverID,
         'seenByReceiver': false,
-        "message": 'I want to be your friend!!!',
         'notificationType': 'Friendship',
       });
       Fluttertoast.showToast(

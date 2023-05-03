@@ -2,7 +2,7 @@
 
 class BookModel {
   final String name;
-  final String title;
+  final String author;
   final String userId;
   final String bookId;
   final String available;
@@ -11,7 +11,7 @@ class BookModel {
 
   BookModel(
       {required this.name,
-      required this.title,
+      required this.author,
       required this.userId,
       required this.bookId,
       required this.available,
@@ -20,7 +20,7 @@ class BookModel {
 
   static BookModel fromJson(Map<String, dynamic> json) => BookModel(
       name: json['name'],
-      title: json['title'],
+      author: json['author'],
       userId: json['userID'],
       bookId: json['bookID'],
       available: json['available'],
@@ -29,7 +29,7 @@ class BookModel {
 
   Map<String, dynamic> toJson() => {
         'name': name,
-        'title': title,
+        'author': author,
         'userID': userId,
         "bookID": bookId,
         'available': available,
