@@ -322,7 +322,43 @@ class _UserSettingsState extends State<UserSettings> {
             ),
           ),
           onTap: () async {
-            await databaseUserService.deleteAccount(context);
+            try {
+              bool confirmDelete = await showDialog(
+                context: context,
+                barrierDismissible: true,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    backgroundColor: AppTheme.secondBackgroundColor,
+                    title: const Text(
+                      'Видалити акаунт',
+                      style: TextStyle(color: AppTheme.textColor),
+                    ),
+                    content: const Text(
+                      'Ви дійсно хочете видалити акаунт?',
+                      style: TextStyle(color: AppTheme.textColor),
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, false),
+                        child: const Text(
+                          'Відмінити',
+                          style: TextStyle(color: AppTheme.iconColor),
+                        ),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, true),
+                        child: const Text('Видалити',
+                            style: TextStyle(color: AppTheme.iconColor)),
+                      ),
+                    ],
+                  );
+                },
+              );
+              if (confirmDelete == true) {
+                await databaseUserService.deleteAccount(context);
+              }
+            } catch (e) {}
+            //
           },
         ),
       ],
